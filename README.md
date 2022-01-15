@@ -1,1 +1,1 @@
-# astronomy-fov-calculator
+# Astronomy Field of View Calculator
