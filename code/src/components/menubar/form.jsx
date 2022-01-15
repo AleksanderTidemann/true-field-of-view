@@ -1,22 +1,24 @@
 import React from "react";
-import FormInput from "./forminput";
+import FormSection from "./formsection";
 import PropTypes from "prop-types";
 
-const Form = ({
-  colors,
-  isEyepieceMode,
-  formData,
-  onFormChange,
-  onFormSubmit,
-}) => {
+const Form = (props) => {
+  const {
+    aperture,
+    focallength,
+    barlow,
+    eyepieceafov,
+    eyepiecefocallength,
+    pixelsize,
+    resolutionx,
+    resolutiony,
+  } = props.formData;
+  const { colors, isEyepieceMode, onFormInputChange, onFormSubmit } = props;
+
+  console.log("Form renders");
+
   const SubmitBtnColor = () => {
     let className = "btn ml-1 mb-1 " + colors.text + " bg-";
-    className += isEyepieceMode ? colors.eyepieceMode : colors.cameraMode;
-    return className;
-  };
-
-  const inputAddonColor = () => {
-    let className = "input-group-text " + colors.text + " bg-";
     className += isEyepieceMode ? colors.eyepieceMode : colors.cameraMode;
     return className;
   };
@@ -29,10 +31,12 @@ const Form = ({
       }
     >
       <h2 className={"ml-2 mt-1 " + colors.text}>Camera</h2>
-      <FormInput
-        items={[formData.pixelsize, formData.resolutionx, formData.resolutiony]}
-        addoncolor={inputAddonColor()}
-        onFormChange={onFormChange}
+      <FormSection
+        key="Cam"
+        colors={colors}
+        isEyepieceMode={isEyepieceMode}
+        formItems={[pixelsize, resolutionx, resolutiony]}
+        onFormInputChange={onFormInputChange}
       />
     </div>
   );
@@ -45,10 +49,12 @@ const Form = ({
       }
     >
       <h2 className={"ml-2 mt-1 " + colors.text}>Eyepiece</h2>
-      <FormInput
-        items={[formData.eyepiecefocallength, formData.eyepieceafov]}
-        addoncolor={inputAddonColor()}
-        onFormChange={onFormChange}
+      <FormSection
+        key="Eye"
+        colors={colors}
+        isEyepieceMode={isEyepieceMode}
+        formItems={[eyepiecefocallength, eyepieceafov]}
+        onFormInputChange={onFormInputChange}
       />
     </div>
   );
@@ -62,10 +68,12 @@ const Form = ({
         }
       >
         <h2 className={"ml-2 mt-1 " + colors.text}>Telescope</h2>
-        <FormInput
-          items={[formData.aperture, formData.focallength, formData.barlow]}
-          onFormChange={onFormChange}
-          addoncolor={inputAddonColor()}
+        <FormSection
+          key="Telescope"
+          colors={colors}
+          isEyepieceMode={isEyepieceMode}
+          formItems={[aperture, focallength, barlow]}
+          onFormInputChange={onFormInputChange}
         />
       </div>
       {isEyepieceMode ? getEyeSection() : getCamSection()}
@@ -78,7 +86,7 @@ Form.propTypes = {
   colors: PropTypes.object.isRequired,
   isEyepieceMode: PropTypes.bool.isRequired,
   formData: PropTypes.object.isRequired,
-  onFormChange: PropTypes.func.isRequired,
+  onFormInputChange: PropTypes.func.isRequired,
   onFormSubmit: PropTypes.func.isRequired,
 };
 

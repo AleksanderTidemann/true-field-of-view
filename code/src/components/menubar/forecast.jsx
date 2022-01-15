@@ -6,12 +6,12 @@ import {
   getData,
   filterData,
 } from "../../utils/requests/getForecast";
+import PropTypes from "prop-types";
 
-// Make so that, if we check at 23:00 (for instace) it get the info from 23:00.. not 21:00..
 const loading = DIVIMAGES.loading;
 const error = DIVIMAGES.error;
 
-const Forecast = (props) => {
+const Forecast = ({ isEyepieceMode, colors }) => {
   const [forecastData, setForecastData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setError] = useState(false);
@@ -54,17 +54,15 @@ const Forecast = (props) => {
   const borderStyle = () => {
     let css =
       "info-items text-center " +
-      props.colors.text +
+      colors.text +
       " col-auto border rounded border-";
-    let bg = props.isEyepieceMode
-      ? props.colors.eyepieceMode
-      : props.colors.cameraMode;
+    let bg = isEyepieceMode ? colors.eyepieceMode : colors.cameraMode;
     return css + bg;
   };
 
   return (
     <div className="form-label-group mb-0 mt-2" key="forecast">
-      <p className={"mr-1 " + props.colors.text}>
+      <p className={"mr-1 " + colors.text}>
         <small>Forecast</small>
       </p>
       {isError ? (
@@ -89,6 +87,11 @@ const Forecast = (props) => {
       )}
     </div>
   );
+};
+
+Forecast.propTypes = {
+  isEyepieceMode: PropTypes.bool.isRequired,
+  colors: PropTypes.object.isRequired,
 };
 
 export default Forecast;

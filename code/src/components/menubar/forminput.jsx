@@ -1,38 +1,34 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const FormInput = ({ items, onFormChange, addoncolor }) => (
-  <div className="d-flex">
-    {items.map((item) => {
-      return (
-        <div className="form-label-group" key={item.ref}>
-          <input
-            type={item.type}
-            placeholder={item.name}
-            id={item.ref}
-            name={item.ref}
-            onChange={onFormChange}
-            value={item.value}
-            required={item.required}
-            className="form-control ml-2"
-            aria-describedby="addon"
-          />
-          <label htmlFor={item.ref}>{item.name}</label>
-          <div className="input-group-append">
-            <span className={addoncolor} id={item.ref}>
-              {item.unit}
-            </span>
-          </div>
-        </div>
-      );
-    })}
-  </div>
-);
+const FormInput = ({ formItem, onFormInputChange, addonColor }) => {
+  return (
+    <div className="form-label-group" key={formItem.ref}>
+      <input
+        type={formItem.type}
+        placeholder={formItem.name}
+        id={formItem.ref}
+        name={formItem.ref}
+        onChange={onFormInputChange}
+        value={formItem.value}
+        required={formItem.required}
+        className="form-control ml-2"
+        aria-describedby="addon"
+      />
+      <label htmlFor={formItem.ref}>{formItem.name}</label>
+      <div className="input-group-append">
+        <span className={addonColor} id={formItem.ref}>
+          {formItem.unit}
+        </span>
+      </div>
+    </div>
+  );
+};
 
 FormInput.propTypes = {
-  items: PropTypes.array.isRequired,
-  onFormChange: PropTypes.func.isRequired,
-  addoncolor: PropTypes.string.isRequired,
+  formItem: PropTypes.object.isRequired,
+  onFormInputChange: PropTypes.func.isRequired,
+  addonColor: PropTypes.string.isRequired,
 };
 
 export default FormInput;

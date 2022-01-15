@@ -142,22 +142,24 @@ const App = () => {
   };
 
   return (
-    <div className="App">
-      <Menubar
-        onFormChange={handleFormChange}
-        onFormSubmit={handleFormSubmit}
-        onModeChange={handleModeChange}
-        onGridChange={handleGridChange}
-        onRedGridChange={handleRedGridChange}
-        onLabelChange={handleLabelChange}
-        onZoomChange={handleZoomChange}
-        formData={formData}
-        formDataInfo={formDataInfo}
-        colors={colors}
-        isSubmit={isSubmit}
-      />
-      <Chart canvasData={canvasData} colors={colors} />
-    </div>
+    <React.StrictMode>
+      <div className="App">
+        <Menubar
+          onFormInputChange={handleFormChange}
+          onFormSubmit={handleFormSubmit}
+          onModeChange={handleModeChange}
+          onGridChange={handleGridChange}
+          onRedGridChange={handleRedGridChange}
+          onLabelChange={handleLabelChange}
+          onZoomChange={handleZoomChange}
+          formData={formData}
+          formDataInfo={formDataInfo}
+          colors={colors}
+          isSubmit={isSubmit}
+        />
+        <Chart canvasData={canvasData} colors={colors} />
+      </div>
+    </React.StrictMode>
   );
 };
 

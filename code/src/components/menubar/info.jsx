@@ -1,16 +1,34 @@
 import React, { useEffect, useState, useRef } from "react";
-import Forecast from "./forecast";
 import InfoInput from "./infoinput";
 import * as calc from "../../utils/calc";
 import initInfoData from "../../data/info-data";
+import PropTypes from "prop-types";
 
 const Info = (props) => {
-  const [infoData, setInfoData] = useState(initInfoData);
-  // for get pxPerSquare (Grid)
-  const prevRedGridState = useRef(props.hasRedGrid);
-  const prevGridState = useRef(props.hasGrid);
+  const {
+    focallength,
+    barlow,
+    aperture,
+    resolutionx,
+    resolutiony,
+    pixelsize,
+    eyepiecefocallength,
+  } = props.formData;
+  const {
+    hasGrid,
+    hasRedGrid,
+    redGridFactor,
+    plotsizex,
+    plotsizey,
+    isEyepieceMode,
+  } = props.formDataInfo;
+  const { colors, isSubmit } = props;
 
-  // When I submit, I set the isChanged fla to false
+  const [infoData, setInfoData] = useState(initInfoData);
+  const prevRedGridState = useRef(hasRedGrid);
+  const prevGridState = useRef(hasGrid);
+
+  // When I submit, I set the isChanged to false
   // Whenever the info boxes is changed after submit, the text color changes.
   useEffect(() => {
     setInfoData((prevInfoData) => {
@@ -20,14 +38,14 @@ const Info = (props) => {
       });
       return { ...stateCopy };
     });
-  }, [props.isSubmit]);
+  }, [isSubmit]);
 
   // get Focal Ratio
   useEffect(() => {
     const focalRatio = calc.getFratio(
-      props.focallength.value,
-      props.barlow.value,
-      props.aperture.value
+      focallength.value,
+      barlow.value,
+      aperture.value
     );
 
     setInfoData((prevInfoData) => ({
@@ -38,13 +56,13 @@ const Info = (props) => {
         isChanged: true,
       },
     }));
-  }, [props.barlow, props.focallength, props.aperture]);
+  }, [barlow, focallength, aperture]);
 
   // get Aspect Ratio
   useEffect(() => {
     const aspectRatio = calc.getAspectRatio(
-      props.resolutionx.value,
-      props.resolutiony.value
+      resolutionx.value,
+      resolutiony.value
     );
 
     setInfoData((prevInfoData) => ({
@@ -55,15 +73,12 @@ const Info = (props) => {
         isChanged: true,
       },
     }));
-  }, [props.resolutionx, props.resolutiony]);
+  }, [resolutionx, resolutiony]);
 
   // get Magnification (Mag)
   useEffect(() => {
-    const flengthScope = calc.getFlength(
-      props.focallength.value,
-      props.barlow.value
-    );
-    const mag = calc.getMag(flengthScope, props.eyepiecefocallength.value);
+    const flengthScope = calc.getFlength(focallength.value, barlow.value);
+    const mag = calc.getMag(flengthScope, eyepiecefocallength.value);
 
     setInfoData((prevInfoData) => ({
       ...prevInfoData,
@@ -73,14 +88,11 @@ const Info = (props) => {
         isChanged: true,
       },
     }));
-  }, [props.barlow, props.focallength, props.eyepiecefocallength]);
+  }, [barlow, focallength, eyepiecefocallength]);
 
   // get Max Magnification (Max Mag)
   useEffect(() => {
-    const maxMag = calc.getMaxMag(
-      props.focallength.value,
-      props.aperture.value
-    );
+    const maxMag = calc.getMaxMag(focallength.value, aperture.value);
     setInfoData((prevInfoData) => ({
       ...prevInfoData,
       maxMagnification: {
@@ -89,18 +101,18 @@ const Info = (props) => {
         isChanged: true,
       },
     }));
-  }, [props.focallength, props.aperture]);
+  }, [focallength, aperture]);
 
   // get pxPerSquare (Grid)
   useEffect(() => {
     const pxPerGridSquare = calc.getPxPerGridSquare(
-      props.resolutionx.value,
-      props.resolutiony.value,
-      props.plotsizex,
-      props.plotsizey,
-      props.hasGrid,
-      props.hasRedGrid,
-      props.redGridFactor
+      resolutionx.value,
+      resolutiony.value,
+      plotsizex,
+      plotsizey,
+      hasGrid,
+      hasRedGrid,
+      redGridFactor
     );
 
     setInfoData((prevInfoData) => ({
@@ -109,31 +121,31 @@ const Info = (props) => {
         ...prevInfoData.pxPerSquare,
         value: pxPerGridSquare,
         isChanged:
-          props.hasRedGrid !== prevRedGridState.current ||
-          props.hasGrid !== prevGridState.current
+          hasRedGrid !== prevRedGridState.current ||
+          hasGrid !== prevGridState.current
             ? prevInfoData.pxPerSquare.isChanged
             : true,
       },
     }));
 
-    prevRedGridState.current = props.hasRedGrid;
-    prevGridState.current = props.hasGrid;
+    prevRedGridState.current = hasRedGrid;
+    prevGridState.current = hasGrid;
   }, [
-    props.resolutionx,
-    props.resolutiony,
-    props.plotsizex,
-    props.plotsizey,
-    props.hasGrid,
-    props.hasRedGrid,
-    props.redGridFactor,
+    resolutionx,
+    resolutiony,
+    plotsizex,
+    plotsizey,
+    hasGrid,
+    hasRedGrid,
+    redGridFactor,
   ]);
 
   // get Chip Size (Chip)
   useEffect(() => {
     const result = calc.getChipSize(
-      props.resolutionx.value,
-      props.resolutiony.value,
-      props.pixelsize.value
+      resolutionx.value,
+      resolutiony.value,
+      pixelsize.value
     );
     setInfoData((prevInfoData) => ({
       ...prevInfoData,
@@ -143,24 +155,18 @@ const Info = (props) => {
         isChanged: true,
       },
     }));
-  }, [props.resolutionx, props.resolutiony, props.pixelsize]);
+  }, [resolutionx, resolutiony, pixelsize]);
 
   return (
-    <div
-      className={
-        "border border-white rounded mb-1 bg-" + props.colors.background
-      }
-    >
+    <div className={"border border-white rounded mb-1 bg-" + colors.background}>
       <div className="d-flex justify-content-around">
         {Object.values(infoData).map((item) => {
-          if (props.isEyepieceMode && item.isEyepieceInfo) {
+          if (isEyepieceMode && item.isEyepieceInfo) {
             return (
               <InfoInput
-                colors={props.colors}
+                colors={colors}
                 borderColor={
-                  props.isEyepieceMode
-                    ? props.colors.eyepieceMode
-                    : props.colors.cameraMode
+                  isEyepieceMode ? colors.eyepieceMode : colors.cameraMode
                 }
                 key={item.name}
                 name={item.name}
@@ -169,17 +175,12 @@ const Info = (props) => {
               />
             );
           }
-          if (
-            (!props.isEyepieceMode && !item.isEyepieceInfo) ||
-            item.name === "FR"
-          ) {
+          if ((!isEyepieceMode && !item.isEyepieceInfo) || item.name === "FR") {
             return (
               <InfoInput
-                colors={props.colors}
+                colors={colors}
                 borderColor={
-                  props.isEyepieceMode
-                    ? props.colors.eyepieceMode
-                    : props.colors.cameraMode
+                  isEyepieceMode ? colors.eyepieceMode : colors.cameraMode
                 }
                 key={item.name}
                 name={item.name}
@@ -189,10 +190,17 @@ const Info = (props) => {
             );
           }
         })}
-        <Forecast isEyepieceMode={props.isEyepieceMode} colors={props.colors} />
+        {props.children}
       </div>
     </div>
   );
+};
+
+Info.propTypes = {
+  formData: PropTypes.object.isRequired,
+  formDataInfo: PropTypes.object.isRequired,
+  colors: PropTypes.object.isRequired,
+  isSubmit: PropTypes.bool.isRequired,
 };
 
 export default Info;

@@ -2,12 +2,14 @@ import React from "react";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import Form from "./form";
 import Info from "./info";
+import Forecast from "./forecast";
 import CanvasOptions from "./canvasoptions";
 import PropTypes from "prop-types";
 
 const Menubar = (props) => (
   <div className="container p-0">
     <BootstrapSwitchButton
+      key="Mode-changer"
       checked={props.formDataInfo.isEyepieceMode}
       onlabel="Camera"
       onstyle={props.colors.eyepieceMode}
@@ -20,26 +22,21 @@ const Menubar = (props) => (
       isEyepieceMode={props.formDataInfo.isEyepieceMode}
       colors={props.colors}
       formData={props.formData}
-      onFormChange={props.onFormChange}
+      onFormInputChange={props.onFormInputChange}
       onFormSubmit={props.onFormSubmit}
     />
     <Info
+      formData={props.formData}
+      formDataInfo={props.formDataInfo}
       isSubmit={props.isSubmit}
-      focallength={props.formData.focallength}
-      barlow={props.formData.barlow}
-      aperture={props.formData.aperture}
-      resolutionx={props.formData.resolutionx}
-      resolutiony={props.formData.resolutiony}
-      pixelsize={props.formData.pixelsize}
-      eyepiecefocallength={props.formData.eyepiecefocallength}
-      hasGrid={props.formDataInfo.hasGrid}
-      hasRedGrid={props.formDataInfo.hasRedGrid}
-      redGridFactor={props.formDataInfo.redGridFactor}
-      plotsizex={props.formDataInfo.plotSizeX}
-      plotsizey={props.formDataInfo.plotSizeY}
-      isEyepieceMode={props.formDataInfo.isEyepieceMode}
       colors={props.colors}
-    />
+    >
+      <Forecast
+        isEyepieceMode={props.formDataInfo.isEyepieceMode}
+        colors={props.colors}
+        key="Forecast"
+      />
+    </Info>
     <CanvasOptions
       colors={props.colors}
       zoomValue={props.formDataInfo.zoomValue}
@@ -56,7 +53,7 @@ const Menubar = (props) => (
 );
 
 Menubar.propTypes = {
-  onFormChange: PropTypes.func.isRequired,
+  onFormInputChange: PropTypes.func.isRequired,
   onFormSubmit: PropTypes.func.isRequired,
   onModeChange: PropTypes.func.isRequired,
   onGridChange: PropTypes.func.isRequired,
