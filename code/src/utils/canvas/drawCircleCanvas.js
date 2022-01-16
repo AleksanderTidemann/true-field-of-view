@@ -1,4 +1,5 @@
 import { nrstPointZero } from "../calc";
+import colors from "../../data/color-data";
 
 function drawCircleGridY(
   ctx,
@@ -171,7 +172,6 @@ function drawCircleGridNumbers(
 export function drawCircleCanvas(
   ctx,
   canvasData,
-  colors,
   scaledCanvasWidth,
   scaledCanvasHeight,
   labelFont,

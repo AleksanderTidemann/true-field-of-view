@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import colors from "../../../../data/color-data";
 
-const InfoInput = ({ isChanged, colors, name, value, borderColor }) => {
+const FormInfoInput = ({ isChanged, name, value, borderColor }) => {
   const [textColor, setTextColor] = useState(null);
 
   // set textColor based on submit and if the info value has changed after a submit.
@@ -29,12 +30,11 @@ const InfoInput = ({ isChanged, colors, name, value, borderColor }) => {
   );
 };
 
-InfoInput.propTypes = {
-  isChanged: PropTypes.func.isRequired,
-  colors: PropTypes.object.isRequired,
+FormInfoInput.propTypes = {
+  isChanged: PropTypes.bool.isRequired,
   name: PropTypes.string.isRequired,
-  value: PropTypes.number.isRequired,
+  value: PropTypes.string.isRequired,
   borderColor: PropTypes.string.isRequired,
 };
 
-export default InfoInput;
+export default FormInfoInput;

@@ -29,7 +29,7 @@ const BodySelector = ({
       ) : (
         <>
           {Object.keys(currCrowd).map((item) => {
-            if (item === "key") return;
+            if (item === "key") return "";
             let bodyName = currCrowd[item].key;
             return (
               <Body

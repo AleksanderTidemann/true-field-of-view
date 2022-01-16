@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { DIVIMAGES } from "../../data/img-data";
+import { DIVIMAGES } from "../../../../data/img-data";
 import {
   getLatLong,
   getAreaCountry,
   getData,
   filterData,
-} from "../../utils/requests/getForecast";
+} from "../../../../utils/requests/getForecast";
 import PropTypes from "prop-types";
+import colors from "../../../../data/color-data";
 
 const loading = DIVIMAGES.loading;
 const error = DIVIMAGES.error;
 
-const Forecast = ({ isEyepieceMode, colors }) => {
+const Forecast = ({ isEyepieceMode }) => {
   const [forecastData, setForecastData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setError] = useState(false);
@@ -30,7 +31,7 @@ const Forecast = ({ isEyepieceMode, colors }) => {
         );
         const symbol_code = forecast.data.next_6_hours.summary.symbol_code;
         const temperature = forecast.data.instant.details.air_temperature;
-        const wimg = require("../../img/weather/" +
+        const wimg = require("../../../../img/weather/" +
           symbol_code +
           ".png").default;
 
@@ -91,7 +92,6 @@ const Forecast = ({ isEyepieceMode, colors }) => {
 
 Forecast.propTypes = {
   isEyepieceMode: PropTypes.bool.isRequired,
-  colors: PropTypes.object.isRequired,
 };
 
 export default Forecast;

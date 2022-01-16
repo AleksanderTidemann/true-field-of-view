@@ -4,9 +4,9 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import CanvasZoom from "./canvaszoom";
 import PropTypes from "prop-types";
+import colors from "../../../data/color-data";
 
 const CanvasOptions = ({
-  colors,
   zoomValue,
   hasLabels,
   isEyepieceMode,
@@ -75,7 +75,6 @@ const CanvasOptions = ({
           isEyepieceMode={isEyepieceMode}
           onZoomChange={onZoomChange}
           zoomValue={zoomValue}
-          colors={colors}
         />
       </FormGroup>
     </div>
@@ -83,7 +82,6 @@ const CanvasOptions = ({
 };
 
 CanvasOptions.propTypes = {
-  colors: PropTypes.object.isRequired,
   zoomValue: PropTypes.number.isRequired,
   hasLabels: PropTypes.bool.isRequired,
   isEyepieceMode: PropTypes.bool.isRequired,

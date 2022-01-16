@@ -1,7 +1,6 @@
 import { ANGULAR_MEASUREMENT_LABELS } from "../data/angular-measurement-labels";
 
 // ./canvas/drawSquareCanvas & drawCircleCanvas //
-
 export function nrstPointZero(val, scaledCanvasNumb) {
   // round to nearest 0.5
   // The screen can’t display half a pixel, so it expands the line to cover a total of two pixels.
@@ -23,15 +22,17 @@ export function nrstPointZero(val, scaledCanvasNumb) {
 }
 
 // ../components/chart/info.jsx //
+// returns only strings
 export function getFratio(flength, barlow, aperture) {
   let b = Number(barlow) <= 0 ? 1 : Number(barlow);
   let f = Number(flength) <= 0 ? 0 : Number(flength) * b;
   let a = Number(aperture) <= 0 ? 0 : Number(aperture);
-  return a !== 0 && f !== 0 ? Math.floor((f / a) * 10) / 10 : "";
+  let result = Math.floor((f / a) * 10) / 10;
+  return a !== 0 && f !== 0 ? "" + result : "";
 }
 
 export function getAspectRatio(resX, resY) {
-  // calculate the aspect ratio (f.instance "4:3") of our camera lense.
+  // calculate the aspect ratio (f.instance "4:3") of our camera lens.
   let aspectRatio = "";
   let x = Number(resX) <= 0 ? 0 : Number(resX);
   let y = Number(resY) <= 0 ? 0 : Number(resY);
@@ -46,7 +47,6 @@ export function getAspectRatio(resX, resY) {
       if (aspectX % i === 0) factorX.push(i);
       if (aspectY % i === 0) factorY.push(i);
     }
-
     if (factorY.length && factorX.length) {
       const commonFactors = factorX.filter((n) => factorY.indexOf(n) !== -1);
       const greatestCommonFactor = Math.max(...commonFactors);
@@ -54,14 +54,22 @@ export function getAspectRatio(resX, resY) {
       aspectY /= greatestCommonFactor;
       aspectRatio = aspectX + ":" + aspectY;
     }
-    return aspectRatio;
   }
+  return aspectRatio;
+}
+
+export function getMag(flengthScope, flengthEye) {
+  const scope = Number(flengthScope) <= 0 ? 0 : Number(flengthScope);
+  const eye = Number(flengthEye) <= 0 ? 0 : Number(flengthEye);
+  const result = Math.round((scope / eye) * 10) / 10;
+  return eye !== 0 && scope !== 0 ? "" + result : "";
 }
 
 export function getMaxMag(flengthNoBarlow, aperture) {
   const f = Number(flengthNoBarlow) <= 0 ? 0 : Number(flengthNoBarlow);
   let a = Number(aperture) <= 0 ? 0 : Number(aperture);
-  return f !== 0 && a !== 0 ? Math.round(a * 2 * 10) / 10 : "";
+  let result = Math.round(a * 2 * 10) / 10;
+  return f !== 0 && a !== 0 ? "" + result : "";
 }
 
 export function getPxPerGridSquare(
@@ -112,18 +120,12 @@ export function getChipSize(resX, resY, micronssquared) {
 }
 
 // ./utils/eye2canvas & ./utils/eye2canvas//
-// ../components/chart/info.jsx //
+// ../components/menubar/info.jsx //
 export function getTrueFOVdeg(afov, mag) {
   // This output is a FOV unit in degrees.
   const a = Number(afov) <= 0 ? 1 : Number(afov);
   const m = Number(mag) <= 0 ? 1 : Number(mag);
   return a / m;
-}
-
-export function getMag(flengthScope, flengthEye) {
-  const scope = Number(flengthScope) <= 0 ? 0 : Number(flengthScope);
-  const eye = Number(flengthEye) <= 0 ? 0 : Number(flengthEye);
-  return eye !== 0 && scope !== 0 ? Math.round((scope / eye) * 10) / 10 : "";
 }
 
 export function getFlength(flength, barlow) {
@@ -205,7 +207,7 @@ export function deg2unitEye(deg) {
   }
 }
 
-// used in ./drawBodies //
+// used in ./chart/canvas/body //
 export function unit2ang(deg, unit) {
   // convert angular values from degrees to arcmin or arcsec based on prefered unit.
   switch (unit) {
@@ -259,7 +261,7 @@ export function getCanvasObject(angUnit, degX, degY, plotDiv) {
   }
 }
 
-// ../App.js //
+// ./menubar/menubar.js //
 export function numberify(val) {
   // return only numbers above 0
   return Number(val) <= 0 ? 0 : Number(val);
@@ -297,7 +299,7 @@ export function eye2canvas(
   // calculate the tfov of or eyepiece from the eyepiece afov, focal length and scope specifics
   const flength_scope = getFlength(focallenghtvalue, barlowvalue);
   const mag = getMag(flength_scope, eyepiecefocallengthvalue);
-  const tFovDeg = getTrueFOVdeg(eyepieceafovvalue, mag);
+  const tFovDeg = getTrueFOVdeg(eyepieceafovvalue, Number(mag));
   const preferedUnit = deg2unitEye(tFovDeg);
   const plotDivisor = unit2plotDivisor(preferedUnit);
 

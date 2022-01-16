@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
-import InfoInput from "./infoinput";
-import * as calc from "../../utils/calc";
-import initInfoData from "../../data/info-data";
+import FormInfoInput from "./forminfoinput";
+import * as calc from "../../../../utils/calc";
+import initFormInfoData from "../../../../data/form-info-data";
 import PropTypes from "prop-types";
+import colors from "../../../../data/color-data";
 
-const Info = (props) => {
+const FormInfo = (props) => {
   const {
     focallength,
     barlow,
@@ -22,16 +23,15 @@ const Info = (props) => {
     plotsizey,
     isEyepieceMode,
   } = props.formDataInfo;
-  const { colors, isSubmit } = props;
-
-  const [infoData, setInfoData] = useState(initInfoData);
+  const { isSubmit } = props;
+  const [formInfoData, setFormInfoData] = useState(initFormInfoData);
   const prevRedGridState = useRef(hasRedGrid);
   const prevGridState = useRef(hasGrid);
 
   // When I submit, I set the isChanged to false
   // Whenever the info boxes is changed after submit, the text color changes.
   useEffect(() => {
-    setInfoData((prevInfoData) => {
+    setFormInfoData((prevInfoData) => {
       let stateCopy = JSON.parse(JSON.stringify(prevInfoData));
       Object.keys(stateCopy).forEach((key) => {
         stateCopy[key].isChanged = false;
@@ -48,7 +48,7 @@ const Info = (props) => {
       aperture.value
     );
 
-    setInfoData((prevInfoData) => ({
+    setFormInfoData((prevInfoData) => ({
       ...prevInfoData,
       focalRatio: {
         ...prevInfoData.focalRatio,
@@ -64,8 +64,7 @@ const Info = (props) => {
       resolutionx.value,
       resolutiony.value
     );
-
-    setInfoData((prevInfoData) => ({
+    setFormInfoData((prevInfoData) => ({
       ...prevInfoData,
       aspectRatio: {
         ...prevInfoData.aspectRatio,
@@ -80,7 +79,7 @@ const Info = (props) => {
     const flengthScope = calc.getFlength(focallength.value, barlow.value);
     const mag = calc.getMag(flengthScope, eyepiecefocallength.value);
 
-    setInfoData((prevInfoData) => ({
+    setFormInfoData((prevInfoData) => ({
       ...prevInfoData,
       magnification: {
         ...prevInfoData.magnification,
@@ -93,7 +92,7 @@ const Info = (props) => {
   // get Max Magnification (Max Mag)
   useEffect(() => {
     const maxMag = calc.getMaxMag(focallength.value, aperture.value);
-    setInfoData((prevInfoData) => ({
+    setFormInfoData((prevInfoData) => ({
       ...prevInfoData,
       maxMagnification: {
         ...prevInfoData.maxMagnification,
@@ -115,7 +114,7 @@ const Info = (props) => {
       redGridFactor
     );
 
-    setInfoData((prevInfoData) => ({
+    setFormInfoData((prevInfoData) => ({
       ...prevInfoData,
       pxPerSquare: {
         ...prevInfoData.pxPerSquare,
@@ -147,7 +146,7 @@ const Info = (props) => {
       resolutiony.value,
       pixelsize.value
     );
-    setInfoData((prevInfoData) => ({
+    setFormInfoData((prevInfoData) => ({
       ...prevInfoData,
       chipSize: {
         ...prevInfoData.chipSize,
@@ -160,11 +159,10 @@ const Info = (props) => {
   return (
     <div className={"border border-white rounded mb-1 bg-" + colors.background}>
       <div className="d-flex justify-content-around">
-        {Object.values(infoData).map((item) => {
+        {Object.values(formInfoData).map((item) => {
           if (isEyepieceMode && item.isEyepieceInfo) {
             return (
-              <InfoInput
-                colors={colors}
+              <FormInfoInput
                 borderColor={
                   isEyepieceMode ? colors.eyepieceMode : colors.cameraMode
                 }
@@ -177,8 +175,7 @@ const Info = (props) => {
           }
           if ((!isEyepieceMode && !item.isEyepieceInfo) || item.name === "FR") {
             return (
-              <InfoInput
-                colors={colors}
+              <FormInfoInput
                 borderColor={
                   isEyepieceMode ? colors.eyepieceMode : colors.cameraMode
                 }
@@ -189,6 +186,7 @@ const Info = (props) => {
               />
             );
           }
+          return "";
         })}
         {props.children}
       </div>
@@ -196,11 +194,10 @@ const Info = (props) => {
   );
 };
 
-Info.propTypes = {
+FormInfo.propTypes = {
   formData: PropTypes.object.isRequired,
   formDataInfo: PropTypes.object.isRequired,
-  colors: PropTypes.object.isRequired,
   isSubmit: PropTypes.bool.isRequired,
 };
 
-export default Info;
+export default FormInfo;

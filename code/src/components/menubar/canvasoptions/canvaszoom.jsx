@@ -5,9 +5,10 @@ import ZoomOutIcon from "@mui/icons-material/ZoomOut";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Tooltip from "@mui/material/Tooltip";
 import PropTypes from "prop-types";
+import colors from "../../../data/color-data";
 
 const INC = 10;
-const CanvasZoom = ({ isEyepieceMode, onZoomChange, zoomValue, colors }) => {
+const CanvasZoom = ({ isEyepieceMode, onZoomChange, zoomValue }) => {
   return (
     <Tooltip title={zoomValue + "%"} placement="bottom">
       <ButtonGroup
@@ -39,7 +40,6 @@ CanvasZoom.propTypes = {
   isEyepieceMode: PropTypes.bool.isRequired,
   onZoomChange: PropTypes.func.isRequired,
   zoomValue: PropTypes.number.isRequired,
-  colors: PropTypes.object.isRequired,
 };
 
 export default CanvasZoom;

@@ -6,7 +6,7 @@ import initCrowdData from "../../data/crowd-data";
 import { getSolarSystemData } from "../../utils/requests/getSolarsystemdata";
 import PropTypes from "prop-types";
 
-const Chart = ({ canvasData, colors }) => {
+const Chart = ({ canvasData }) => {
   const [crowdData, setCrowdData] = useState(null);
   const [currCrowd, setCurrCrowd] = useState(null);
   const [currBody, setCurrBody] = useState(null);
@@ -57,7 +57,6 @@ const Chart = ({ canvasData, colors }) => {
       <div className="container d-flex justify-content-around p-0 mb-4">
         <CrowdSelector
           isEyepieceMode={canvasData.isEyepieceMode}
-          colors={colors}
           currCrowdName={currCrowd ? currCrowd.key : ""}
           onCrowdSelection={handleCrowdSelection}
           crowdNames={crowdData ? Object.keys(crowdData) : []}
@@ -72,7 +71,6 @@ const Chart = ({ canvasData, colors }) => {
       </div>
       <Canvas
         canvasData={canvasData}
-        colors={colors}
         currBody={currBody ? currBody : {}}
       ></Canvas>
     </div>
@@ -81,7 +79,6 @@ const Chart = ({ canvasData, colors }) => {
 
 Chart.propTypes = {
   canvasData: PropTypes.object.isRequired,
-  colors: PropTypes.object.isRequired,
 };
 
 export default Chart;

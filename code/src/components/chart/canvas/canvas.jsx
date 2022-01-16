@@ -24,7 +24,7 @@ const OFFSET = 5;
 
 // layouteffect runs before the DOM initally renders.
 // A good place to update/get size of DOM elements to avoid flickering.
-const Canvas = ({ canvasData, colors, currBody }) => {
+const Canvas = ({ canvasData, currBody }) => {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
   const [containerWidth, setContainerWidth] = useState(null);
@@ -44,7 +44,6 @@ const Canvas = ({ canvasData, colors, currBody }) => {
   useLayoutEffect(() => {
     // Set the containerWidth when the parent DIV mounts,
     // and whenever we resize the window.
-
     if (containerRef.current) {
       setContainerWidth(containerRef.current.parentNode.clientWidth);
     }
@@ -53,7 +52,6 @@ const Canvas = ({ canvasData, colors, currBody }) => {
   useLayoutEffect(() => {
     // Set the canvasWidth If the container width
     //OR a new zoom value is registered.
-
     if (containerWidth) {
       let cw = (containerWidth / 100) * canvasData.zoomValue;
       setCanvasWidth(cw);
@@ -93,7 +91,6 @@ const Canvas = ({ canvasData, colors, currBody }) => {
         drawSquareCanvas(
           context,
           canvasData,
-          colors,
           scaledCanvasWidth,
           scaledCanvasHeight,
           LABELFONT,
@@ -105,7 +102,6 @@ const Canvas = ({ canvasData, colors, currBody }) => {
         drawCircleCanvas(
           context,
           canvasData,
-          colors,
           scaledCanvasWidth,
           scaledCanvasHeight,
           LABELFONT,
@@ -128,7 +124,7 @@ const Canvas = ({ canvasData, colors, currBody }) => {
       // canvas.style.width = canvasWidth + "px !important";
       // canvas.style.height = canvasWidth + "px !important";
     }
-  }, [canvasRef, canvasWidth, colors, canvasData, currBody]);
+  }, [canvasRef, canvasWidth, canvasData, currBody]);
 
   return (
     <motion.div
@@ -157,7 +153,6 @@ const Canvas = ({ canvasData, colors, currBody }) => {
 Canvas.propTypes = {
   canvasData: PropTypes.object.isRequired,
   currBody: PropTypes.object.isRequired,
-  colors: PropTypes.object.isRequired,
 };
 
 export default Canvas;

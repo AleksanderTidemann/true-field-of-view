@@ -1,9 +1,9 @@
 import { nrstPointZero } from "../calc";
+import colors from "../../data/color-data";
 
 function drawSquareGridY(
   ctx,
   plotSizeY,
-  colors,
   offsetWidth,
   scaledCanvasWidth,
   scaledCanvasHeight,
@@ -152,8 +152,7 @@ function drawSquareGridX(
   scaledCanvasHeight,
   hasGrid,
   hasRedGrid,
-  redGridFactor,
-  colors
+  redGridFactor
 ) {
   for (let i = 0; i <= plotSizeX; i++) {
     //i = 0 and 20 to make the border
@@ -194,7 +193,6 @@ function drawSquareGridX(
 export function drawSquareCanvas(
   ctx,
   canvasData,
-  colors,
   scaledCanvasWidth,
   scaledCanvasHeight,
   labelFont,
@@ -231,8 +229,7 @@ export function drawSquareCanvas(
     scaledCanvasHeight,
     hasGrid,
     hasRedGrid,
-    redGridFactor,
-    colors
+    redGridFactor
   );
   drawSquareGridXnumbers(
     ctx,
@@ -261,7 +258,6 @@ export function drawSquareCanvas(
   drawSquareGridY(
     ctx,
     plotSizeY,
-    colors,
     offsetWidth,
     scaledCanvasWidth,
     scaledCanvasHeight,

@@ -3,6 +3,7 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import colors from "../../../data/color-data";
 import PropTypes from "prop-types";
 
 const menuPaperHeight = 48;
@@ -38,7 +39,6 @@ const style = (isEyepieceMode) => ({
 
 const CrowdSelector = ({
   isEyepieceMode,
-  colors,
   onCrowdSelection,
   currCrowdName,
   crowdNames,
@@ -102,7 +102,6 @@ const CrowdSelector = ({
 
 CrowdSelector.propTypes = {
   isEyepieceMode: PropTypes.bool.isRequired,
-  colors: PropTypes.object.isRequired,
   onCrowdSelection: PropTypes.func.isRequired,
   currCrowdName: PropTypes.string.isRequired,
   crowdNames: PropTypes.array.isRequired,

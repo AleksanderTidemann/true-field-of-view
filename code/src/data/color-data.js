@@ -1,5 +1,5 @@
 // Bootstrap colors
-const initColorData = {
+const colors = {
   eyepieceMode: "info",
   cameraMode: "success",
   background: "gradient-dark",
@@ -10,4 +10,4 @@ const initColorData = {
   canvasGrid: "#4c4c4c",
 };
 
-export default initColorData;
+export default colors;

@@ -1,69 +1,101 @@
-import React from "react";
-import BootstrapSwitchButton from "bootstrap-switch-button-react";
-import Form from "./form";
-import Info from "./info";
-import Forecast from "./forecast";
-import CanvasOptions from "./canvasoptions";
+import React, { useState } from "react";
+import Form from "./form/form";
+import CanvasOptions from "./canvasoptions/canvasoptions";
+import ModeSwitcher from "./modeswitcher/modeswitcher";
+import initCanvasData from "../../data/canvas-data";
 import PropTypes from "prop-types";
 
-const Menubar = (props) => (
-  <div className="container p-0">
-    <BootstrapSwitchButton
-      key="Mode-changer"
-      checked={props.formDataInfo.isEyepieceMode}
-      onlabel="Camera"
-      onstyle={props.colors.eyepieceMode}
-      offlabel="Eyepiece"
-      offstyle={props.colors.cameraMode}
-      onChange={props.onModeChange}
-      style="w-100 mb-1 mt-2"
-    />
-    <Form
-      isEyepieceMode={props.formDataInfo.isEyepieceMode}
-      colors={props.colors}
-      formData={props.formData}
-      onFormInputChange={props.onFormInputChange}
-      onFormSubmit={props.onFormSubmit}
-    />
-    <Info
-      formData={props.formData}
-      formDataInfo={props.formDataInfo}
-      isSubmit={props.isSubmit}
-      colors={props.colors}
-    >
-      <Forecast
-        isEyepieceMode={props.formDataInfo.isEyepieceMode}
-        colors={props.colors}
-        key="Forecast"
+const Menubar = ({ setGlobalCanvasData }) => {
+  const [formDataInfo, setFormDataInfo] = useState(initCanvasData);
+
+  // useeffect på submit true.
+  const handleModeChange = (bool) => {
+    setFormDataInfo({
+      ...initCanvasData,
+      isEyepieceMode: bool,
+    });
+    setGlobalCanvasData((prev) => ({
+      ...prev,
+      isEyepieceMode: bool,
+    }));
+  };
+
+  const handleGridChange = (bool) => {
+    setFormDataInfo((prev) => ({
+      ...prev,
+      hasGrid: bool,
+    }));
+    setGlobalCanvasData((prev) => ({
+      ...prev,
+      hasGrid: bool,
+    }));
+  };
+
+  const handleLabelChange = (bool) => {
+    setFormDataInfo((prev) => ({
+      ...prev,
+      hasLabels: bool,
+    }));
+    setGlobalCanvasData((prev) => ({
+      ...prev,
+      hasLabels: bool,
+    }));
+  };
+
+  const handleRedGridChange = (bool) => {
+    setFormDataInfo((prev) => ({
+      ...prev,
+      hasRedGrid: bool,
+    }));
+    setGlobalCanvasData((prev) => ({
+      ...prev,
+      hasRedGrid: bool,
+    }));
+  };
+
+  const handleZoomChange = (val) => {
+    setFormDataInfo((prev) => ({
+      ...prev,
+      zoomValue: val,
+    }));
+    setGlobalCanvasData((prev) => ({
+      ...prev,
+      zoomValue: val,
+    }));
+  };
+
+  const handleFormSubmit = () => {
+    setGlobalCanvasData({ ...formDataInfo });
+  };
+
+  return (
+    <div className="container p-0">
+      <ModeSwitcher
+        isEyepieceMode={formDataInfo.isEyepieceMode}
+        onModeChange={handleModeChange}
       />
-    </Info>
-    <CanvasOptions
-      colors={props.colors}
-      zoomValue={props.formDataInfo.zoomValue}
-      hasLabels={props.formDataInfo.hasLabels}
-      isEyepieceMode={props.formDataInfo.isEyepieceMode}
-      hasGrid={props.formDataInfo.hasGrid}
-      hasRedGrid={props.formDataInfo.hasRedGrid}
-      onZoomChange={props.onZoomChange}
-      onGridChange={props.onGridChange}
-      onLabelChange={props.onLabelChange}
-      onRedGridChange={props.onRedGridChange}
-    />
-  </div>
-);
+      <Form
+        onFormSubmit={handleFormSubmit}
+        setFormDataInfo={setFormDataInfo}
+        formDataInfo={formDataInfo}
+      />
+      <CanvasOptions
+        zoomValue={formDataInfo.zoomValue}
+        hasLabels={formDataInfo.hasLabels}
+        isEyepieceMode={formDataInfo.isEyepieceMode}
+        hasGrid={formDataInfo.hasGrid}
+        hasRedGrid={formDataInfo.hasRedGrid}
+        onZoomChange={handleZoomChange}
+        onGridChange={handleGridChange}
+        onLabelChange={handleLabelChange}
+        onRedGridChange={handleRedGridChange}
+      />
+    </div>
+  );
+};
 
 Menubar.propTypes = {
-  onFormInputChange: PropTypes.func.isRequired,
-  onFormSubmit: PropTypes.func.isRequired,
-  onModeChange: PropTypes.func.isRequired,
-  onGridChange: PropTypes.func.isRequired,
-  onRedGridChange: PropTypes.func.isRequired,
-  onLabelChange: PropTypes.func.isRequired,
-  onZoomChange: PropTypes.func.isRequired,
-  formData: PropTypes.object.isRequired,
-  formDataInfo: PropTypes.object.isRequired,
-  colors: PropTypes.object.isRequired,
-  isSubmit: PropTypes.bool.isRequired,
+  setGlobalCanvasData: PropTypes.func.isRequired,
 };
 
 export default Menubar;
