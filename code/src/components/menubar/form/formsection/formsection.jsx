@@ -3,7 +3,12 @@ import FormModule from "./formmodule";
 import PropTypes from "prop-types";
 import colors from "../../../../data/color-data";
 
-const FormSection = (props) => {
+const FormSection = ({
+  formData,
+  isEyepieceMode,
+  onFormInputChange,
+  onFormSubmit,
+}) => {
   const {
     aperture,
     focallength,
@@ -13,10 +18,24 @@ const FormSection = (props) => {
     pixelsize,
     resolutionx,
     resolutiony,
-  } = props.formData;
-  const { isEyepieceMode, onFormInputChange, onFormSubmit } = props;
+  } = formData;
 
-  console.log("formsection rendered");
+  // return arrays of items
+  // only when needed.
+  const telModuleItems = useMemo(
+    () => [aperture, focallength, barlow],
+    [aperture, focallength, barlow]
+  );
+
+  const eyeModuleItems = useMemo(
+    () => [eyepiecefocallength, eyepieceafov],
+    [eyepiecefocallength, eyepieceafov]
+  );
+
+  const camModuleItems = useMemo(
+    () => [pixelsize, resolutionx, resolutiony],
+    [pixelsize, resolutionx, resolutiony]
+  );
 
   const submitBtnColor = useMemo(() => {
     let className = "btn ml-1 mb-1 " + colors.text + " bg-";
@@ -29,7 +48,7 @@ const FormSection = (props) => {
       <FormModule
         key="Tel"
         title="Telescope"
-        formItems={[aperture, focallength, barlow]}
+        formItems={telModuleItems}
         isEyepieceMode={isEyepieceMode}
         onFormInputChange={onFormInputChange}
       />
@@ -37,7 +56,7 @@ const FormSection = (props) => {
         <FormModule
           key="Eye"
           title="Eyepiece"
-          formItems={[eyepiecefocallength, eyepieceafov]}
+          formItems={eyeModuleItems}
           isEyepieceMode={isEyepieceMode}
           onFormInputChange={onFormInputChange}
         />
@@ -45,12 +64,12 @@ const FormSection = (props) => {
         <FormModule
           key="Cam"
           title="Camera"
-          formItems={[pixelsize, resolutionx, resolutiony]}
+          formItems={camModuleItems}
           isEyepieceMode={isEyepieceMode}
           onFormInputChange={onFormInputChange}
         />
       )}
-      <input className={submitBtnColor} type="submit" value="Plot!" />
+      <input className={submitBtnColor} type="submit" value="Go!" />
     </form>
   );
 };

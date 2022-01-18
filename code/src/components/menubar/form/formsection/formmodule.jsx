@@ -1,9 +1,7 @@
 import React, { useMemo, memo } from "react";
-import PropTypes from "prop-types";
+import FormInput from "./forminput";
 import colors from "../../../../data/color-data";
-
-// maybe re-introduce formInput.
-// it can reduce the rendering even more?
+import PropTypes from "prop-types";
 
 const FormModule = ({
   formItems,
@@ -11,8 +9,6 @@ const FormModule = ({
   isEyepieceMode,
   title,
 }) => {
-  console.log("module", title, "rendered");
-
   const addonColor = useMemo(() => {
     let className = "input-group-text " + colors.text + " bg-";
     className += isEyepieceMode ? colors.eyepieceMode : colors.cameraMode;
@@ -27,31 +23,16 @@ const FormModule = ({
       }
     >
       <h2 className={"ml-2 mt-1 " + colors.text}>{title}</h2>
+      {/* THIS IS WHERE THE DROPDOWN MENU ("FORMDROP") WILL GO */}
       <div className="d-flex">
-        {formItems.map((formItem) => {
-          return (
-            <div className="form-label-group" key={formItem.ref}>
-              <input
-                type={formItem.type}
-                placeholder={formItem.name}
-                id={formItem.ref}
-                name={formItem.ref}
-                // {() => onformInputChange(value, id)}
-                onChange={onFormInputChange}
-                value={formItem.value}
-                required={formItem.required}
-                className="form-control ml-2"
-                aria-describedby="addon"
-              />
-              <label htmlFor={formItem.ref}>{formItem.name}</label>
-              <div className="input-group-append">
-                <span className={addonColor} id={formItem.ref}>
-                  {formItem.unit}
-                </span>
-              </div>
-            </div>
-          );
-        })}
+        {formItems.map((formItem) => (
+          <FormInput
+            key={formItem.ref}
+            item={formItem}
+            addonColor={addonColor}
+            onFormInputChange={onFormInputChange}
+          />
+        ))}
       </div>
     </div>
   );
@@ -60,7 +41,6 @@ const FormModule = ({
 FormModule.propTypes = {
   formItems: PropTypes.array.isRequired,
   isEyepieceMode: PropTypes.bool.isRequired,
-  addonColor: PropTypes.string.isRequired,
   onFormInputChange: PropTypes.func.isRequired,
 };
 

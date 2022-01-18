@@ -8,7 +8,7 @@ const FormInfoInput = ({ isChanged, name, value, borderColor }) => {
   // set textColor based on submit and if the info value has changed after a submit.
   useEffect(() => {
     isChanged ? setTextColor(colors.textMuted) : setTextColor(colors.text);
-  }, [isChanged, colors]);
+  }, [isChanged]);
 
   return (
     <div className={"form-label-group mb-0 mt-2 " + colors.text}>

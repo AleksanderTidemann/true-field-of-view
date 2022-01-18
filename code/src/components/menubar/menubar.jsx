@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import Form from "./form/form";
 import CanvasOptions from "./canvasoptions/canvasoptions";
 import ModeSwitcher from "./modeswitcher/modeswitcher";
@@ -6,85 +6,99 @@ import initCanvasData from "../../data/canvas-data";
 import PropTypes from "prop-types";
 
 const Menubar = ({ setGlobalCanvasData }) => {
-  const [formDataInfo, setFormDataInfo] = useState(initCanvasData);
+  const [localCanvasData, setLocalCanvasData] = useState(initCanvasData);
 
-  // useeffect på submit true.
-  const handleModeChange = (bool) => {
-    setFormDataInfo({
-      ...initCanvasData,
-      isEyepieceMode: bool,
-    });
-    setGlobalCanvasData((prev) => ({
-      ...prev,
-      isEyepieceMode: bool,
-    }));
-  };
+  const handleModeChange = useCallback(
+    (bool) => {
+      setLocalCanvasData({
+        ...initCanvasData,
+        isEyepieceMode: bool,
+      });
+      setGlobalCanvasData((prev) => ({
+        ...initCanvasData,
+        isEyepieceMode: bool,
+      }));
+    },
+    [setGlobalCanvasData]
+  );
 
-  const handleGridChange = (bool) => {
-    setFormDataInfo((prev) => ({
-      ...prev,
-      hasGrid: bool,
-    }));
-    setGlobalCanvasData((prev) => ({
-      ...prev,
-      hasGrid: bool,
-    }));
-  };
+  const handleGridChange = useCallback(
+    (bool) => {
+      setLocalCanvasData((prev) => ({
+        ...prev,
+        hasGrid: bool,
+      }));
+      setGlobalCanvasData((prev) => ({
+        ...prev,
+        hasGrid: bool,
+      }));
+    },
+    [setGlobalCanvasData]
+  );
 
-  const handleLabelChange = (bool) => {
-    setFormDataInfo((prev) => ({
-      ...prev,
-      hasLabels: bool,
-    }));
-    setGlobalCanvasData((prev) => ({
-      ...prev,
-      hasLabels: bool,
-    }));
-  };
+  const handleLabelChange = useCallback(
+    (bool) => {
+      setLocalCanvasData((prev) => ({
+        ...prev,
+        hasLabels: bool,
+      }));
+      setGlobalCanvasData((prev) => ({
+        ...prev,
+        hasLabels: bool,
+      }));
+    },
+    [setGlobalCanvasData]
+  );
 
-  const handleRedGridChange = (bool) => {
-    setFormDataInfo((prev) => ({
-      ...prev,
-      hasRedGrid: bool,
-    }));
-    setGlobalCanvasData((prev) => ({
-      ...prev,
-      hasRedGrid: bool,
-    }));
-  };
+  const handleRedGridChange = useCallback(
+    (bool) => {
+      setLocalCanvasData((prev) => ({
+        ...prev,
+        hasRedGrid: bool,
+      }));
+      setGlobalCanvasData((prev) => ({
+        ...prev,
+        hasRedGrid: bool,
+      }));
+    },
+    [setGlobalCanvasData]
+  );
 
-  const handleZoomChange = (val) => {
-    setFormDataInfo((prev) => ({
-      ...prev,
-      zoomValue: val,
-    }));
-    setGlobalCanvasData((prev) => ({
-      ...prev,
-      zoomValue: val,
-    }));
-  };
-
-  const handleFormSubmit = () => {
-    setGlobalCanvasData({ ...formDataInfo });
-  };
+  const handleZoomChange = useCallback(
+    (val) => {
+      setLocalCanvasData((prev) => ({
+        ...prev,
+        zoomValue: val,
+      }));
+      setGlobalCanvasData((prev) => ({
+        ...prev,
+        zoomValue: val,
+      }));
+    },
+    [setGlobalCanvasData]
+  );
 
   return (
     <div className="container p-0">
       <ModeSwitcher
-        isEyepieceMode={formDataInfo.isEyepieceMode}
+        isEyepieceMode={localCanvasData.isEyepieceMode}
         onModeChange={handleModeChange}
       />
       <Form
-        onFormSubmit={handleFormSubmit}
-        setFormDataInfo={setFormDataInfo}
-        formDataInfo={formDataInfo}
+        setLocalCanvasData={setLocalCanvasData}
+        setGlobalCanvasData={setGlobalCanvasData}
+        localCanvasData={localCanvasData}
       />
+      {/* 
+      CanvasOptions should be memoized to avoid renders from
+      converting formData to localCanvasData, which happens in <Form/> 
+      */}
       <CanvasOptions
-        zoomValue={formDataInfo.zoomValue}
-        hasLabels={formDataInfo.hasLabels}
-        isEyepieceMode={formDataInfo.isEyepieceMode}
-        hasGrid={formDataInfo.hasGrid}
-        hasRedGrid={formDataInfo.hasRedGrid}
+        zoomValue={localCanvasData.zoomValue}
+        hasLabels={localCanvasData.hasLabels}
+        isEyepieceMode={localCanvasData.isEyepieceMode}
+        hasGrid={localCanvasData.hasGrid}
+        hasRedGrid={localCanvasData.hasRedGrid}
         onZoomChange={handleZoomChange}
         onGridChange={handleGridChange}
         onLabelChange={handleLabelChange}

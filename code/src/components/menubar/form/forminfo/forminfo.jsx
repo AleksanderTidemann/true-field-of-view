@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import FormInfoInput from "./forminfoinput";
 import * as calc from "../../../../utils/calc";
-import initFormInfoData from "../../../../data/form-info-data";
+import initInfoData from "../../../../data/info-data";
 import PropTypes from "prop-types";
 import colors from "../../../../data/color-data";
 
@@ -22,16 +22,16 @@ const FormInfo = (props) => {
     plotsizex,
     plotsizey,
     isEyepieceMode,
-  } = props.formDataInfo;
+  } = props.localCanvasData;
   const { isSubmit } = props;
-  const [formInfoData, setFormInfoData] = useState(initFormInfoData);
+  const [infoData, setInfoData] = useState(initInfoData);
   const prevRedGridState = useRef(hasRedGrid);
   const prevGridState = useRef(hasGrid);
 
   // When I submit, I set the isChanged to false
   // Whenever the info boxes is changed after submit, the text color changes.
   useEffect(() => {
-    setFormInfoData((prevInfoData) => {
+    setInfoData((prevInfoData) => {
       let stateCopy = JSON.parse(JSON.stringify(prevInfoData));
       Object.keys(stateCopy).forEach((key) => {
         stateCopy[key].isChanged = false;
@@ -48,7 +48,7 @@ const FormInfo = (props) => {
       aperture.value
     );
 
-    setFormInfoData((prevInfoData) => ({
+    setInfoData((prevInfoData) => ({
       ...prevInfoData,
       focalRatio: {
         ...prevInfoData.focalRatio,
@@ -64,7 +64,7 @@ const FormInfo = (props) => {
       resolutionx.value,
       resolutiony.value
     );
-    setFormInfoData((prevInfoData) => ({
+    setInfoData((prevInfoData) => ({
       ...prevInfoData,
       aspectRatio: {
         ...prevInfoData.aspectRatio,
@@ -79,7 +79,7 @@ const FormInfo = (props) => {
     const flengthScope = calc.getFlength(focallength.value, barlow.value);
     const mag = calc.getMag(flengthScope, eyepiecefocallength.value);
 
-    setFormInfoData((prevInfoData) => ({
+    setInfoData((prevInfoData) => ({
       ...prevInfoData,
       magnification: {
         ...prevInfoData.magnification,
@@ -92,7 +92,7 @@ const FormInfo = (props) => {
   // get Max Magnification (Max Mag)
   useEffect(() => {
     const maxMag = calc.getMaxMag(focallength.value, aperture.value);
-    setFormInfoData((prevInfoData) => ({
+    setInfoData((prevInfoData) => ({
       ...prevInfoData,
       maxMagnification: {
         ...prevInfoData.maxMagnification,
@@ -114,7 +114,7 @@ const FormInfo = (props) => {
       redGridFactor
     );
 
-    setFormInfoData((prevInfoData) => ({
+    setInfoData((prevInfoData) => ({
       ...prevInfoData,
       pxPerSquare: {
         ...prevInfoData.pxPerSquare,
@@ -146,7 +146,7 @@ const FormInfo = (props) => {
       resolutiony.value,
       pixelsize.value
     );
-    setFormInfoData((prevInfoData) => ({
+    setInfoData((prevInfoData) => ({
       ...prevInfoData,
       chipSize: {
         ...prevInfoData.chipSize,
@@ -159,7 +159,7 @@ const FormInfo = (props) => {
   return (
     <div className={"border border-white rounded mb-1 bg-" + colors.background}>
       <div className="d-flex justify-content-around">
-        {Object.values(formInfoData).map((item) => {
+        {Object.values(infoData).map((item) => {
           if (isEyepieceMode && item.isEyepieceInfo) {
             return (
               <FormInfoInput
@@ -196,7 +196,7 @@ const FormInfo = (props) => {
 
 FormInfo.propTypes = {
   formData: PropTypes.object.isRequired,
-  formDataInfo: PropTypes.object.isRequired,
+  localCanvasData: PropTypes.object.isRequired,
   isSubmit: PropTypes.bool.isRequired,
 };
 

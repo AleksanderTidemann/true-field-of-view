@@ -4,51 +4,46 @@ import FormInfo from "./forminfo/forminfo";
 import Forecast from "./forminfo/forecast";
 import initFormData from "../../../data/form-data";
 import { numberify, cam2canvas, eye2canvas } from "../../../utils/calc";
+import PropTypes from "prop-types";
 
-// useCallback() = return a memo function when the deps changes. Use it when I dont know what the output of the function is.
-// useMemo() = retursn the value of the memo function. Use it when I know what the reutnr of rhte func is.
-// memo() = HOC that does the same as useMemo(). The "key" props allow React to identify elements across renders. They're most commonly used when rendering a list of items.
-// useEffect() = Sideeffects of the current state of the component.
-
-// reducer.. more
-// context.Provider. useContext() over many components
-
-const Form = ({ onFormSubmit, setFormDataInfo, formDataInfo }) => {
+const Form = ({ setGlobalCanvasData, setLocalCanvasData, localCanvasData }) => {
   const [formData, setFormData] = useState(initFormData);
-  // When changing the mode and adding any new form info, the subitflag goes to false.
   const [isSubmit, setSubmit] = useState(false);
 
-  // should be just a callback with [] as dep
-  // is cached at mount and never changes.
-  const handleFormChange = (e) => {
+  // callBacks to avoid giving the funcs
+  // new reference on every render.
+  const handleFormChange = useCallback((value, target) => {
     setFormData((prevData) => {
-      let newValue = e.target.value;
-      let keyRef = e.target.id;
-      let keyCopy = { ...prevData[keyRef] };
-      keyCopy.value = newValue;
-      prevData[keyRef] = keyCopy;
+      let keyCopy = { ...prevData[target] };
+      keyCopy.value = value;
+      prevData[target] = keyCopy;
       return { ...prevData };
     });
     setSubmit((prevSubmit) => (prevSubmit ? false : prevSubmit));
-  };
+  }, []);
 
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    setSubmit(true);
-    onFormSubmit();
-    // kanskje bare send submitflagget oppover til menubar?
-  };
+  const handleFormSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      setSubmit(true);
+      setGlobalCanvasData({ ...localCanvasData });
+    },
+    [setGlobalCanvasData, localCanvasData]
+  );
 
   // reset the formdata when the mode changes.
   useEffect(() => {
-    setFormData(initFormData);
+    setFormData({ ...initFormData });
     setSubmit((prevSubmit) => (prevSubmit ? false : prevSubmit));
-  }, [formDataInfo.isEyepieceMode]);
+  }, [localCanvasData.isEyepieceMode]);
 
-  // converts formData to formDataInfo
+  // converts formData to localCanvasData
+  // calls the setLocalCanvasData in
+  // parent component to avoid
+  // unnecessary re-renders.
   useEffect(() => {
     let newFormDataInfo = [];
-    if (formDataInfo.isEyepieceMode) {
+    if (localCanvasData.isEyepieceMode) {
       let epAFOV = numberify(formData.eyepieceafov.value);
       let epFL = numberify(formData.eyepiecefocallength.value);
       let FL = numberify(formData.focallength.value);
@@ -72,30 +67,39 @@ const Form = ({ onFormSubmit, setFormDataInfo, formDataInfo }) => {
     }
 
     if (Object.keys(newFormDataInfo).length) {
-      setFormDataInfo((prev) => ({
+      setLocalCanvasData((prev) => ({
         ...prev,
         ...newFormDataInfo,
       }));
     }
-  }, [formData, setFormDataInfo, formDataInfo.isEyepieceMode]);
+  }, [formData, setLocalCanvasData, localCanvasData.isEyepieceMode]);
 
   return (
     <>
       <FormSection
-        isEyepieceMode={formDataInfo.isEyepieceMode}
+        isEyepieceMode={localCanvasData.isEyepieceMode}
         formData={formData}
         onFormInputChange={handleFormChange}
         onFormSubmit={handleFormSubmit}
       />
       <FormInfo
         formData={formData}
-        formDataInfo={formDataInfo}
+        localCanvasData={localCanvasData}
         isSubmit={isSubmit}
       >
-        <Forecast isEyepieceMode={formDataInfo.isEyepieceMode} key="Forecast" />
+        <Forecast
+          isEyepieceMode={localCanvasData.isEyepieceMode}
+          key="Forecast"
+        />
       </FormInfo>
     </>
   );
+};
+
+Form.protoTypes = {
+  setGlobalCanvasData: PropTypes.func.isRequired,
+  setLocalCanvasData: PropTypes.func.isRequired,
+  localCanvasData: PropTypes.object.isRequired,
 };
 
 export default Form;

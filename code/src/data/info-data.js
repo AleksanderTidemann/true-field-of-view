@@ -1,4 +1,4 @@
-const initFormInfoData = {
+const initInfoData = {
   focalRatio: {
     name: "FR",
     value: "",
@@ -37,4 +37,4 @@ const initFormInfoData = {
   },
 };
 
-export default initFormInfoData;
+export default initInfoData;

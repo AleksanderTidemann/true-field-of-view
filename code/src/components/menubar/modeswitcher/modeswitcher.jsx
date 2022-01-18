@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import colors from "../../../data/color-data";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import PropTypes from "prop-types";
@@ -23,4 +23,4 @@ ModeSwitcher.propTypes = {
   onModeChange: PropTypes.func.isRequired,
 };
 
-export default ModeSwitcher;
+export default memo(ModeSwitcher);
