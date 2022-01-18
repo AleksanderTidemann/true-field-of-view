@@ -6,7 +6,7 @@ const initCanvasData = {
   hasLabels: true,
   hasRedGrid: false,
   redGridFactor: 6,
-  zoomValue: 100,
+  zoomValue: 50,
   plotSizeX: 20,
   plotSizeY: 20,
   plotDivisor: 6,

@@ -6,6 +6,8 @@ import PropTypes from "prop-types";
 import colors from "../../../../data/color-data";
 
 const FormInfo = (props) => {
+  // Create a component for each item.
+  // much better code that way.
   const {
     focallength,
     barlow,

@@ -17,6 +17,8 @@ const CanvasOptions = ({
   onLabelChange,
   onRedGridChange,
 }) => {
+  // make one component for each input.
+  // that is much more readable and friendly
   return (
     <div className={"border border-white rounded mb-1 bg-" + colors.background}>
       <FormGroup className={"justify-content-around " + colors.text} row>

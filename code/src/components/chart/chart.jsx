@@ -59,6 +59,8 @@ const Chart = ({ canvasData }) => {
           isEyepieceMode={canvasData.isEyepieceMode}
           currCrowdName={currCrowd ? currCrowd.key : ""}
           onCrowdSelection={handleCrowdSelection}
+          // get crowdNames should be a useMemo.
+          // an array will not be memoized correctly.
           crowdNames={crowdData ? Object.keys(crowdData) : []}
         />
         <BodySelector
