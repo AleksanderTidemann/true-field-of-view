@@ -10,6 +10,7 @@ The application functionality is based on a series of assumptions (calculations)
 
 ### From camera sensor properties to degrees, arc minutes and arc seconds
 ### From eyepiece apparant fied-of-view to true field-of-view 
+### Planitary data aquired from ...
 
 ## Dependencies
 * React v.17.0.2
