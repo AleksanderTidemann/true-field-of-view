@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { motion } from "framer-motion";
 import PropTypes from "prop-types";
 
@@ -37,4 +37,4 @@ Body.propTypes = {
   bodyWidth: PropTypes.string.isRequired,
 };
 
-export default Body;
+export default memo(Body);

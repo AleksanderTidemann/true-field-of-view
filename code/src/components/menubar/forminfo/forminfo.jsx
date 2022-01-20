@@ -5,6 +5,9 @@ import PropTypes from "prop-types";
 import colors from "../../../data/color-data";
 import initInfoData from "../../../data/info-data";
 
+// useEffect, actually make the comp render twice.
+// because the calcs are sideEffects.
+
 const FormInfo = (props) => {
   const {
     focallength,

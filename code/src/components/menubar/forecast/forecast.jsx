@@ -57,32 +57,52 @@ const Forecast = ({ isEyepieceMode }) => {
     return css + bg;
   };
 
+  if (isError) {
+    return (
+      <div className={"border border-white rounded mb-1 col-3 bg-" + colors.background}>
+        <div className="form-label-group mb-0 mt-2 justify-content-center">
+          <p className={"mr-1 " + colors.text}>
+            <small>Forecast</small>
+          </p>
+          <p className={borderStyle()}>
+            <img src={error} alt="ERROR..." width="25px" height="25px" />
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className={"border border-white rounded mb-1 col-3 bg-" + colors.background}>
+        <div className="form-label-group mb-0 mt-2 justify-content-center">
+          <p className={"mr-1 " + colors.text}>
+            <small>Forecast</small>
+          </p>
+          <p className={borderStyle()}>
+            <img src={loading} alt="loading..." width="25px" height="25px" />
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={"border border-white rounded mb-1 col-3 bg-" + colors.background}>
       <div className="form-label-group mb-0 mt-2 justify-content-center">
         <p className={"mr-1 " + colors.text}>
           <small>Forecast</small>
         </p>
-        {isError ? (
-          <p className={borderStyle()}>
-            <img src={error} alt="ERROR..." width="25px" height="25px" />
-          </p>
-        ) : isLoading ? (
-          <p className={borderStyle()}>
-            <img src={loading} alt="loading..." width="25px" height="25px" />
-          </p>
-        ) : (
-          <p className={borderStyle()}>
-            <img
-              src={forecastData.next6h_img}
-              alt="Specification Drawing"
-              width="25px"
-              height="25px"
-              className="mr-2"
-            />
-            {forecastData.next6h_temp}°
-          </p>
-        )}
+        <p className={borderStyle()}>
+          <img
+            src={forecastData.next6h_img}
+            alt="Specification Drawing"
+            width="25px"
+            height="25px"
+            className="mr-2"
+          />
+          {forecastData.next6h_temp}°
+        </p>
       </div>
     </div>
   );

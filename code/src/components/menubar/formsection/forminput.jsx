@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
 const FormInput = ({ item, addonColor, onFormInputChange }) => {
@@ -31,4 +31,4 @@ FormInput.propTypes = {
   onFormInputChange: PropTypes.func.isRequired,
 };
 
-export default memo(FormInput);
+export default FormInput;

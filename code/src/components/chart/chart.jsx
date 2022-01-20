@@ -1,19 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Canvas from "./canvas/canvas";
-import BodySelector from "./selector/bodyselector";
-import CrowdSelector from "./selector/crowdselector";
+import Selector from "./selector/selector";
 import initCrowdData from "../../data/crowd-data";
 import { getSolarSystemData } from "../../utils/requests/getSolarsystemdata";
 import PropTypes from "prop-types";
 
-const Chart = ({ canvasData }) => {
+const Chart = ({ globalCanvasData }) => {
   const [crowdData, setCrowdData] = useState(null);
   const [currCrowd, setCurrCrowd] = useState(null);
   const [currBody, setCurrBody] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
-  // Fetch current API data on celestiasl objects (AU, distance from earth etc.)
+  // Fetch current space object API data on mount.
   useEffect(() => {
     setIsLoading(true);
     setIsError(false);
@@ -34,50 +33,47 @@ const Chart = ({ canvasData }) => {
     fetchData();
   }, []);
 
-  // Set the currCrowed based on the user selection in the crowdSelector menu.
-  const handleCrowdSelection = (crowdSelection) => {
-    if (!isLoading && !isError) {
+  // Set the current list of planets/space objects (currCrowd)
+  const handleCrowdSelection = useCallback(
+    (crowdSelection) => {
       setCurrCrowd(crowdData[crowdSelection]);
       setCurrBody(null);
-    }
-  };
+    },
+    [crowdData]
+  );
 
-  const handleBodySelection = (bodyName) => {
-    if (!isLoading && !isError) {
-      if (!currBody || currBody.key !== bodyName) {
-        setCurrBody(currCrowd[bodyName]);
-        return;
-      }
-      setCurrBody(null);
-    }
-  };
+  // Set the current planet or space object selected (currBody)
+  const handleBodySelection = useCallback(
+    (bodyName) => {
+      setCurrBody((prevBody) => {
+        if (!prevBody || prevBody.key !== bodyName) {
+          return { ...currCrowd[bodyName] };
+        }
+        return null;
+      });
+    },
+    [currCrowd]
+  );
 
   return (
-    <div className="container p-0">
-      <div className="container d-flex justify-content-around p-0 mb-4">
-        <CrowdSelector
-          isEyepieceMode={canvasData.isEyepieceMode}
-          currCrowdName={currCrowd ? currCrowd.key : ""}
-          onCrowdSelection={handleCrowdSelection}
-          // get crowdNames should be a useMemo.
-          // an array will not be memoized correctly.
-          crowdNames={crowdData ? Object.keys(crowdData) : []}
-        />
-        <BodySelector
-          isLoading={isLoading}
-          isError={isError}
-          onBodySelection={handleBodySelection}
-          currCrowd={currCrowd ? currCrowd : {}}
-          currBodyName={currBody ? currBody.key : ""}
-        />
-      </div>
-      <Canvas canvasData={canvasData} currBody={currBody ? currBody : {}}></Canvas>
-    </div>
+    <>
+      <Selector
+        isLoading={isLoading}
+        isError={isError}
+        isEyepieceMode={globalCanvasData.isEyepieceMode}
+        crowdData={crowdData}
+        currCrowd={currCrowd}
+        currBody={currBody}
+        onBodySelection={handleBodySelection}
+        onCrowdSelection={handleCrowdSelection}
+      />
+      <Canvas canvasData={globalCanvasData} currBody={currBody ? currBody : {}}></Canvas>
+    </>
   );
 };
 
 Chart.propTypes = {
-  canvasData: PropTypes.object.isRequired,
+  globalCanvasData: PropTypes.object.isRequired,
 };
 
 export default Chart;

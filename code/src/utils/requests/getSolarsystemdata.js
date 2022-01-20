@@ -46,9 +46,7 @@ export async function getSolarSystemData(crowdsObj) {
   for (let i = 0; i < crowds.length; i++) {
     if (crowds[i] !== "planets" && crowds[i] !== "moons") continue;
     let currCrowd = crowdsObj[crowds[i]];
-    let currCrowdBodies = Object.keys(currCrowd).filter(
-      (item) => item !== "key"
-    );
+    let currCrowdBodies = Object.keys(currCrowd).filter((item) => item !== "key");
     for (let x = 0; x < currCrowdBodies.length; x++) {
       let currBody = currCrowd[currCrowdBodies[x]];
       let currBodyName = currBody.key;
@@ -65,8 +63,7 @@ export async function getSolarSystemData(crowdsObj) {
       // save new data in the copied object.
       crowdsObjCopy[crowds[i]][currCrowdBodies[x]].kmFromEarth = km;
       crowdsObjCopy[crowds[i]][currCrowdBodies[x]].auFromEarth = au;
-      crowdsObjCopy[crowds[i]][currCrowdBodies[x]].angularDiameterDeg =
-        aDiameter;
+      crowdsObjCopy[crowds[i]][currCrowdBodies[x]].angularDiameterDeg = aDiameter;
       crowdsObjCopy[crowds[i]][currCrowdBodies[x]].magnitude = mag;
     }
   }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -107,4 +107,4 @@ CrowdSelector.propTypes = {
   crowdNames: PropTypes.array.isRequired,
 };
 
-export default CrowdSelector;
+export default memo(CrowdSelector);

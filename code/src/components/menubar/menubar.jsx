@@ -9,6 +9,8 @@ import initFormData from "../../data/form-data";
 import { numberify, cam2canvas, eye2canvas } from "../../utils/calc";
 import PropTypes from "prop-types";
 
+// label change and zoom does not have to update the forminfo
+
 const Menubar = ({ setGlobalCanvasData }) => {
   const [localCanvasData, setLocalCanvasData] = useState(initCanvasData);
   const [formData, setFormData] = useState(initFormData);
@@ -26,20 +28,24 @@ const Menubar = ({ setGlobalCanvasData }) => {
     setSubmit((prevSubmit) => (prevSubmit ? false : prevSubmit));
   }, []);
 
-  const handleFormSubmit = useCallback(
-    (e) => {
-      e.preventDefault();
-      setSubmit(true);
-      setGlobalCanvasData({ ...localCanvasData });
-    },
-    [setGlobalCanvasData, localCanvasData]
-  );
+  const handleFormSubmit = useCallback((e) => {
+    e.preventDefault();
+    setSubmit(true);
+  }, []);
 
+  // converts localCanvasData to globalCanvasData
   useEffect(() => {
-    // converts formData to localCanvasData
-    // calls the setLocalCanvasData in
-    // parent component to avoid
-    // unnecessary re-renders.
+    if (isSubmit) {
+      setGlobalCanvasData((prevData) => ({
+        hasLabels: prevData.hasLabels,
+        zoomValue: prevData.zoomValue,
+        ...localCanvasData,
+      }));
+    }
+  }, [setGlobalCanvasData, localCanvasData, isSubmit]);
+
+  // converts formData to localCanvasData
+  useEffect(() => {
     let newFormDataInfo = [];
     if (localCanvasData.isEyepieceMode) {
       let epAFOV = numberify(formData.eyepieceafov.value);
@@ -146,7 +152,7 @@ const Menubar = ({ setGlobalCanvasData }) => {
   );
 
   return (
-    <div className="container p-0">
+    <>
       <ModeSwitcher
         isEyepieceMode={localCanvasData.isEyepieceMode}
         onModeChange={handleModeChange}
@@ -176,7 +182,7 @@ const Menubar = ({ setGlobalCanvasData }) => {
         onLabelChange={handleLabelChange}
         onRedGridChange={handleRedGridChange}
       />
-    </div>
+    </>
   );
 };
 

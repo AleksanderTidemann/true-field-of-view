@@ -10,8 +10,12 @@ const App = () => {
   return (
     <React.StrictMode>
       <div className="App">
-        <Menubar setGlobalCanvasData={setGlobalCanvasData} />
-        <Chart canvasData={globalCanvasData} />
+        <div className="container p-0">
+          <Menubar setGlobalCanvasData={setGlobalCanvasData} />
+        </div>
+        <div className="container p-0">
+          <Chart globalCanvasData={globalCanvasData} />
+        </div>
       </div>
     </React.StrictMode>
   );
