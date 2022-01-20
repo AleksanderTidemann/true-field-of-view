@@ -33,7 +33,7 @@ const CanvasOptions = ({
           onRedGridChange={onRedGridChange}
         />
         <Labels
-          hasLables={hasLabels}
+          hasLabels={hasLabels}
           isEyepieceMode={isEyepieceMode}
           onLabelChange={onLabelChange}
         />

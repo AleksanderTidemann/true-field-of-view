@@ -25,7 +25,7 @@ const Labels = ({ hasLabels, isEyepieceMode, onLabelChange }) => {
 };
 
 Labels.propTypes = {
-  hasLables: PropTypes.bool.isRequired,
+  hasLabels: PropTypes.bool.isRequired,
   isEyepieceMode: PropTypes.bool.isRequired,
   onLabelChange: PropTypes.func.isRequired,
 };

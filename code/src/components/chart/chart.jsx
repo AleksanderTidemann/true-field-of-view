@@ -71,10 +71,7 @@ const Chart = ({ canvasData }) => {
           currBodyName={currBody ? currBody.key : ""}
         />
       </div>
-      <Canvas
-        canvasData={canvasData}
-        currBody={currBody ? currBody : {}}
-      ></Canvas>
+      <Canvas canvasData={canvasData} currBody={currBody ? currBody : {}}></Canvas>
     </div>
   );
 };
