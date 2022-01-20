@@ -1,4 +1,4 @@
-# Field-of-view Calculator For Amateur Astronomy  
+# True Field of View : A Web Tool for Amateur Astronomy  
 An web application for calculating and visualizing the **true field-of-view** of celestial objects based on your current astronomy setup (telescope, eyepiece and camera properties). The application is loosely based on the [astronomy.tools](https://astronomy.tools/calculators/field_of_view/) web service.
 
 ## Features
@@ -10,6 +10,7 @@ The application functionality is based on a series of assumptions (calculations)
 
 ### From camera sensor properties to degrees, arc minutes and arc seconds
 ### From eyepiece apparant fied-of-view to true field-of-view 
+### Planitary data aquired from ...
 
 ## Dependencies
 * React v.17.0.2
