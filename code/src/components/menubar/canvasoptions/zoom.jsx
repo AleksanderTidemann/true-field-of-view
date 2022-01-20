@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import Button from "@mui/material/Button";
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import ZoomOutIcon from "@mui/icons-material/ZoomOut";
@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 import colors from "../../../data/color-data";
 
 const INC = 10;
-const CanvasZoom = ({ isEyepieceMode, onZoomChange, zoomValue }) => {
+const Zoom = ({ isEyepieceMode, onZoomChange, zoomValue }) => {
   return (
     <Tooltip title={zoomValue + "%"} placement="bottom">
       <ButtonGroup
@@ -36,10 +36,10 @@ const CanvasZoom = ({ isEyepieceMode, onZoomChange, zoomValue }) => {
   );
 };
 
-CanvasZoom.propTypes = {
+Zoom.propTypes = {
   isEyepieceMode: PropTypes.bool.isRequired,
   onZoomChange: PropTypes.func.isRequired,
   zoomValue: PropTypes.number.isRequired,
 };
 
-export default CanvasZoom;
+export default memo(Zoom);

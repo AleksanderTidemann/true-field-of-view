@@ -1,14 +1,9 @@
 import React, { useMemo, memo } from "react";
 import FormModule from "./formmodule";
 import PropTypes from "prop-types";
-import colors from "../../../../data/color-data";
+import colors from "../../../data/color-data";
 
-const FormSection = ({
-  formData,
-  isEyepieceMode,
-  onFormInputChange,
-  onFormSubmit,
-}) => {
+const FormSection = ({ formData, isEyepieceMode, onFormInputChange, onFormSubmit }) => {
   const {
     aperture,
     focallength,

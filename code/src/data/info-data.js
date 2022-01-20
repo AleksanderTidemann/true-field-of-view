@@ -1,36 +1,38 @@
+// remove all isEyepiece
+
 const initInfoData = {
   focalRatio: {
-    name: "FR",
+    key: "FR",
     value: "",
     isEyepieceInfo: true,
     isChanged: true,
   },
   aspectRatio: {
-    name: "AR",
+    key: "AR",
     value: "",
     isEyepieceInfo: false,
     isChanged: true,
   },
   magnification: {
-    name: "CurrMag",
+    key: "CurrMag",
     value: "",
     isEyepieceInfo: true,
     isChanged: false,
   },
   maxMagnification: {
-    name: "MaxMag",
+    key: "MaxMag",
     value: "",
     isEyepieceInfo: true,
     isChanged: false,
   },
   pxPerSquare: {
-    name: "Grid □",
+    key: "Grid □",
     value: "",
     isEyepieceInfo: false,
     isChanged: false,
   },
   chipSize: {
-    name: "Chip",
+    key: "Chip",
     value: "",
     isEyepieceInfo: false,
     isChanged: false,

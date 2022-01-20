@@ -1,10 +1,10 @@
-import React from "react";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
-import CanvasZoom from "./canvaszoom";
-import PropTypes from "prop-types";
+import React, { memo } from "react";
+import Grid from "./grid";
+import ReducedGridlines from "./reducedgridlines";
+import Labels from "./labels";
+import Zoom from "./zoom";
 import colors from "../../../data/color-data";
+import PropTypes from "prop-types";
 
 const CanvasOptions = ({
   zoomValue,
@@ -17,68 +17,32 @@ const CanvasOptions = ({
   onLabelChange,
   onRedGridChange,
 }) => {
-  // make one component for each input.
-  // that is much more readable and friendly
   return (
     <div className={"border border-white rounded mb-1 bg-" + colors.background}>
-      <FormGroup className={"justify-content-around " + colors.text} row>
-        <FormControlLabel
-          key="hasGrid"
-          control={
-            <Switch
-              inputProps={{ "aria-label": "hasGrid" }}
-              color={isEyepieceMode ? colors.eyepieceMode : colors.cameraMode}
-              checked={hasGrid}
-              onChange={(event) => {
-                onGridChange(event.target.checked);
-                if (!event.target.checked)
-                  onRedGridChange(event.target.checked);
-              }}
-            />
-          }
-          label="Grid"
-          labelPlacement="start"
+      <div className={"d-flex justify-content-around " + colors.text}>
+        <Grid
+          hasGrid={hasGrid}
+          isEyepieceMode={isEyepieceMode}
+          onGridChange={onGridChange}
+          onRedGridChange={onRedGridChange}
         />
-        <FormControlLabel
-          key="Reduce Gridlines"
-          control={
-            <Switch
-              disabled={!hasGrid}
-              inputProps={{
-                "aria-label": "Reduce Gridlines",
-              }}
-              color={isEyepieceMode ? colors.eyepieceMode : colors.cameraMode}
-              checked={hasRedGrid}
-              onChange={(event) => {
-                onRedGridChange(event.target.checked);
-              }}
-            />
-          }
-          label="Reduce Gridlines"
-          labelPlacement="start"
+        <ReducedGridlines
+          hasGrid={hasGrid}
+          hasRedGrid={hasRedGrid}
+          isEyepieceMode={isEyepieceMode}
+          onRedGridChange={onRedGridChange}
         />
-        <FormControlLabel
-          key="Labels"
-          control={
-            <Switch
-              inputProps={{ "aria-label": "Labels" }}
-              color={isEyepieceMode ? colors.eyepieceMode : colors.cameraMode}
-              checked={hasLabels}
-              onChange={(event) => {
-                onLabelChange(event.target.checked);
-              }}
-            />
-          }
-          label="Labels"
-          labelPlacement="start"
+        <Labels
+          hasLables={hasLabels}
+          isEyepieceMode={isEyepieceMode}
+          onLabelChange={onLabelChange}
         />
-        <CanvasZoom
-          key="CanvasZoom"
+        <Zoom
           isEyepieceMode={isEyepieceMode}
           onZoomChange={onZoomChange}
           zoomValue={zoomValue}
         />
-      </FormGroup>
+      </div>
     </div>
   );
 };
@@ -95,4 +59,4 @@ CanvasOptions.propTypes = {
   onRedGridChange: PropTypes.func.isRequired,
 };
 
-export default CanvasOptions;
+export default memo(CanvasOptions);

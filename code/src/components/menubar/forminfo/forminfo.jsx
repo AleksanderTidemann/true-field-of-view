@@ -1,13 +1,11 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import FormInfoInput from "./forminfoinput";
-import * as calc from "../../../../utils/calc";
-import initInfoData from "../../../../data/info-data";
+import * as calc from "../../../utils/calc";
 import PropTypes from "prop-types";
-import colors from "../../../../data/color-data";
+import colors from "../../../data/color-data";
+import initInfoData from "../../../data/info-data";
 
 const FormInfo = (props) => {
-  // Create a component for each item.
-  // much better code that way.
   const {
     focallength,
     barlow,
@@ -17,22 +15,16 @@ const FormInfo = (props) => {
     pixelsize,
     eyepiecefocallength,
   } = props.formData;
-  const {
-    hasGrid,
-    hasRedGrid,
-    redGridFactor,
-    plotsizex,
-    plotsizey,
-    isEyepieceMode,
-  } = props.localCanvasData;
+  const { hasGrid, hasRedGrid, redGridFactor, plotsizex, plotsizey, isEyepieceMode } =
+    props.localCanvasData;
   const { isSubmit } = props;
   const [infoData, setInfoData] = useState(initInfoData);
   const prevRedGridState = useRef(hasRedGrid);
   const prevGridState = useRef(hasGrid);
 
-  // When I submit, I set the isChanged to false
-  // Whenever the info boxes is changed after submit, the text color changes.
   useEffect(() => {
+    // When I submit, I set the isChanged in the infoData items to false
+    // Whenever the info boxes is changed after submit, the text color changes.
     setInfoData((prevInfoData) => {
       let stateCopy = JSON.parse(JSON.stringify(prevInfoData));
       Object.keys(stateCopy).forEach((key) => {
@@ -44,11 +36,7 @@ const FormInfo = (props) => {
 
   // get Focal Ratio
   useEffect(() => {
-    const focalRatio = calc.getFratio(
-      focallength.value,
-      barlow.value,
-      aperture.value
-    );
+    const focalRatio = calc.getFratio(focallength.value, barlow.value, aperture.value);
 
     setInfoData((prevInfoData) => ({
       ...prevInfoData,
@@ -62,10 +50,7 @@ const FormInfo = (props) => {
 
   // get Aspect Ratio
   useEffect(() => {
-    const aspectRatio = calc.getAspectRatio(
-      resolutionx.value,
-      resolutiony.value
-    );
+    const aspectRatio = calc.getAspectRatio(resolutionx.value, resolutiony.value);
     setInfoData((prevInfoData) => ({
       ...prevInfoData,
       aspectRatio: {
@@ -122,8 +107,7 @@ const FormInfo = (props) => {
         ...prevInfoData.pxPerSquare,
         value: pxPerGridSquare,
         isChanged:
-          hasRedGrid !== prevRedGridState.current ||
-          hasGrid !== prevGridState.current
+          hasRedGrid !== prevRedGridState.current || hasGrid !== prevGridState.current
             ? prevInfoData.pxPerSquare.isChanged
             : true,
       },
@@ -158,31 +142,31 @@ const FormInfo = (props) => {
     }));
   }, [resolutionx, resolutiony, pixelsize]);
 
+  const borderColor = useMemo(() => {
+    return isEyepieceMode ? colors.eyepieceMode : colors.cameraMode;
+  }, [isEyepieceMode]);
+
   return (
-    <div className={"border border-white rounded mb-1 bg-" + colors.background}>
+    <div className={"border border-white rounded mb-1 mr-1 col bg-" + colors.background}>
       <div className="d-flex justify-content-around">
         {Object.values(infoData).map((item) => {
           if (isEyepieceMode && item.isEyepieceInfo) {
             return (
               <FormInfoInput
-                borderColor={
-                  isEyepieceMode ? colors.eyepieceMode : colors.cameraMode
-                }
-                key={item.name}
-                name={item.name}
+                borderColor={borderColor}
+                key={item.key}
+                title={item.key}
                 value={item.value}
                 isChanged={item.isChanged}
               />
             );
           }
-          if ((!isEyepieceMode && !item.isEyepieceInfo) || item.name === "FR") {
+          if ((!isEyepieceMode && !item.isEyepieceInfo) || item.key === "FR") {
             return (
               <FormInfoInput
-                borderColor={
-                  isEyepieceMode ? colors.eyepieceMode : colors.cameraMode
-                }
-                key={item.name}
-                name={item.name}
+                borderColor={borderColor}
+                key={item.key}
+                title={item.key}
                 value={item.value}
                 isChanged={item.isChanged}
               />
@@ -190,7 +174,6 @@ const FormInfo = (props) => {
           }
           return "";
         })}
-        {props.children}
       </div>
     </div>
   );

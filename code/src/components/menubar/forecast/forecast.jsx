@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { DIVIMAGES } from "../../../../data/img-data";
+import React, { useEffect, useState, memo } from "react";
+import { DIVIMAGES } from "../../../data/img-data";
 import {
   getLatLong,
   getAreaCountry,
   getData,
   filterData,
-} from "../../../../utils/requests/getForecast";
+} from "../../../utils/requests/getForecast";
 import PropTypes from "prop-types";
-import colors from "../../../../data/color-data";
+import colors from "../../../data/color-data";
 
 const loading = DIVIMAGES.loading;
 const error = DIVIMAGES.error;
@@ -31,9 +31,7 @@ const Forecast = ({ isEyepieceMode }) => {
         );
         const symbol_code = forecast.data.next_6_hours.summary.symbol_code;
         const temperature = forecast.data.instant.details.air_temperature;
-        const wimg = require("../../../../img/weather/" +
-          symbol_code +
-          ".png").default;
+        const wimg = require("../../../img/weather/" + symbol_code + ".png").default;
 
         setForecastData({
           next6h_img: wimg,
@@ -54,38 +52,38 @@ const Forecast = ({ isEyepieceMode }) => {
 
   const borderStyle = () => {
     let css =
-      "info-items text-center " +
-      colors.text +
-      " col-auto border rounded border-";
+      "info-items text-center " + colors.text + " col-auto border rounded border-";
     let bg = isEyepieceMode ? colors.eyepieceMode : colors.cameraMode;
     return css + bg;
   };
 
   return (
-    <div className="form-label-group mb-0 mt-2" key="forecast">
-      <p className={"mr-1 " + colors.text}>
-        <small>Forecast</small>
-      </p>
-      {isError ? (
-        <p className={borderStyle()}>
-          <img src={error} alt="ERROR..." width="25px" height="25px" />
+    <div className={"border border-white rounded mb-1 col-3 bg-" + colors.background}>
+      <div className="form-label-group mb-0 mt-2 justify-content-center">
+        <p className={"mr-1 " + colors.text}>
+          <small>Forecast</small>
         </p>
-      ) : isLoading ? (
-        <p className={borderStyle()}>
-          <img src={loading} alt="loading..." width="25px" height="25px" />
-        </p>
-      ) : (
-        <p className={borderStyle()}>
-          <img
-            src={forecastData.next6h_img}
-            alt="Specification Drawing"
-            width="25px"
-            height="25px"
-            className="mr-2"
-          />
-          {forecastData.next6h_temp}°
-        </p>
-      )}
+        {isError ? (
+          <p className={borderStyle()}>
+            <img src={error} alt="ERROR..." width="25px" height="25px" />
+          </p>
+        ) : isLoading ? (
+          <p className={borderStyle()}>
+            <img src={loading} alt="loading..." width="25px" height="25px" />
+          </p>
+        ) : (
+          <p className={borderStyle()}>
+            <img
+              src={forecastData.next6h_img}
+              alt="Specification Drawing"
+              width="25px"
+              height="25px"
+              className="mr-2"
+            />
+            {forecastData.next6h_temp}°
+          </p>
+        )}
+      </div>
     </div>
   );
 };
@@ -94,4 +92,4 @@ Forecast.propTypes = {
   isEyepieceMode: PropTypes.bool.isRequired,
 };
 
-export default Forecast;
+export default memo(Forecast);
