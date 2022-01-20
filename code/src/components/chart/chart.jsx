@@ -33,6 +33,11 @@ const Chart = ({ globalCanvasData }) => {
     fetchData();
   }, []);
 
+  // reset currBody when modeswitching
+  useEffect(() => {
+    setCurrBody(null);
+  }, [globalCanvasData.isEyepieceMode]);
+
   // Set the current list of planets/space objects (currCrowd)
   const handleCrowdSelection = useCallback(
     (crowdSelection) => {
@@ -67,7 +72,11 @@ const Chart = ({ globalCanvasData }) => {
         onBodySelection={handleBodySelection}
         onCrowdSelection={handleCrowdSelection}
       />
-      <Canvas canvasData={globalCanvasData} currBody={currBody ? currBody : {}}></Canvas>
+      <Canvas
+        globalCanvasData={globalCanvasData}
+        // currBody={currBody ? currBody : {}}
+        currBody={currBody}
+      ></Canvas>
     </>
   );
 };

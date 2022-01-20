@@ -4,6 +4,7 @@ import React, {
   useReducer,
   useEffect,
   useLayoutEffect,
+  memo,
 } from "react";
 import {
   getDPRwithZoom,
@@ -24,7 +25,7 @@ const OFFSET = 5;
 
 // layouteffect runs before the DOM initally renders.
 // A good place to update/get size of DOM elements to avoid flickering.
-const Canvas = ({ canvasData, currBody }) => {
+const Canvas = ({ globalCanvasData, currBody }) => {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
   const [containerWidth, setContainerWidth] = useState(null);
@@ -53,10 +54,10 @@ const Canvas = ({ canvasData, currBody }) => {
     // Set the canvasWidth If the container width
     //OR a new zoom value is registered.
     if (containerWidth) {
-      let cw = (containerWidth / 100) * canvasData.zoomValue;
+      let cw = (containerWidth / 100) * globalCanvasData.zoomValue;
       setCanvasWidth(cw);
     }
-  }, [containerWidth, canvasData.zoomValue]);
+  }, [containerWidth, globalCanvasData.zoomValue]);
 
   // Paint the canvas
   useLayoutEffect(() => {
@@ -64,16 +65,16 @@ const Canvas = ({ canvasData, currBody }) => {
       //setup canvas
       const canvas = canvasRef.current;
       const context = canvas.getContext("2d");
-      const dpr = getDPRwithZoom(canvasData.zoomValue);
-      const canvasHeight = getCanvasHeight(canvasWidth, canvasData);
+      const dpr = getDPRwithZoom(globalCanvasData.zoomValue);
+      const canvasHeight = getCanvasHeight(canvasWidth, globalCanvasData);
       const { scaledCanvasWidth, scaledCanvasHeight } = getScaledCanvasDim(
         dpr,
         canvasWidth,
         canvasHeight
       );
       const LABELOFFSET = getSizeOffsetForLabels(
-        canvasData.hasLabels,
-        canvasData.isEyepieceMode,
+        globalCanvasData.hasLabels,
+        globalCanvasData.isEyepieceMode,
         scaledCanvasWidth,
         scaledCanvasHeight,
         NUMBERFONT,
@@ -87,10 +88,10 @@ const Canvas = ({ canvasData, currBody }) => {
 
       drawCanvasBg(context, scaledCanvasWidth, scaledCanvasHeight);
 
-      if (!canvasData.isEyepieceMode) {
+      if (!globalCanvasData.isEyepieceMode) {
         drawSquareCanvas(
           context,
-          canvasData,
+          globalCanvasData,
           scaledCanvasWidth,
           scaledCanvasHeight,
           LABELFONT,
@@ -101,7 +102,7 @@ const Canvas = ({ canvasData, currBody }) => {
       } else {
         drawCircleCanvas(
           context,
-          canvasData,
+          globalCanvasData,
           scaledCanvasWidth,
           scaledCanvasHeight,
           LABELFONT,
@@ -111,24 +112,25 @@ const Canvas = ({ canvasData, currBody }) => {
       }
 
       // finally,
-      if (currBody)
+      if (currBody) {
         drawCanvasBody(
           context,
-          canvasData,
+          globalCanvasData,
           scaledCanvasWidth,
           scaledCanvasHeight,
           currBody,
           LABELOFFSET
         );
+      }
 
       // canvas.style.width = canvasWidth + "px !important";
       // canvas.style.height = canvasWidth + "px !important";
     }
-  }, [canvasRef, canvasWidth, canvasData, currBody]);
+  }, [canvasRef, canvasWidth, globalCanvasData, currBody]);
 
   return (
     <motion.div
-      key={canvasData.isEyepieceMode ? "ep" : "cam"}
+      key={globalCanvasData.isEyepieceMode ? "ep" : "cam"}
       animate={{ opacity: 1, y: 0 }}
       initial={{ opacity: 0, y: 20 }}
       exit={{ opacity: 0, y: -20 }}
@@ -139,9 +141,7 @@ const Canvas = ({ canvasData, currBody }) => {
           <canvas
             ref={canvasRef}
             className={
-              canvasData.isEyepieceMode
-                ? "w-100 border rounded-circle"
-                : "w-100"
+              globalCanvasData.isEyepieceMode ? "w-100 border rounded-circle" : "w-100"
             }
           />
         </div>
@@ -151,8 +151,8 @@ const Canvas = ({ canvasData, currBody }) => {
 };
 
 Canvas.propTypes = {
-  canvasData: PropTypes.object.isRequired,
-  currBody: PropTypes.object.isRequired,
+  globalCanvasData: PropTypes.object.isRequired,
+  //   currBody: PropTypes.object.isRequired, can be both object and null :/
 };
 
 export default Canvas;
