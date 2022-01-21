@@ -1,4 +1,5 @@
 import * as calc from "../calc";
+import { PLOTDIVISOR } from "../calc";
 
 export function drawCanvasBody(
   context,
@@ -8,11 +9,11 @@ export function drawCanvasBody(
   selectedBody,
   labelOffset
 ) {
-  const { plotSizeX, plotDivisor, angularUnit } = canvasData;
+  const { plotSizeX, angularUnit } = canvasData;
   const { angularDiameterDeg, img } = selectedBody;
   const bodyUnitCount = calc.unit2ang(angularDiameterDeg, angularUnit);
 
-  const canvasUnitCount = plotSizeX / plotDivisor;
+  const canvasUnitCount = plotSizeX / PLOTDIVISOR;
   const offsetWidth = (scaledCanvasWidth / 100) * labelOffset;
   const offsetHeight = (scaledCanvasHeight / 100) * labelOffset;
   const pxPerUnit = (scaledCanvasWidth - offsetWidth) / canvasUnitCount;

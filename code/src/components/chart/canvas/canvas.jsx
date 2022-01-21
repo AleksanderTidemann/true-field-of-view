@@ -1,11 +1,4 @@
-import React, {
-  useRef,
-  useState,
-  useReducer,
-  useEffect,
-  useLayoutEffect,
-  memo,
-} from "react";
+import React, { useRef, useState, useReducer, useEffect, useLayoutEffect } from "react";
 import {
   getDPRwithZoom,
   getCanvasHeight,
@@ -136,7 +129,7 @@ const Canvas = ({ globalCanvasData, currBody }) => {
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.2, type: "spring", stiffness: 100 }}
     >
-      <div className="container d-flex justify-content-center p-0">
+      <div className="container d-flex justify-content-center p-0 mb-2">
         <div ref={containerRef} style={{ width: canvasWidth }}>
           <canvas
             ref={canvasRef}
