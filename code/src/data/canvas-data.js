@@ -9,7 +9,6 @@ const initCanvasData = {
   zoomValue: 50,
   plotSizeX: 20,
   plotSizeY: 20,
-  plotDivisor: 6,
   angularUnit: ANGULAR_MEASUREMENT_LABELS[1],
 };
 

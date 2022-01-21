@@ -2,6 +2,8 @@ import React, { useMemo, memo } from "react";
 import BodySelector from "./bodyselector";
 import CrowdSelector from "./crowdselector";
 import { DIVIMAGES } from "../../../data/img-data";
+import { isEmptyObject } from "../../../utils/calc";
+import PropTypes from "prop-types";
 
 const loading = DIVIMAGES.loading;
 const error = DIVIMAGES.error;
@@ -18,7 +20,7 @@ const Selector = ({
   onCrowdSelection,
 }) => {
   const crowdNames = useMemo(
-    () => (crowdData ? Object.keys(crowdData) : []),
+    () => (isEmptyObject(crowdData) ? [] : Object.keys(crowdData)),
     [crowdData]
   );
 
@@ -42,17 +44,28 @@ const Selector = ({
     <div className="container d-flex justify-content-around p-0 mb-4">
       <CrowdSelector
         isEyepieceMode={isEyepieceMode}
-        currCrowdName={currCrowd.key}
+        currCrowdName={isEmptyObject(currCrowd) ? "" : currCrowd.key}
         onCrowdSelection={onCrowdSelection}
         crowdNames={crowdNames}
       />
       <BodySelector
         onBodySelection={onBodySelection}
         currCrowd={currCrowd}
-        currBodyName={currBody ? currBody.key : ""}
+        currBodyName={isEmptyObject(currBody) ? "" : currBody.key}
       />
     </div>
   );
+};
+
+Selector.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
+  isError: PropTypes.bool.isRequired,
+  isEyepieceMode: PropTypes.bool.isRequired,
+  crowdData: PropTypes.object.isRequired,
+  currCrowd: PropTypes.object.isRequired,
+  currBody: PropTypes.object.isRequired,
+  onBodySelection: PropTypes.func.isRequired,
+  onCrowdSelection: PropTypes.func.isRequired,
 };
 
 // because globalCanvasData does not have to update the Selector

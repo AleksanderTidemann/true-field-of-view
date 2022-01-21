@@ -1,5 +1,6 @@
-import { nrstPointZero } from "../calc";
+import { nrstPointZero, isArcSeconds } from "../calc";
 import colors from "../../data/color-data";
+import { PLOTDIVISOR } from "../calc";
 
 function drawCircleGridY(
   ctx,
@@ -52,8 +53,7 @@ function paintCircularText(
   // rotate 50% of total angle for center alignment
   for (let j = 0; j < label.length; j++) {
     let charWid = ctx.measureText(label[j]).width;
-    startAngle +=
-      (charWid / (scaledCanvasWidth / 2 - textHeight) / 2) * -clockwise;
+    startAngle += (charWid / (scaledCanvasWidth / 2 - textHeight) / 2) * -clockwise;
   }
 
   ctx.rotate(startAngle);
@@ -62,20 +62,12 @@ function paintCircularText(
   for (let j = 0; j < label.length; j++) {
     let charWid = ctx.measureText(label[j]).width; // half letter
     // rotate half letter
-    ctx.rotate(
-      (charWid / 2 / (scaledCanvasWidth / 2 - textHeight)) * clockwise
-    );
+    ctx.rotate((charWid / 2 / (scaledCanvasWidth / 2 - textHeight)) * clockwise);
     // draw the character at "top" or "bottom"
     // depending on inward or outward facing
-    ctx.fillText(
-      label[j],
-      0,
-      -1 * (0 - scaledCanvasWidth / 2 + textHeight / 2)
-    );
+    ctx.fillText(label[j], 0, -1 * (0 - scaledCanvasWidth / 2 + textHeight / 2));
 
-    ctx.rotate(
-      (charWid / 2 / (scaledCanvasWidth / 2 - textHeight)) * clockwise
-    ); // rotate half letter
+    ctx.rotate((charWid / 2 / (scaledCanvasWidth / 2 - textHeight)) * clockwise); // rotate half letter
   }
 }
 
@@ -139,19 +131,23 @@ function drawCircleGridNumbers(
   ctx,
   plotSizeX,
   hasLabels,
-  plotDivisor,
   hasRedGrid,
   scaledCanvasHeight,
   pxPerUnitX,
   pxPerUnitY,
   redGridFactor,
   numberFont,
-  offset
+  offset,
+  angularUnit
 ) {
+  // when using arc seconds, we still have 6 spaces between numbers,
+  // but unlike arc sec or degrees, the numbers of arc sec count 1 for every empty space
+  let divisor = isArcSeconds(angularUnit) ? 1 : PLOTDIVISOR;
+  console.log(divisor);
   for (let i = 0; i <= plotSizeX; i++) {
     // paint numbers
     if (hasLabels) {
-      if (i !== 0 && i % plotDivisor === 0 && i !== plotSizeX) {
+      if (i !== 0 && i % PLOTDIVISOR === 0 && i !== plotSizeX) {
         // draw numbers along axis
         let textHeight = hasRedGrid
           ? scaledCanvasHeight - pxPerUnitY * redGridFactor
@@ -159,8 +155,9 @@ function drawCircleGridNumbers(
 
         ctx.font = numberFont;
         ctx.textBaseline = "top";
+
         ctx.fillText(
-          i / plotDivisor,
+          i / divisor,
           pxPerUnitX * i + offset * 2,
           textHeight + offset // offsett the pixel size chosen above
         );
@@ -181,7 +178,6 @@ export function drawCircleCanvas(
   const {
     plotSizeX,
     plotSizeY,
-    plotDivisor,
     angularUnit,
     hasLabels,
     hasGrid,
@@ -210,14 +206,14 @@ export function drawCircleCanvas(
     ctx,
     plotSizeX,
     hasLabels,
-    plotDivisor,
     hasRedGrid,
     scaledCanvasHeight,
     pxPerUnitX,
     pxPerUnitY,
     redGridFactor,
     numberFont,
-    offset
+    offset,
+    angularUnit
   );
   drawCircleLabels(
     ctx,

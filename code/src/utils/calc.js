@@ -1,5 +1,12 @@
 import { ANGULAR_MEASUREMENT_LABELS } from "../data/angular-measurement-labels";
 
+export const PLOTDIVISOR = 6;
+
+// /components/chart/selector/selector and canvas
+export function isEmptyObject(value) {
+  return Object.keys(value).length === 0 && value.constructor === Object;
+}
+
 // ./canvas/drawSquareCanvas & drawCircleCanvas //
 export function nrstPointZero(val, scaledCanvasNumb) {
   // round to nearest 0.5
@@ -19,6 +26,10 @@ export function nrstPointZero(val, scaledCanvasNumb) {
 
   //let pointZero = Math.round(numb);
   //return pointZero;
+}
+
+export function isArcSeconds(canvasAU) {
+  return typeof canvasAU === "string" && canvasAU === ANGULAR_MEASUREMENT_LABELS[2];
 }
 
 // ../components/chart/info.jsx //
@@ -97,8 +108,7 @@ export function getPxPerGridSquare(
 
     // if hasRedGrid, then the px² should be the: result * redGridFactor²?
     pxPerSquare = hasRedGrid
-      ? Math.round(pxPerSquare * (redGridFactor * redGridFactor) * 10) / 10 +
-        "px²"
+      ? Math.round(pxPerSquare * (redGridFactor * redGridFactor) * 10) / 10 + "px²"
       : Math.round(pxPerSquare * 10) / 10 + "px²";
   }
   return pxPerSquare;
@@ -221,40 +231,24 @@ export function unit2ang(deg, unit) {
   }
 }
 
-export function unit2plotDivisor(unit) {
-  const plotDiv = 6;
-  switch (unit) {
-    case ANGULAR_MEASUREMENT_LABELS[0]:
-      return plotDiv;
-    case ANGULAR_MEASUREMENT_LABELS[1]:
-      return plotDiv;
-    case ANGULAR_MEASUREMENT_LABELS[2]:
-      return 1;
-    default:
-  }
-}
-
-export function getCanvasObject(angUnit, degX, degY, plotDiv) {
+export function getCanvasObject(angUnit, degX, degY) {
   switch (angUnit) {
     case ANGULAR_MEASUREMENT_LABELS[0]:
       return {
-        plotSizeX: Math.round(degX * plotDiv),
-        plotSizeY: Math.round(degY * plotDiv),
-        plotDivisor: plotDiv,
+        plotSizeX: Math.round(degX * PLOTDIVISOR),
+        plotSizeY: Math.round(degY * PLOTDIVISOR),
         angularUnit: ANGULAR_MEASUREMENT_LABELS[0],
       };
     case ANGULAR_MEASUREMENT_LABELS[1]:
       return {
-        plotSizeX: Math.round(deg2arcmin(degX) * plotDiv),
-        plotSizeY: Math.round(deg2arcmin(degY) * plotDiv),
-        plotDivisor: plotDiv,
+        plotSizeX: Math.round(deg2arcmin(degX) * PLOTDIVISOR),
+        plotSizeY: Math.round(deg2arcmin(degY) * PLOTDIVISOR),
         angularUnit: ANGULAR_MEASUREMENT_LABELS[1],
       };
     case ANGULAR_MEASUREMENT_LABELS[2]:
       return {
         plotSizeX: Math.round(deg2arcsec(degX)),
         plotSizeY: Math.round(deg2arcsec(degY)),
-        plotDivisor: plotDiv,
         angularUnit: ANGULAR_MEASUREMENT_LABELS[2],
       };
     default:
@@ -285,9 +279,8 @@ export function cam2canvas(
   const fovXdeg = rad2deg(fovXrad);
   const fovYdeg = rad2deg(fovYrad);
   const preferedUnit = deg2unitCam(fovXdeg, fovYdeg);
-  const plotDivisor = unit2plotDivisor(preferedUnit);
 
-  return getCanvasObject(preferedUnit, fovXdeg, fovYdeg, plotDivisor);
+  return getCanvasObject(preferedUnit, fovXdeg, fovYdeg);
 }
 
 export function eye2canvas(
@@ -301,7 +294,6 @@ export function eye2canvas(
   const mag = getMag(flength_scope, eyepiecefocallengthvalue);
   const tFovDeg = getTrueFOVdeg(eyepieceafovvalue, Number(mag));
   const preferedUnit = deg2unitEye(tFovDeg);
-  const plotDivisor = unit2plotDivisor(preferedUnit);
 
-  return getCanvasObject(preferedUnit, tFovDeg, tFovDeg, plotDivisor);
+  return getCanvasObject(preferedUnit, tFovDeg, tFovDeg);
 }

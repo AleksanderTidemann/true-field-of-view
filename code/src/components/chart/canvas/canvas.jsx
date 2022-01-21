@@ -16,6 +16,7 @@ import { drawCircleCanvas } from "../../../utils/canvas/drawCircleCanvas.js";
 import { drawCanvasBg } from "../../../utils/canvas/drawCanvasBg.js";
 import { drawSquareCanvas } from "../../../utils/canvas/drawSquareCanvas.js";
 import { drawCanvasBody } from "../../../utils/canvas/drawCanvasBody.js";
+import { isEmptyObject } from "../../../utils/calc";
 import { motion } from "framer-motion";
 import PropTypes from "prop-types";
 
@@ -112,16 +113,15 @@ const Canvas = ({ globalCanvasData, currBody }) => {
       }
 
       // finally,
-      if (currBody) {
-        drawCanvasBody(
-          context,
-          globalCanvasData,
-          scaledCanvasWidth,
-          scaledCanvasHeight,
-          currBody,
-          LABELOFFSET
-        );
-      }
+      if (isEmptyObject(currBody)) return;
+      drawCanvasBody(
+        context,
+        globalCanvasData,
+        scaledCanvasWidth,
+        scaledCanvasHeight,
+        currBody,
+        LABELOFFSET
+      );
 
       // canvas.style.width = canvasWidth + "px !important";
       // canvas.style.height = canvasWidth + "px !important";
@@ -152,7 +152,7 @@ const Canvas = ({ globalCanvasData, currBody }) => {
 
 Canvas.propTypes = {
   globalCanvasData: PropTypes.object.isRequired,
-  //   currBody: PropTypes.object.isRequired, can be both object and null :/
+  currBody: PropTypes.object.isRequired,
 };
 
 export default Canvas;

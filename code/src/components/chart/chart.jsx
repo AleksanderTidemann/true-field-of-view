@@ -6,9 +6,9 @@ import { getSolarSystemData } from "../../utils/requests/getSolarsystemdata";
 import PropTypes from "prop-types";
 
 const Chart = ({ globalCanvasData }) => {
-  const [crowdData, setCrowdData] = useState(null);
-  const [currCrowd, setCurrCrowd] = useState(null);
-  const [currBody, setCurrBody] = useState(null);
+  const [crowdData, setCrowdData] = useState({});
+  const [currCrowd, setCurrCrowd] = useState({});
+  const [currBody, setCurrBody] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
 
@@ -35,14 +35,14 @@ const Chart = ({ globalCanvasData }) => {
 
   // reset currBody when modeswitching
   useEffect(() => {
-    setCurrBody(null);
+    setCurrBody({});
   }, [globalCanvasData.isEyepieceMode]);
 
   // Set the current list of planets/space objects (currCrowd)
   const handleCrowdSelection = useCallback(
     (crowdSelection) => {
       setCurrCrowd(crowdData[crowdSelection]);
-      setCurrBody(null);
+      setCurrBody({});
     },
     [crowdData]
   );
@@ -51,10 +51,10 @@ const Chart = ({ globalCanvasData }) => {
   const handleBodySelection = useCallback(
     (bodyName) => {
       setCurrBody((prevBody) => {
-        if (!prevBody || prevBody.key !== bodyName) {
+        if (prevBody.key !== bodyName) {
           return { ...currCrowd[bodyName] };
         }
-        return null;
+        return {};
       });
     },
     [currCrowd]
@@ -72,11 +72,7 @@ const Chart = ({ globalCanvasData }) => {
         onBodySelection={handleBodySelection}
         onCrowdSelection={handleCrowdSelection}
       />
-      <Canvas
-        globalCanvasData={globalCanvasData}
-        // currBody={currBody ? currBody : {}}
-        currBody={currBody}
-      ></Canvas>
+      <Canvas globalCanvasData={globalCanvasData} currBody={currBody}></Canvas>
     </>
   );
 };
