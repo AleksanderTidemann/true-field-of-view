@@ -143,7 +143,6 @@ function drawCircleGridNumbers(
   // when using arc seconds, we still have 6 spaces between numbers,
   // but unlike arc sec or degrees, the numbers of arc sec count 1 for every empty space
   let divisor = isArcSeconds(angularUnit) ? 1 : PLOTDIVISOR;
-  console.log(divisor);
   for (let i = 0; i <= plotSizeX; i++) {
     // paint numbers
     if (hasLabels) {
