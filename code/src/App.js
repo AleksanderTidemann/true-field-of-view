@@ -6,7 +6,6 @@ import initCanvasData from "./data/canvas-data";
 const App = () => {
   // this is the same as local, only updated less frequent
   const [globalCanvasData, setGlobalCanvasData] = useState(initCanvasData);
-  console.log("hello world");
 
   return (
     <React.StrictMode>
