@@ -31,7 +31,7 @@ const Forecast = ({ isEyepieceMode }) => {
         );
         const symbol_code = forecast.data.next_6_hours.summary.symbol_code;
         const temperature = forecast.data.instant.details.air_temperature;
-        const wimg = require("../../../img/weather/" + symbol_code + ".png").default;
+        const wimg = require("../../../img/weather/" + symbol_code + ".png");
 
         setForecastData({
           next6h_img: wimg,
