@@ -1,18 +1,9 @@
 # True Field of View : A Web Tool for Amateur Astronomers 
-An web application for calculating and visualizing the **true field-of-view** of celestial objects based on your current astronomy setup (telescope, eyepiece and camera properties). The application is loosely based on the [astronomy.tools](https://astronomy.tools/calculators/field_of_view/) web service.
+True Field of View is a web application for calculating and visualizing the *true field-of-view* of celestial objects based on your current astronomy setup (telescope, camera and eyepiece). Through an interactive UI, True Field of View provides users with useful information about the precice angular and visual diameter of dedicated celestial objects (and their respective astronomical units), an array of different visualization options, the upcoming forecast, various user-presets, and much more.
 
-## Features
+A work in progress...
 
-* list of things 
-
-## Calculations 
-The application functionality is based on a series of assumptions (calculations).  
-
-### From camera sensor properties to degrees, arc minutes and arc seconds
-### From eyepiece apparant fied-of-view to true field-of-view 
-### Planitary data aquired from ...
-
-## Dependencies
+## Dependencies / Stack
 * React v.17.0.2
 * [BootstrapSwitchButton v1.2.0](https://www.npmjs.com/package/bootstrap-switch-button-react)
 * [Material-ui v.5.1.1](https://mui.com/)
