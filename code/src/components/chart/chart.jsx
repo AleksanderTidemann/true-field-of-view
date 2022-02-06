@@ -61,7 +61,7 @@ const Chart = ({ globalCanvasData }) => {
   );
 
   return (
-    <>
+    <div className="container p-0">
       <Selector
         isLoading={isLoading}
         isError={isError}
@@ -73,7 +73,7 @@ const Chart = ({ globalCanvasData }) => {
         onCrowdSelection={handleCrowdSelection}
       />
       <Canvas globalCanvasData={globalCanvasData} currBody={currBody}></Canvas>
-    </>
+    </div>
   );
 };
 

@@ -6,7 +6,7 @@ import Forecast from "./forecast/forecast";
 import CanvasOptions from "./canvasoptions/canvasoptions";
 import initCanvasData from "../../data/canvas-data";
 import initFormData from "../../data/form-data";
-import { numberify, cam2canvas, eye2canvas } from "../../utils/calc";
+import * as calc from "../../utils/calc";
 import PropTypes from "prop-types";
 
 // label change and zoom does not have to update the forminfo
@@ -48,26 +48,26 @@ const Menubar = ({ setGlobalCanvasData }) => {
   useEffect(() => {
     let newFormDataInfo = [];
     if (localCanvasData.isEyepieceMode) {
-      let epAFOV = numberify(formData.eyepieceafov.value);
-      let epFL = numberify(formData.eyepiecefocallength.value);
-      let FL = numberify(formData.focallength.value);
-      let b = numberify(formData.barlow.value);
+      let epAFOV = calc.numberify(formData.eyepieceafov.value);
+      let epFL = calc.numberify(formData.eyepiecefocallength.value);
+      let FL = calc.numberify(formData.focallength.value);
+      let b = calc.numberify(formData.barlow.value);
 
       let vars = [epAFOV, epFL, FL, b];
 
       // if there are no 0 value in any of the variables
-      newFormDataInfo = vars.indexOf(0) === -1 ? eye2canvas(...vars) : {};
+      newFormDataInfo = vars.indexOf(0) === -1 ? calc.eye2canvas(...vars) : {};
     } else {
-      let pxS = numberify(formData.pixelsize.value);
-      let resX = numberify(formData.resolutionx.value);
-      let resY = numberify(formData.resolutiony.value);
-      let FL = numberify(formData.focallength.value);
-      let b = numberify(formData.barlow.value);
+      let pxS = calc.numberify(formData.pixelsize.value);
+      let resX = calc.numberify(formData.resolutionx.value);
+      let resY = calc.numberify(formData.resolutiony.value);
+      let FL = calc.numberify(formData.focallength.value);
+      let b = calc.numberify(formData.barlow.value);
 
       let vars = [pxS, resX, resY, FL, b];
 
       // if there are no 0 values in any of the variables
-      newFormDataInfo = vars.indexOf(0) === -1 ? cam2canvas(...vars) : {};
+      newFormDataInfo = vars.indexOf(0) === -1 ? calc.cam2canvas(...vars) : {};
     }
 
     if (Object.keys(newFormDataInfo).length) {
@@ -152,7 +152,7 @@ const Menubar = ({ setGlobalCanvasData }) => {
   );
 
   return (
-    <>
+    <div className="container p-0">
       <ModeSwitcher
         isEyepieceMode={localCanvasData.isEyepieceMode}
         onModeChange={handleModeChange}
@@ -182,7 +182,7 @@ const Menubar = ({ setGlobalCanvasData }) => {
         onLabelChange={handleLabelChange}
         onRedGridChange={handleRedGridChange}
       />
-    </>
+    </div>
   );
 };
 

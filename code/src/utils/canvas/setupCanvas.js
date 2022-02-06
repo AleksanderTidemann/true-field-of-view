@@ -30,18 +30,18 @@ export function getLabelOffset(
   isEyepieceMode,
   dprCanvasWidth,
   dprCanvasHeight,
-  DEFAULT_NUMBERSIZE,
-  DEFAULT_LABELSIZE,
+  numberSize,
+  labelSize,
   OFFSET
 ) {
   // calculate how much we should shrink the canvas in order to
-  // fit the DEFAULT_LABELSIZE and DEFAULT_NUMBERSIZE nicely on the outside.
+  // fit the labels and numbers directly on the outside.
   // we base the calculation on whichever axis has the least pixels.
   let labelOffset = 0;
   if (!isEyepieceMode && hasLabels && dprCanvasWidth && dprCanvasHeight) {
     let smllstSide = dprCanvasHeight < dprCanvasWidth ? dprCanvasHeight : dprCanvasWidth;
     // then we find how many % the the font and labels are of the axis with the least pixels.
-    let spaceRequired = DEFAULT_LABELSIZE + DEFAULT_NUMBERSIZE + OFFSET * 2;
+    let spaceRequired = labelSize + numberSize + OFFSET * 2;
     // then we set the labelOffset as that percentage.
     labelOffset = (spaceRequired / smllstSide) * 100;
   }
