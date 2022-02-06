@@ -6,8 +6,8 @@ function drawSquareGridY(
   ctx,
   plotSizeY,
   offsetWidth,
-  scaledCanvasWidth,
-  scaledCanvasHeight,
+  dprCanvasWidth,
+  dprCanvasHeight,
   pxPerUnitY,
   hasGrid,
   hasRedGrid,
@@ -16,8 +16,8 @@ function drawSquareGridY(
   // paint Y axis grid and numbers
   for (let i = 0; i <= plotSizeY; i++) {
     // include 0 and 20 to make the border
-    const x = nrstPointZero(scaledCanvasWidth + offsetWidth, scaledCanvasWidth);
-    const y = nrstPointZero(pxPerUnitY * i, scaledCanvasHeight);
+    const x = nrstPointZero(dprCanvasWidth + offsetWidth, dprCanvasWidth);
+    const y = nrstPointZero(pxPerUnitY * i, dprCanvasHeight);
 
     // paint Y grid
     ctx.beginPath();
@@ -45,11 +45,12 @@ function drawSquareGridY(
 function drawSquareLabels(
   hasLabels,
   ctx,
-  labelFont,
-  numberFont,
+  labelSize,
+  numberSize,
+  myFont,
   angularUnit,
-  scaledCanvasWidth,
-  scaledCanvasHeight,
+  dprCanvasWidth,
+  dprCanvasHeight,
   offsetWidth,
   offsetHeight,
   offset
@@ -57,20 +58,20 @@ function drawSquareLabels(
   // paint X and Y axis labels
   if (hasLabels) {
     // X label
-    ctx.font = labelFont;
+    ctx.font = labelSize + "px " + myFont;
     ctx.fillText(
       angularUnit,
-      scaledCanvasWidth / 2 + offsetWidth,
-      scaledCanvasHeight - offsetHeight + offset + Number(numberFont.slice(0, 2)) + offset
+      dprCanvasWidth / 2 + offsetWidth,
+      dprCanvasHeight - offsetHeight + offset + numberSize + offset
     );
 
     // Y label
     ctx.save();
     ctx.textBaseline = "bottom";
-    ctx.font = labelFont;
+    ctx.font = labelSize + "px " + myFont;
     ctx.translate(
-      offsetWidth - offset - Number(numberFont.slice(0, 2)) - offset,
-      scaledCanvasHeight / 2 - offsetHeight
+      offsetWidth - offset - numberSize - offset,
+      dprCanvasHeight / 2 - offsetHeight
     );
     ctx.rotate(Math.PI / -2);
     ctx.fillText(angularUnit, 0, 0);
@@ -82,8 +83,9 @@ function drawSquareGridYnumbers(
   ctx,
   plotSizeY,
   hasLabels,
-  numberFont,
-  scaledCanvasHeight,
+  numberSize,
+  myFont,
+  dprCanvasHeight,
   pxPerUnitY,
   offsetHeight,
   offsetWidth,
@@ -98,12 +100,12 @@ function drawSquareGridYnumbers(
     if (hasLabels) {
       if (i !== 0 && i % PLOTDIVISOR === 0 && i !== plotSizeY) {
         // draw numbers along Y axis
-        ctx.font = numberFont;
+        ctx.font = numberSize + "px " + myFont;
         ctx.textBaseline = "bottom"; // hmmmm
         ctx.save();
         ctx.translate(
           offsetWidth - offset,
-          scaledCanvasHeight - pxPerUnitY * i - offsetHeight
+          dprCanvasHeight - pxPerUnitY * i - offsetHeight
         );
         ctx.rotate(Math.PI / -2);
         ctx.fillText(i / divisor, 0, 0);
@@ -117,11 +119,12 @@ function drawSquareGridXnumbers(
   ctx,
   plotSizeX,
   hasLabels,
-  numberFont,
+  numberSize,
+  myFont,
   pxPerUnitX,
   offsetWidth,
   offsetHeight,
-  scaledCanvasHeight,
+  dprCanvasHeight,
   offset,
   angularUnit
 ) {
@@ -134,11 +137,11 @@ function drawSquareGridXnumbers(
       if (i !== 0 && i % PLOTDIVISOR === 0 && i !== plotSizeX) {
         // draw numbers along X axis
         ctx.textBaseline = "top";
-        ctx.font = numberFont;
+        ctx.font = numberSize + "px " + myFont;
         ctx.fillText(
           i / divisor,
           pxPerUnitX * i + offsetWidth,
-          scaledCanvasHeight - offsetHeight + offset // offsett the pixel size chosen above
+          dprCanvasHeight - offsetHeight + offset // offsett the pixel size chosen above
         );
       }
     }
@@ -151,8 +154,8 @@ function drawSquareGridX(
   pxPerUnitX,
   offsetWidth,
   offsetHeight,
-  scaledCanvasWidth,
-  scaledCanvasHeight,
+  dprCanvasWidth,
+  dprCanvasHeight,
   hasGrid,
   hasRedGrid,
   redGridFactor
@@ -161,11 +164,11 @@ function drawSquareGridX(
     //i = 0 and 20 to make the border
     // let { x, y } = nearestPointZero(
     //   pxPerUnitX * i + offsetWidth,
-    //   scaledCanvasHeight - offsetHeight
+    //   dprCanvasHeight - offsetHeight
     // );
 
-    let x = nrstPointZero(pxPerUnitX * i + offsetWidth, scaledCanvasWidth);
-    let y = nrstPointZero(scaledCanvasHeight - offsetHeight, scaledCanvasHeight);
+    let x = nrstPointZero(pxPerUnitX * i + offsetWidth, dprCanvasWidth);
+    let y = nrstPointZero(dprCanvasHeight - offsetHeight, dprCanvasHeight);
 
     // paint X grid
     ctx.beginPath();
@@ -193,12 +196,13 @@ function drawSquareGridX(
 export function drawSquareCanvas(
   ctx,
   canvasData,
-  scaledCanvasWidth,
-  scaledCanvasHeight,
-  labelFont,
-  numberFont,
+  dprCanvasWidth,
+  dprCanvasHeight,
+  labelSize,
+  numberSize,
   labelOffset,
-  offset
+  offset,
+  myFont
 ) {
   const {
     plotSizeX,
@@ -209,10 +213,10 @@ export function drawSquareCanvas(
     hasRedGrid,
     redGridFactor,
   } = canvasData;
-  const offsetHeight = (scaledCanvasHeight / 100) * labelOffset;
-  const offsetWidth = (scaledCanvasWidth / 100) * labelOffset;
-  const pxPerUnitX = (scaledCanvasWidth - offsetWidth) / plotSizeX;
-  const pxPerUnitY = (scaledCanvasHeight - offsetHeight) / plotSizeY;
+  const offsetHeight = (dprCanvasHeight / 100) * labelOffset;
+  const offsetWidth = (dprCanvasWidth / 100) * labelOffset;
+  const pxPerUnitX = (dprCanvasWidth - offsetWidth) / plotSizeX;
+  const pxPerUnitY = (dprCanvasHeight - offsetHeight) / plotSizeY;
 
   ctx.textAlign = "center";
   ctx.fillStyle = colors.canvasText; // text and numbers
@@ -224,8 +228,8 @@ export function drawSquareCanvas(
     pxPerUnitX,
     offsetWidth,
     offsetHeight,
-    scaledCanvasWidth,
-    scaledCanvasHeight,
+    dprCanvasWidth,
+    dprCanvasHeight,
     hasGrid,
     hasRedGrid,
     redGridFactor
@@ -234,22 +238,24 @@ export function drawSquareCanvas(
     ctx,
     plotSizeX,
     hasLabels,
-    numberFont,
+    numberSize,
+    myFont,
     pxPerUnitX,
     offsetWidth,
     offsetHeight,
-    scaledCanvasHeight,
+    dprCanvasHeight,
     offset,
     angularUnit
   );
   drawSquareLabels(
     hasLabels,
     ctx,
-    labelFont,
-    numberFont,
+    labelSize,
+    numberSize,
+    myFont,
     angularUnit,
-    scaledCanvasWidth,
-    scaledCanvasHeight,
+    dprCanvasWidth,
+    dprCanvasHeight,
     offsetWidth,
     offsetHeight,
     offset
@@ -258,8 +264,8 @@ export function drawSquareCanvas(
     ctx,
     plotSizeY,
     offsetWidth,
-    scaledCanvasWidth,
-    scaledCanvasHeight,
+    dprCanvasWidth,
+    dprCanvasHeight,
     pxPerUnitY,
     hasGrid,
     hasRedGrid,
@@ -269,8 +275,9 @@ export function drawSquareCanvas(
     ctx,
     plotSizeY,
     hasLabels,
-    numberFont,
-    scaledCanvasHeight,
+    numberSize,
+    myFont,
+    dprCanvasHeight,
     pxPerUnitY,
     offsetHeight,
     offsetWidth,

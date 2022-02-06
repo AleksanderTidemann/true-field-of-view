@@ -1,17 +1,5 @@
-import React, {
-  useRef,
-  useState,
-  useReducer,
-  useEffect,
-  useLayoutEffect,
-  memo,
-} from "react";
-import {
-  getDPRwithZoom,
-  getCanvasHeight,
-  getScaledCanvasDim,
-  getSizeOffsetForLabels,
-} from "../../../utils/canvas/setupCanvas.js";
+import React, { useRef, useState, useEffect, useLayoutEffect } from "react";
+import * as setup from "../../../utils/canvas/setupCanvas.js";
 import { drawCircleCanvas } from "../../../utils/canvas/drawCircleCanvas.js";
 import { drawCanvasBg } from "../../../utils/canvas/drawCanvasBg.js";
 import { drawSquareCanvas } from "../../../utils/canvas/drawSquareCanvas.js";
@@ -20,21 +8,28 @@ import { isEmptyObject } from "../../../utils/calc";
 import { motion } from "framer-motion";
 import PropTypes from "prop-types";
 
-const LABELFONT = "40px Arial";
-const NUMBERFONT = "20px Arial";
-const OFFSET = 5;
+const DEFAULT_FONT = "Arial";
+const DEFAULT_LABELSIZE = 40;
+const DEFAULT_NUMBERSIZE = 20;
+const DEFAULT_OFFSET = 5;
 
-// layouteffect runs before the DOM initally renders.
-// A good place to update/get size of DOM elements to avoid flickering.
 const Canvas = ({ globalCanvasData, currBody }) => {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
+
   const [containerWidth, setContainerWidth] = useState(null);
   const [canvasWidth, setCanvasWidth] = useState(null);
-  const [forceUpdate, setForceUpdate] = useReducer((x) => x + 1, 0);
+  const [dprCanvasWidth, setDprCanvasWidth] = useState(null);
+  const [dprCanvasHeight, setDprCanvasHeight] = useState(null);
 
+  const [numberSize, setNumberSize] = useState(null);
+  const [labelSize, setLabelSize] = useState(null);
+  const [labelOffset, setLabelOffset] = useState(null);
+
+  const [forceUpdate, setForceUpdate] = useState(null);
+
+  // on mount, listen and forceUpdate on the window resizing.
   useEffect(() => {
-    // on mount, listen and forceUpdate on the window resizing.
     if (canvasRef.current) {
       window.addEventListener("resize", setForceUpdate);
       return () => {
@@ -43,22 +38,68 @@ const Canvas = ({ globalCanvasData, currBody }) => {
     }
   }, [canvasRef]);
 
-  useLayoutEffect(() => {
-    // Set the containerWidth when the parent DIV mounts,
-    // and whenever we resize the window.
+  // If the parent DIV mounts, and whenever we resize the window,
+  // Set a new containerWidth.
+  useEffect(() => {
     if (containerRef.current) {
       setContainerWidth(containerRef.current.parentNode.clientWidth);
     }
   }, [containerRef, forceUpdate]);
 
-  useLayoutEffect(() => {
-    // Set the canvasWidth If the container width
-    //OR a new zoom value is registered.
+  // If the container width changes or a new zoom value is registered,
+  // set a new canvasWidth and Height
+  useEffect(() => {
     if (containerWidth) {
-      let cw = (containerWidth / 100) * globalCanvasData.zoomValue;
-      setCanvasWidth(cw);
+      const newCanvasWidth = (containerWidth / 100) * globalCanvasData.zoomValue;
+      const newCanvasHeight = setup.getCanvasHeight(
+        newCanvasWidth,
+        globalCanvasData.plotSizeX,
+        globalCanvasData.plotSizeY
+      );
+      const dpr = window.devicePixelRatio || 1;
+      const { dprCanvasWidth, dprCanvasHeight } = setup.getDprCanvasDim(
+        dpr,
+        newCanvasWidth,
+        newCanvasHeight
+      );
+
+      setNumberSize(
+        setup.getNumberSize(DEFAULT_NUMBERSIZE, containerWidth, dprCanvasWidth)
+      );
+      setLabelSize(setup.getLabelSize(DEFAULT_LABELSIZE, containerWidth, dprCanvasWidth));
+      setCanvasWidth(newCanvasWidth);
+      setDprCanvasWidth(dprCanvasWidth);
+      setDprCanvasHeight(dprCanvasHeight);
     }
-  }, [containerWidth, globalCanvasData.zoomValue]);
+  }, [
+    containerWidth,
+    globalCanvasData.zoomValue,
+    globalCanvasData.plotSizeX,
+    globalCanvasData.plotSizeY,
+  ]);
+
+  // If the canvasWidth and sizes change,
+  // set a new labelOffset
+  useEffect(() => {
+    setLabelOffset(
+      setup.getLabelOffset(
+        globalCanvasData.hasLabels,
+        globalCanvasData.isEyepieceMode,
+        dprCanvasWidth,
+        dprCanvasHeight,
+        numberSize,
+        labelSize,
+        DEFAULT_OFFSET
+      )
+    );
+  }, [
+    globalCanvasData.hasLabels,
+    globalCanvasData.isEyepieceMode,
+    dprCanvasWidth,
+    dprCanvasHeight,
+    numberSize,
+    labelSize,
+  ]);
 
   // Paint the canvas
   useLayoutEffect(() => {
@@ -66,49 +107,35 @@ const Canvas = ({ globalCanvasData, currBody }) => {
       //setup canvas
       const canvas = canvasRef.current;
       const context = canvas.getContext("2d");
-      const dpr = getDPRwithZoom(globalCanvasData.zoomValue);
-      const canvasHeight = getCanvasHeight(canvasWidth, globalCanvasData);
-      const { scaledCanvasWidth, scaledCanvasHeight } = getScaledCanvasDim(
-        dpr,
-        canvasWidth,
-        canvasHeight
-      );
-      const LABELOFFSET = getSizeOffsetForLabels(
-        globalCanvasData.hasLabels,
-        globalCanvasData.isEyepieceMode,
-        scaledCanvasWidth,
-        scaledCanvasHeight,
-        NUMBERFONT,
-        LABELFONT,
-        OFFSET
-      );
 
-      canvas.width = scaledCanvasWidth;
-      canvas.height = scaledCanvasHeight;
+      canvas.width = dprCanvasWidth;
+      canvas.height = dprCanvasHeight;
       // context.scale(dpr, dpr);
 
-      drawCanvasBg(context, scaledCanvasWidth, scaledCanvasHeight);
+      drawCanvasBg(context, dprCanvasWidth, dprCanvasHeight);
 
       if (!globalCanvasData.isEyepieceMode) {
         drawSquareCanvas(
           context,
           globalCanvasData,
-          scaledCanvasWidth,
-          scaledCanvasHeight,
-          LABELFONT,
-          NUMBERFONT,
-          LABELOFFSET,
-          OFFSET
+          dprCanvasWidth,
+          dprCanvasHeight,
+          labelSize,
+          numberSize,
+          labelOffset,
+          DEFAULT_OFFSET,
+          DEFAULT_FONT
         );
       } else {
         drawCircleCanvas(
           context,
           globalCanvasData,
-          scaledCanvasWidth,
-          scaledCanvasHeight,
-          LABELFONT,
-          NUMBERFONT,
-          OFFSET
+          dprCanvasWidth,
+          dprCanvasHeight,
+          labelSize,
+          numberSize,
+          DEFAULT_OFFSET,
+          DEFAULT_FONT
         );
       }
 
@@ -116,17 +143,15 @@ const Canvas = ({ globalCanvasData, currBody }) => {
       if (isEmptyObject(currBody)) return;
       drawCanvasBody(
         context,
-        globalCanvasData,
-        scaledCanvasWidth,
-        scaledCanvasHeight,
+        globalCanvasData.plotSizeX,
+        globalCanvasData.angularUnit,
+        dprCanvasWidth,
+        dprCanvasHeight,
         currBody,
-        LABELOFFSET
+        labelOffset
       );
-
-      // canvas.style.width = canvasWidth + "px !important";
-      // canvas.style.height = canvasWidth + "px !important";
     }
-  }, [canvasRef, canvasWidth, globalCanvasData, currBody]);
+  });
 
   return (
     <motion.div

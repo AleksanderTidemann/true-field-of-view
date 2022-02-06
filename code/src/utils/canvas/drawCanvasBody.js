@@ -2,20 +2,21 @@ import * as calc from "../calc";
 
 export function drawCanvasBody(
   context,
-  canvasData,
-  scaledCanvasWidth,
-  scaledCanvasHeight,
+  plotSizeX,
+  angularUnit,
+  dprCanvasWidth,
+  dprCanvasHeight,
   selectedBody,
   labelOffset
 ) {
-  const { plotSizeX, plotDivisor, angularUnit } = canvasData;
   const { angularDiameterDeg, img } = selectedBody;
   const bodyUnitCount = calc.unit2ang(angularDiameterDeg, angularUnit);
 
-  const canvasUnitCount = plotSizeX / plotDivisor;
-  const offsetWidth = (scaledCanvasWidth / 100) * labelOffset;
-  const offsetHeight = (scaledCanvasHeight / 100) * labelOffset;
-  const pxPerUnit = (scaledCanvasWidth - offsetWidth) / canvasUnitCount;
+  const canvasUnitCount = plotSizeX / calc.PLOTDIVISOR;
+
+  const offsetWidth = (dprCanvasWidth / 100) * labelOffset;
+  const offsetHeight = (dprCanvasHeight / 100) * labelOffset;
+  const pxPerUnit = (dprCanvasWidth - offsetWidth) / canvasUnitCount;
 
   const imagePxDiameter = bodyUnitCount * pxPerUnit;
   const centeringOffset = imagePxDiameter / 2;
@@ -24,8 +25,8 @@ export function drawCanvasBody(
   imgObject.src = img;
   context.drawImage(
     imgObject,
-    (scaledCanvasWidth + offsetWidth) / 2 - centeringOffset,
-    (scaledCanvasHeight - offsetHeight) / 2 - centeringOffset,
+    (dprCanvasWidth + offsetWidth) / 2 - centeringOffset,
+    (dprCanvasHeight - offsetHeight) / 2 - centeringOffset,
     imagePxDiameter,
     imagePxDiameter
   );

@@ -8,24 +8,15 @@ export function isEmptyObject(value) {
 }
 
 // ./canvas/drawSquareCanvas & drawCircleCanvas //
-export function nrstPointZero(val, scaledCanvasNumb) {
+export function nrstPointZero(val, width) {
   // round to nearest 0.5
-  // The screen can’t display half a pixel, so it expands the line to cover a total of two pixels.
-  // thats why every line must go from .5 something to .5 something
   // http://diveintohtml5.info/canvas.html
-
   let pointZero = Math.round(val - 0.5) + 0.5;
-  pointZero =
-    pointZero < scaledCanvasNumb
-      ? pointZero
-      : Number.isInteger(scaledCanvasNumb - 0.5)
-      ? scaledCanvasNumb - 1
-      : scaledCanvasNumb - 0.5;
-
+  // if its near the width, floor it and round 0.5 down.
+  if (pointZero >= Math.floor(width)) {
+    pointZero = Math.floor(width) - 0.5;
+  }
   return pointZero;
-
-  //let pointZero = Math.round(numb);
-  //return pointZero;
 }
 
 export function isArcSeconds(canvasAU) {

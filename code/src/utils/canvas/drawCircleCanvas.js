@@ -39,16 +39,17 @@ function paintCircularText(
   label,
   ctx,
   angle,
-  labelFont,
+  labelSize,
+  myFont,
   scaledCanvasWidth,
   scaledCanvasHeight
 ) {
   let startAngle = angle;
   let clockwise = -1;
-  let textHeight = Number(labelFont.slice(0, 2));
+  let textHeight = labelSize;
   ctx.translate(scaledCanvasWidth / 2, scaledCanvasHeight / 2);
   ctx.textBaseline = "middle";
-  ctx.font = labelFont;
+  ctx.font = labelSize + "px " + myFont;
 
   // rotate 50% of total angle for center alignment
   for (let j = 0; j < label.length; j++) {
@@ -74,7 +75,8 @@ function paintCircularText(
 function drawCircleLabels(
   ctx,
   hasLabels,
-  labelFont,
+  labelSize,
+  myFont,
   angularUnit,
   scaledCanvasWidth,
   scaledCanvasHeight
@@ -87,7 +89,8 @@ function drawCircleLabels(
       angularUnit,
       ctx,
       45,
-      labelFont,
+      labelSize,
+      myFont,
       scaledCanvasWidth,
       scaledCanvasHeight
     );
@@ -136,7 +139,8 @@ function drawCircleGridNumbers(
   pxPerUnitX,
   pxPerUnitY,
   redGridFactor,
-  numberFont,
+  numberSize,
+  myFont,
   offset,
   angularUnit
 ) {
@@ -152,7 +156,7 @@ function drawCircleGridNumbers(
           ? scaledCanvasHeight - pxPerUnitY * redGridFactor
           : scaledCanvasHeight / 2;
 
-        ctx.font = numberFont;
+        ctx.font = numberSize + "px " + myFont;
         ctx.textBaseline = "top";
 
         ctx.fillText(
@@ -170,9 +174,10 @@ export function drawCircleCanvas(
   canvasData,
   scaledCanvasWidth,
   scaledCanvasHeight,
-  labelFont,
-  numberFont,
-  offset
+  labelSize,
+  numberSize,
+  offset,
+  myFont
 ) {
   const {
     plotSizeX,
@@ -210,14 +215,16 @@ export function drawCircleCanvas(
     pxPerUnitX,
     pxPerUnitY,
     redGridFactor,
-    numberFont,
+    numberSize,
+    myFont,
     offset,
     angularUnit
   );
   drawCircleLabels(
     ctx,
     hasLabels,
-    labelFont,
+    labelSize,
+    myFont,
     angularUnit,
     scaledCanvasWidth,
     scaledCanvasHeight
