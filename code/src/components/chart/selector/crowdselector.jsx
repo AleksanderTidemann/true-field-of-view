@@ -60,7 +60,7 @@ const CrowdSelector = ({
   };
 
   return (
-    <div>
+    <div className="col-1">
       <IconButton
         color={isEyepieceMode ? colors.eyepieceMode : colors.cameraMode}
         aria-label="more"

@@ -18,7 +18,7 @@ const FormInfo = (props) => {
     pixelsize,
     eyepiecefocallength,
   } = props.formData;
-  const { hasGrid, hasRedGrid, redGridFactor, plotsizex, plotsizey, isEyepieceMode } =
+  const { hasGrid, hasRedGrid, redGridFactor, plotSizeX, plotSizeY, isEyepieceMode } =
     props.localCanvasData;
   const { isSubmit } = props;
   const [infoData, setInfoData] = useState(initInfoData);
@@ -97,8 +97,8 @@ const FormInfo = (props) => {
     const pxPerGridSquare = calc.getPxPerGridSquare(
       resolutionx.value,
       resolutiony.value,
-      plotsizex,
-      plotsizey,
+      plotSizeX,
+      plotSizeY,
       hasGrid,
       hasRedGrid,
       redGridFactor
@@ -121,8 +121,8 @@ const FormInfo = (props) => {
   }, [
     resolutionx,
     resolutiony,
-    plotsizex,
-    plotsizey,
+    plotSizeX,
+    plotSizeY,
     hasGrid,
     hasRedGrid,
     redGridFactor,

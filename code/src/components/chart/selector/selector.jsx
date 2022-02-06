@@ -41,18 +41,20 @@ const Selector = ({
   }
 
   return (
-    <div className="container d-flex justify-content-around p-0 mb-4">
-      <CrowdSelector
-        isEyepieceMode={isEyepieceMode}
-        currCrowdName={isEmptyObject(currCrowd) ? "" : currCrowd.key}
-        onCrowdSelection={onCrowdSelection}
-        crowdNames={crowdNames}
-      />
-      <BodySelector
-        onBodySelection={onBodySelection}
-        currCrowd={currCrowd}
-        currBodyName={isEmptyObject(currBody) ? "" : currBody.key}
-      />
+    <div className="container p-0 mb-4">
+      <div className="row">
+        <CrowdSelector
+          isEyepieceMode={isEyepieceMode}
+          currCrowdName={isEmptyObject(currCrowd) ? "" : currCrowd.key}
+          onCrowdSelection={onCrowdSelection}
+          crowdNames={crowdNames}
+        />
+        <BodySelector
+          onBodySelection={onBodySelection}
+          currCrowd={currCrowd}
+          currBodyName={isEmptyObject(currBody) ? "" : currBody.key}
+        />
+      </div>
     </div>
   );
 };

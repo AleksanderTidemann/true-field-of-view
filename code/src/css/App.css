@@ -38,3 +38,208 @@ body {
 .bg-gradient-warning {
   background: #ffc107 linear-gradient(180deg, #ffca2c, #ffc107) repeat-x !important;
 }
+
+/* FLOATING LABELS IN THE INPUT FORM */
+.form-control {
+  /*By me. The actual input boxes borders.*/
+  border-radius: 5px 0px 0px 5px;
+}
+
+.input-group-text {
+  /*the "mm" labe stuff.. By me*/
+  border-radius: 0px 5px 5px 0px;
+}
+
+.form-label-group {
+  position: relative;
+  display: flex; /*By me*/
+  margin-bottom: 1rem;
+}
+
+.form-label-group input,
+.form-label-group label {
+  height: 3.125rem;
+  padding: 0.75rem;
+}
+
+.form-label-group label {
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  margin-bottom: 0; /* Override default `<label>` margin */
+  line-height: 1.5;
+  color: #495057;
+  pointer-events: none;
+  cursor: text; /* Match the input under the label */
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  transition: all 0.1s ease-in-out;
+}
+
+/* We hide the input placeholder */
+.form-label-group input::-webkit-input-placeholder {
+  color: transparent;
+}
+
+.form-label-group input::-moz-placeholder {
+  color: transparent;
+}
+
+.form-label-group input:-ms-input-placeholder {
+  color: transparent;
+}
+
+.form-label-group input::-ms-input-placeholder {
+  color: transparent;
+}
+
+.form-label-group input::placeholder {
+  color: transparent;
+}
+
+/* When the placeholder is not shown, E.G there is text being written, 
+  We first add necessary padding to the text, then we resize and show the label.*/
+.form-label-group input:not(:-moz-placeholder-shown) {
+  padding-top: 1.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.form-label-group input:not(:-ms-input-placeholder) {
+  padding-top: 1.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.form-label-group input:not(:placeholder-shown) {
+  padding-top: 1.25rem;
+  padding-bottom: 0.25rem;
+}
+
+/* Make the text small */
+.form-label-group input:not(:-moz-placeholder-shown) ~ label {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  font-size: 12px;
+  color: #777;
+}
+
+.form-label-group input:not(:-ms-input-placeholder) ~ label {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  font-size: 12px;
+  color: #777;
+}
+
+.form-label-group input:not(:placeholder-shown) ~ label {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  font-size: 12px;
+  color: #777;
+}
+
+.form-label-group input:-webkit-autofill ~ label {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  font-size: 12px;
+  color: #777;
+}
+
+/* For the unit labels in the form input */
+.input-group-text {
+  /* Make it appear in fron of the text */
+  z-index: 1;
+}
+
+/* Based on bootstraps "container" class */
+@media only screen and (max-width: 992px) {
+  /* Make the label small and appear on top aslo when placeholder is shown */
+  .form-label-group input:-moz-placeholder-shown {
+    padding-top: 1.25rem;
+    padding-bottom: 0.25rem;
+  }
+
+  .form-label-group input:-ms-input-placeholder {
+    padding-top: 1.25rem;
+    padding-bottom: 0.25rem;
+  }
+
+  .form-label-group input:placeholder-shown {
+    padding-top: 1.25rem;
+    padding-bottom: 0.25rem;
+  }
+
+  /* Make the text small */
+  .form-label-group input:-moz-placeholder-shown ~ label {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    font-size: 12px;
+    color: #777;
+  }
+
+  .form-label-group input:-ms-input-placeholder ~ label {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    font-size: 12px;
+    color: #777;
+  }
+
+  .form-label-group input:placeholder-shown ~ label {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    font-size: 12px;
+    color: #777;
+  }
+
+  .form-label-group input:-webkit-autofill ~ label {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    font-size: 12px;
+    color: #777;
+  }
+
+  /* For the unit labels in the form input */
+  .input-group-text {
+    padding: 0 !important;
+    font-size: 12px !important;
+  }
+}
+
+/* THE INFO BAR */
+/* Based on bootstraps "container" class */
+@media only screen and (max-width: 768px) {
+  /* in info.jsx */
+  .info-items {
+    padding: 0 !important;
+  }
+}
+
+/* Fallback for Edge
+  -------------------------------------------------- */
+@supports (-ms-ime-align: auto) {
+  .form-label-group {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column-reverse;
+    flex-direction: column-reverse;
+  }
+
+  .form-label-group label {
+    position: static;
+  }
+
+  .form-label-group input::-ms-input-placeholder {
+    color: #777;
+  }
+}
+
+/* Planet input selector image zoom hover */
+/* .img-hover-zoom {
+    transition: transform 0.2s;
+      background-color: rgb(0, 0, 0);
+  }
+  
+  .img-hover-zoom:hover {
+    transform: scale(1.4);
+  } */

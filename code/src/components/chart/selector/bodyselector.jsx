@@ -7,7 +7,7 @@ const bodyWidth = "35px";
 const selectedx = DIVIMAGES.selectedX;
 
 const BodySelector = ({ onBodySelection, currCrowd, currBodyName }) => (
-  <>
+  <div className="col-11 d-flex justify-content-around">
     {Object.keys(currCrowd).map((item) => {
       if (item === "key") return "";
       let bodyName = currCrowd[item].key;
@@ -21,7 +21,7 @@ const BodySelector = ({ onBodySelection, currCrowd, currBodyName }) => (
         />
       );
     })}
-  </>
+  </div>
 );
 
 BodySelector.propTypes = {
