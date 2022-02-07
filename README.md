@@ -8,5 +8,5 @@ A web application for calculating and visualizing the true field-of-view of cele
 
 
 <p align="left">
- <img src="./fig/demo2.jpg" width=auto>
+ <img src="./fig/demo2.jpg" width="640px">
 </p>
