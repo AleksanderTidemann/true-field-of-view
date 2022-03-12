@@ -7,6 +7,9 @@ import initInfoData from "../../../data/info-data";
 
 // useEffect, actually make the comp render twice.
 // because the calcs are sideEffects.
+// maybe not have these in store.
+// since they are just side-effects of the form-data and canvasData. Yes?
+// maybe just store the submitted form-data.
 
 const FormInfo = (props) => {
   const {
@@ -33,6 +36,7 @@ const FormInfo = (props) => {
       Object.keys(stateCopy).forEach((key) => {
         stateCopy[key].isChanged = false;
       });
+      // dont think I need to immutate it again here?
       return { ...stateCopy };
     });
   }, [isSubmit]);
@@ -104,6 +108,9 @@ const FormInfo = (props) => {
       redGridFactor
     );
 
+    // if only the canvasOptions change, then keep the isChanged value the same.
+    // might be a little too complicated. Maybe not needed when moving the canvasOption to the chart.
+    // If this only updates when the chart has been submitted, then I dont need to worry about this. the canvsoptions shouldnt effect this at all then.
     setInfoData((prevInfoData) => ({
       ...prevInfoData,
       pxPerSquare: {

@@ -157,6 +157,9 @@ const Menubar = ({ setGlobalCanvasData }) => {
         isEyepieceMode={localCanvasData.isEyepieceMode}
         onModeChange={handleModeChange}
       />
+      {/* Instead of making sure the numbers are okay before converting formData, Cant I just make formData render only if there is a number there? */}
+      {/* That would remvoe the necessity of having formData AND localCanvasData */}
+      {/* Then, on submit, it would convert to the formData to the canvasData */}
       <FormSection
         isEyepieceMode={localCanvasData.isEyepieceMode}
         formData={formData}

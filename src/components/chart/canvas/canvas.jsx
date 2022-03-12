@@ -8,9 +8,10 @@ import { isEmptyObject } from "../../../utils/calc";
 import { motion } from "framer-motion";
 import PropTypes from "prop-types";
 
+// maybe move into a canvas config file?
 const DEFAULT_FONT = "Arial";
-const DEFAULT_LABELSIZE = 40;
-const DEFAULT_NUMBERSIZE = 20;
+const DEFAULT_LABELSIZE = 60;
+const DEFAULT_NUMBERSIZE = 40;
 const DEFAULT_OFFSET = 5;
 
 const Canvas = ({ globalCanvasData, currBody }) => {
