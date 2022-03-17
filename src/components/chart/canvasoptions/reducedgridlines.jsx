@@ -4,7 +4,12 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import PropTypes from "prop-types";
 
-const ReducedGridlines = ({ hasRedGrid, hasGrid, isEyepieceMode, onRedGridChange }) => {
+const ReducedGridlines = ({
+  hasRedGrid,
+  hasGrid,
+  isEyepieceMode,
+  onRedGridChange,
+}) => {
   return (
     <FormControlLabel
       key="Reduce Gridlines"
@@ -16,7 +21,7 @@ const ReducedGridlines = ({ hasRedGrid, hasGrid, isEyepieceMode, onRedGridChange
           }}
           color={isEyepieceMode ? colors.eyepieceMode : colors.cameraMode}
           checked={hasRedGrid}
-          onChange={(event) => {
+          onChange={event => {
             onRedGridChange(event.target.checked);
           }}
         />

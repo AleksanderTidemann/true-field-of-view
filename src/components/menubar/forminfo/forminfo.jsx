@@ -11,7 +11,7 @@ import initInfoData from "../../../data/info-data";
 // since they are just side-effects of the form-data and canvasData. Yes?
 // maybe just store the submitted form-data.
 
-const FormInfo = (props) => {
+const FormInfo = props => {
   const {
     focallength,
     barlow,
@@ -21,8 +21,14 @@ const FormInfo = (props) => {
     pixelsize,
     eyepiecefocallength,
   } = props.formData;
-  const { hasGrid, hasRedGrid, redGridFactor, plotSizeX, plotSizeY, isEyepieceMode } =
-    props.localCanvasData;
+  const {
+    hasGrid,
+    hasRedGrid,
+    redGridFactor,
+    plotSizeX,
+    plotSizeY,
+    isEyepieceMode,
+  } = props.globalCanvasData;
   const { isSubmit } = props;
   const [infoData, setInfoData] = useState(initInfoData);
   const prevRedGridState = useRef(hasRedGrid);
@@ -31,9 +37,9 @@ const FormInfo = (props) => {
   useEffect(() => {
     // When I submit, I set the isChanged in the infoData items to false
     // Whenever the info boxes is changed after submit, the text color changes.
-    setInfoData((prevInfoData) => {
+    setInfoData(prevInfoData => {
       let stateCopy = JSON.parse(JSON.stringify(prevInfoData));
-      Object.keys(stateCopy).forEach((key) => {
+      Object.keys(stateCopy).forEach(key => {
         stateCopy[key].isChanged = false;
       });
       // dont think I need to immutate it again here?
@@ -43,9 +49,13 @@ const FormInfo = (props) => {
 
   // get Focal Ratio
   useEffect(() => {
-    const focalRatio = calc.getFratio(focallength.value, barlow.value, aperture.value);
+    const focalRatio = calc.getFratio(
+      focallength.value,
+      barlow.value,
+      aperture.value
+    );
 
-    setInfoData((prevInfoData) => ({
+    setInfoData(prevInfoData => ({
       ...prevInfoData,
       focalRatio: {
         ...prevInfoData.focalRatio,
@@ -57,8 +67,11 @@ const FormInfo = (props) => {
 
   // get Aspect Ratio
   useEffect(() => {
-    const aspectRatio = calc.getAspectRatio(resolutionx.value, resolutiony.value);
-    setInfoData((prevInfoData) => ({
+    const aspectRatio = calc.getAspectRatio(
+      resolutionx.value,
+      resolutiony.value
+    );
+    setInfoData(prevInfoData => ({
       ...prevInfoData,
       aspectRatio: {
         ...prevInfoData.aspectRatio,
@@ -73,7 +86,7 @@ const FormInfo = (props) => {
     const flengthScope = calc.getFlength(focallength.value, barlow.value);
     const mag = calc.getMag(flengthScope, eyepiecefocallength.value);
 
-    setInfoData((prevInfoData) => ({
+    setInfoData(prevInfoData => ({
       ...prevInfoData,
       magnification: {
         ...prevInfoData.magnification,
@@ -86,7 +99,7 @@ const FormInfo = (props) => {
   // get Max Magnification (Max Mag)
   useEffect(() => {
     const maxMag = calc.getMaxMag(focallength.value, aperture.value);
-    setInfoData((prevInfoData) => ({
+    setInfoData(prevInfoData => ({
       ...prevInfoData,
       maxMagnification: {
         ...prevInfoData.maxMagnification,
@@ -111,13 +124,14 @@ const FormInfo = (props) => {
     // if only the canvasOptions change, then keep the isChanged value the same.
     // might be a little too complicated. Maybe not needed when moving the canvasOption to the chart.
     // If this only updates when the chart has been submitted, then I dont need to worry about this. the canvsoptions shouldnt effect this at all then.
-    setInfoData((prevInfoData) => ({
+    setInfoData(prevInfoData => ({
       ...prevInfoData,
       pxPerSquare: {
         ...prevInfoData.pxPerSquare,
         value: pxPerGridSquare,
         isChanged:
-          hasRedGrid !== prevRedGridState.current || hasGrid !== prevGridState.current
+          hasRedGrid !== prevRedGridState.current ||
+          hasGrid !== prevGridState.current
             ? prevInfoData.pxPerSquare.isChanged
             : true,
       },
@@ -142,7 +156,7 @@ const FormInfo = (props) => {
       resolutiony.value,
       pixelsize.value
     );
-    setInfoData((prevInfoData) => ({
+    setInfoData(prevInfoData => ({
       ...prevInfoData,
       chipSize: {
         ...prevInfoData.chipSize,
@@ -157,9 +171,13 @@ const FormInfo = (props) => {
   }, [isEyepieceMode]);
 
   return (
-    <div className={"border border-white rounded mb-1 mr-1 col bg-" + colors.background}>
+    <div
+      className={
+        "border border-white rounded mb-1 mr-1 col bg-" + colors.background
+      }
+    >
       <div className="d-flex justify-content-around">
-        {Object.values(infoData).map((item) => {
+        {Object.values(infoData).map(item => {
           if (isEyepieceMode && item.isEyepieceInfo) {
             return (
               <FormInfoInput
@@ -191,7 +209,7 @@ const FormInfo = (props) => {
 
 FormInfo.propTypes = {
   formData: PropTypes.object.isRequired,
-  localCanvasData: PropTypes.object.isRequired,
+  globalCanvasData: PropTypes.object.isRequired,
   isSubmit: PropTypes.bool.isRequired,
 };
 

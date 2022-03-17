@@ -13,7 +13,7 @@ const Grid = ({ hasGrid, isEyepieceMode, onGridChange, onRedGridChange }) => {
           inputProps={{ "aria-label": "hasGrid" }}
           color={isEyepieceMode ? colors.eyepieceMode : colors.cameraMode}
           checked={hasGrid}
-          onChange={(event) => {
+          onChange={event => {
             onGridChange(event.target.checked);
             if (!event.target.checked) onRedGridChange(event.target.checked);
           }}

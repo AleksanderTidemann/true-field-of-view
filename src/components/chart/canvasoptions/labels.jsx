@@ -13,7 +13,7 @@ const Labels = ({ hasLabels, isEyepieceMode, onLabelChange }) => {
           inputProps={{ "aria-label": "Labels" }}
           color={isEyepieceMode ? colors.eyepieceMode : colors.cameraMode}
           checked={hasLabels}
-          onChange={(event) => {
+          onChange={event => {
             onLabelChange(event.target.checked);
           }}
         />
