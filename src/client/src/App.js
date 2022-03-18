@@ -9,17 +9,20 @@ import CanvasOptions from "./components/CanvasOptions/CanvasOptions";
 import initCanvasData from "./data/canvas-data";
 import initFormData from "./data/form-data";
 import * as calc from "./utils/calc";
+import configureStore from "./store/configureStore";
+import { Provider } from "react-redux";
+
+const store = configureStore();
 
 const App = () => {
-  // this is the same as localGlobalData, only updated less frequent
   const [globalCanvasData, setGlobalCanvasData] = useState(initCanvasData);
   const [currBody, setCurrBody] = useState({});
   const [formData, setFormData] = useState(initFormData);
   const [isSubmit, setSubmit] = useState(false);
 
   // Menubar
-  // using callBacks to avoid giving the funcs new references on every render.
   const handleFormChange = useCallback((value, target) => {
+    // using callBacks to avoid giving the components new func references on every render.
     setFormData(prevData => {
       let keyCopy = { ...prevData[target] };
       keyCopy.value = value;
@@ -36,8 +39,6 @@ const App = () => {
     // dispatch(convertFormDataToCanvasData(formData))
   }, []);
 
-  // switching views
-  // reset data, basically
   const handleModeChange = useCallback(
     bool => {
       // dispatch(modeSwitch())
@@ -93,7 +94,7 @@ const App = () => {
   }, [globalCanvasData.isEyepieceMode]);
 
   return (
-    <React.StrictMode>
+    <Provider store={store}>
       <div className="App container p-0">
         <ModeSwitcher
           isEyepieceMode={globalCanvasData.isEyepieceMode}
@@ -124,7 +125,7 @@ const App = () => {
         />
         <Canvas globalCanvasData={globalCanvasData} currBody={currBody} />
       </div>
-    </React.StrictMode>
+    </Provider>
   );
 };
 
