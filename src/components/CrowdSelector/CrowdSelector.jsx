@@ -3,11 +3,11 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import colors from "../../../data/color-data";
+import colors from "../../data/color-data";
 import PropTypes from "prop-types";
 
 const menuPaperHeight = 48;
-const style = (isEyepieceMode) => ({
+const style = isEyepieceMode => ({
   style: {
     maxHeight: menuPaperHeight * 4.5,
     width: "20ch",
@@ -52,7 +52,7 @@ const CrowdSelector = ({
     setOptions(crowdNames);
   }, [crowdNames]);
 
-  const handleClick = (event) => {
+  const handleClick = event => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -82,12 +82,12 @@ const CrowdSelector = ({
         }}
         PaperProps={paperPropsStyle}
       >
-        {options.map((option) => (
+        {options.map(option => (
           <MenuItem
             key={option}
             id={option}
             selected={option === currCrowdName}
-            onClick={(e) => {
+            onClick={e => {
               onCrowdSelection(e.target.id);
               handleClose();
             }}

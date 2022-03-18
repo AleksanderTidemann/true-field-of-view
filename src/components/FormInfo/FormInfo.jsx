@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef, useMemo } from "react";
-import FormInfoInput from "./forminfoinput";
-import * as calc from "../../../utils/calc";
+import FormInfoInput from "./FormInfoInput";
+import * as calc from "../../utils/calc";
 import PropTypes from "prop-types";
-import colors from "../../../data/color-data";
-import initInfoData from "../../../data/info-data";
+import colors from "../../data/color-data";
+import initInfoData from "../../data/info-data";
 
 // useEffect, actually make the comp render twice.
 // because the calcs are sideEffects.

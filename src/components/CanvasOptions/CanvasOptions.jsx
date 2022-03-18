@@ -1,9 +1,9 @@
 import React, { memo } from "react";
-import Grid from "./grid";
-import ReducedGridlines from "./reducedgridlines";
-import Labels from "./labels";
-import Zoom from "./zoom";
-import colors from "../../../data/color-data";
+import Grid from "./Grid";
+import ReducedGridlines from "./ReducedGridlines";
+import Labels from "./Labels";
+import Zoom from "./Zoom";
+import colors from "../../data/color-data";
 import PropTypes from "prop-types";
 
 const CanvasOptions = ({ globalCanvasData, setGlobalCanvasData }) => {

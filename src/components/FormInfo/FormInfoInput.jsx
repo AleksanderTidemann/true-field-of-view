@@ -1,6 +1,6 @@
 import React, { useEffect, useState, memo } from "react";
 import PropTypes from "prop-types";
-import colors from "../../..//data/color-data";
+import colors from "../../data/color-data";
 
 const FormInfoInput = ({ isChanged, title, value, borderColor }) => {
   const [textColor, setTextColor] = useState(null);

@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import colors from "../../../data/color-data";
+import colors from "../../data/color-data";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import PropTypes from "prop-types";

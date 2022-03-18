@@ -1,10 +1,10 @@
 import React, { useRef, useState, useEffect, useLayoutEffect } from "react";
-import * as setup from "../../../utils/canvas/setupCanvas.js";
-import { drawCircleCanvas } from "../../../utils/canvas/drawCircleCanvas.js";
-import { drawCanvasBg } from "../../../utils/canvas/drawCanvasBg.js";
-import { drawSquareCanvas } from "../../../utils/canvas/drawSquareCanvas.js";
-import { drawCanvasBody } from "../../../utils/canvas/drawCanvasBody.js";
-import { isEmptyObject } from "../../../utils/calc";
+import * as setup from "../../utils/canvas/setupCanvas.js";
+import { drawCircleCanvas } from "../../utils/canvas/drawCircleCanvas.js";
+import { drawCanvasBg } from "../../utils/canvas/drawCanvasBg.js";
+import { drawSquareCanvas } from "../../utils/canvas/drawSquareCanvas.js";
+import { drawCanvasBody } from "../../utils/canvas/drawCanvasBody.js";
+import { isEmptyObject } from "../../utils/calc";
 import { motion } from "framer-motion";
 import PropTypes from "prop-types";
 
@@ -51,7 +51,8 @@ const Canvas = ({ globalCanvasData, currBody }) => {
   // set a new canvasWidth and Height
   useEffect(() => {
     if (containerWidth) {
-      const newCanvasWidth = (containerWidth / 100) * globalCanvasData.zoomValue;
+      const newCanvasWidth =
+        (containerWidth / 100) * globalCanvasData.zoomValue;
       const newCanvasHeight = setup.getCanvasHeight(
         newCanvasWidth,
         globalCanvasData.plotSizeX,
@@ -67,7 +68,9 @@ const Canvas = ({ globalCanvasData, currBody }) => {
       setNumberSize(
         setup.getNumberSize(DEFAULT_NUMBERSIZE, containerWidth, dprCanvasWidth)
       );
-      setLabelSize(setup.getLabelSize(DEFAULT_LABELSIZE, containerWidth, dprCanvasWidth));
+      setLabelSize(
+        setup.getLabelSize(DEFAULT_LABELSIZE, containerWidth, dprCanvasWidth)
+      );
       setCanvasWidth(newCanvasWidth);
       setDprCanvasWidth(dprCanvasWidth);
       setDprCanvasHeight(dprCanvasHeight);
@@ -167,7 +170,9 @@ const Canvas = ({ globalCanvasData, currBody }) => {
           <canvas
             ref={canvasRef}
             className={
-              globalCanvasData.isEyepieceMode ? "w-100 border rounded-circle" : "w-100"
+              globalCanvasData.isEyepieceMode
+                ? "w-100 border rounded-circle"
+                : "w-100"
             }
           />
         </div>

@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
-import ModeSwitcher from "./modeswitcher/modeswitcher";
-import FormSection from "./formsection/formsection";
-import FormInfo from "./forminfo/forminfo";
-import Forecast from "./forecast/forecast";
-import CanvasOptions from "../chart/canvasoptions/canvasoptions";
+import ModeSwitcher from "../ModeSwitcher/ModeSwitcher";
+import FormSection from "../FormSection/FormSection";
+import FormInfo from "../FormInfo/FormInfo";
+import Forecast from "../Forecast/Forecast";
 import initCanvasData from "../../data/canvas-data";
 import initFormData from "../../data/form-data";
 import * as calc from "../../utils/calc";

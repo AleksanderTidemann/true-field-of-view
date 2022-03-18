@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Menubar from "./components/menubar/menubar";
-import Chart from "./components/chart/chart";
+import Menubar from "./components/Menubar/Menubar";
+import Chart from "./components/Chart/Chart";
 import initCanvasData from "./data/canvas-data";
 
 const App = () => {

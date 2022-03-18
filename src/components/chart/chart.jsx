@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
-import Canvas from "./canvas/canvas";
-import Selector from "./selector/selector";
-import CanvasOptions from "./canvasoptions/canvasoptions";
+import Canvas from "../Canvas/Canvas";
+import Selector from "../Selector/Selector";
+import CanvasOptions from "../CanvasOptions/CanvasOptions";
 import PropTypes from "prop-types";
 
 const Chart = ({ globalCanvasData, setGlobalCanvasData }) => {

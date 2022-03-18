@@ -12,7 +12,7 @@ const Body = ({ name, img, onBodySelection, bodyWidth }) => {
       transition={{ type: "spring", stiffness: 100, duration: 0.2 }}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
-      onTap={(event) => {
+      onTap={event => {
         onBodySelection(event.target.alt);
       }}
     >

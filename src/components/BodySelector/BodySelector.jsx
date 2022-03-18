@@ -1,6 +1,6 @@
 import React from "react";
-import Body from "./body";
-import { DIVIMAGES } from "../../../data/img-data";
+import Body from "./Body";
+import { DIVIMAGES } from "../../data/img-data";
 import PropTypes from "prop-types";
 
 const bodyWidth = "35px";
@@ -8,7 +8,7 @@ const selectedx = DIVIMAGES.selectedX;
 
 const BodySelector = ({ onBodySelection, currCrowd, currBodyName }) => (
   <div className="col-11 d-flex justify-content-around">
-    {Object.keys(currCrowd).map((item) => {
+    {Object.keys(currCrowd).map(item => {
       if (item === "key") return "";
       let bodyName = currCrowd[item].key;
       return (

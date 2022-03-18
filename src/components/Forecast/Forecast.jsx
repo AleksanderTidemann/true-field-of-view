@@ -1,13 +1,13 @@
 import React, { useEffect, useState, memo } from "react";
-import { DIVIMAGES } from "../../../data/img-data";
+import { DIVIMAGES } from "../../data/img-data";
 import {
   getLatLong,
   getAreaCountry,
   getData,
   filterData,
-} from "../../../utils/requests/getForecast";
+} from "../../utils/requests/getForecast";
 import PropTypes from "prop-types";
-import colors from "../../../data/color-data";
+import colors from "../../data/color-data";
 
 const loading = DIVIMAGES.loading;
 const error = DIVIMAGES.error;
@@ -31,7 +31,7 @@ const Forecast = ({ isEyepieceMode }) => {
         );
         const symbol_code = forecast.data.next_6_hours.summary.symbol_code;
         const temperature = forecast.data.instant.details.air_temperature;
-        const wimg = require("../../../img/weather/" + symbol_code + ".png");
+        const wimg = require("../../img/weather/" + symbol_code + ".png");
 
         setForecastData({
           next6h_img: wimg,
@@ -52,14 +52,20 @@ const Forecast = ({ isEyepieceMode }) => {
 
   const borderStyle = () => {
     let css =
-      "info-items text-center " + colors.text + " col-auto border rounded border-";
+      "info-items text-center " +
+      colors.text +
+      " col-auto border rounded border-";
     let bg = isEyepieceMode ? colors.eyepieceMode : colors.cameraMode;
     return css + bg;
   };
 
   if (isError) {
     return (
-      <div className={"border border-white rounded mb-1 col-3 bg-" + colors.background}>
+      <div
+        className={
+          "border border-white rounded mb-1 col-3 bg-" + colors.background
+        }
+      >
         <div className="form-label-group mb-0 mt-2 justify-content-center">
           <p className={"mr-1 " + colors.text}>
             <small>Forecast</small>
@@ -74,7 +80,11 @@ const Forecast = ({ isEyepieceMode }) => {
 
   if (isLoading) {
     return (
-      <div className={"border border-white rounded mb-1 col-3 bg-" + colors.background}>
+      <div
+        className={
+          "border border-white rounded mb-1 col-3 bg-" + colors.background
+        }
+      >
         <div className="form-label-group mb-0 mt-2 justify-content-center">
           <p className={"mr-1 " + colors.text}>
             <small>Forecast</small>
@@ -88,7 +98,11 @@ const Forecast = ({ isEyepieceMode }) => {
   }
 
   return (
-    <div className={"border border-white rounded mb-1 col-3 bg-" + colors.background}>
+    <div
+      className={
+        "border border-white rounded mb-1 col-3 bg-" + colors.background
+      }
+    >
       <div className="form-label-group mb-0 mt-2 justify-content-center">
         <p className={"mr-1 " + colors.text}>
           <small>Forecast</small>

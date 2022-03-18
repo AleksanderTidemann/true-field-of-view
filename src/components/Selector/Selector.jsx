@@ -1,10 +1,10 @@
 import React, { useMemo, useState, useEffect, memo } from "react";
-import BodySelector from "./bodyselector";
-import CrowdSelector from "./crowdselector";
-import { DIVIMAGES } from "../../../data/img-data";
-import { isEmptyObject } from "../../../utils/calc";
-import initCrowdData from "../../../data/crowd-data";
-import { getSolarSystemData } from "../../../utils/requests/getSolarsystemdata";
+import BodySelector from "../BodySelector/BodySelector";
+import CrowdSelector from "../CrowdSelector/CrowdSelector";
+import { DIVIMAGES } from "../../data/img-data";
+import initCrowdData from "../../data/crowd-data";
+import { isEmptyObject } from "../../utils/calc";
+import { getSolarSystemData } from "../../utils/requests/getSolarsystemdata";
 import PropTypes from "prop-types";
 
 const loading = DIVIMAGES.loading;

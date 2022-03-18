@@ -5,7 +5,7 @@ import ZoomOutIcon from "@mui/icons-material/ZoomOut";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Tooltip from "@mui/material/Tooltip";
 import PropTypes from "prop-types";
-import colors from "../../../data/color-data";
+import colors from "../../data/color-data";
 
 const INC = 10;
 const Zoom = ({ isEyepieceMode, onZoomChange, zoomValue }) => {
