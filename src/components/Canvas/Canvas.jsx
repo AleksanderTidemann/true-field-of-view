@@ -1,4 +1,10 @@
-import React, { useRef, useState, useEffect, useLayoutEffect } from "react";
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  useLayoutEffect,
+  memo,
+} from "react";
 import * as setup from "../../utils/canvas/setupCanvas.js";
 import { drawCircleCanvas } from "../../utils/canvas/drawCircleCanvas.js";
 import { drawCanvasBg } from "../../utils/canvas/drawCanvasBg.js";
@@ -186,4 +192,4 @@ Canvas.propTypes = {
   currBody: PropTypes.object.isRequired,
 };
 
-export default Canvas;
+export default memo(Canvas);

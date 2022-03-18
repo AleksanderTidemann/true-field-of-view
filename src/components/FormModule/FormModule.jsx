@@ -9,6 +9,7 @@ const FormModule = ({
   isEyepieceMode,
   title,
 }) => {
+  // add API database fetch
   const addonColor = useMemo(() => {
     let className = "input-group-text " + colors.text + " bg-";
     className += isEyepieceMode ? colors.eyepieceMode : colors.cameraMode;
