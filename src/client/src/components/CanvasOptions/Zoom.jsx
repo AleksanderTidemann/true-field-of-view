@@ -7,8 +7,13 @@ import Tooltip from "@mui/material/Tooltip";
 import PropTypes from "prop-types";
 import colors from "../../data/color-data";
 
+import { useDispatch } from "react-redux";
+import { zoomInn, zoomOut } from "../../store/canvasData/canvasData";
+
 const INC = 10;
+
 const Zoom = ({ isEyepieceMode, onZoomChange, zoomValue }) => {
+  const dispatch = useDispatch();
   return (
     <Tooltip title={zoomValue + "%"} placement="bottom">
       <ButtonGroup
@@ -19,6 +24,7 @@ const Zoom = ({ isEyepieceMode, onZoomChange, zoomValue }) => {
       >
         <Button
           onClick={() => {
+            dispatch(zoomOut());
             onZoomChange(zoomValue - INC <= 10 ? 10 : zoomValue - INC);
           }}
         >
@@ -26,6 +32,7 @@ const Zoom = ({ isEyepieceMode, onZoomChange, zoomValue }) => {
         </Button>
         <Button
           onClick={() => {
+            dispatch(zoomInn());
             onZoomChange(zoomValue + INC > 100 ? 100 : zoomValue + INC);
           }}
         >

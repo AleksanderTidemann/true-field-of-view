@@ -4,7 +4,11 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import PropTypes from "prop-types";
 
+import { useDispatch } from "react-redux";
+import { switchLabel } from "../../store/canvasData/canvasData";
+
 const Labels = ({ hasLabels, isEyepieceMode, onLabelChange }) => {
+  const dispatch = useDispatch();
   return (
     <FormControlLabel
       key="Labels"
@@ -14,6 +18,7 @@ const Labels = ({ hasLabels, isEyepieceMode, onLabelChange }) => {
           color={isEyepieceMode ? colors.eyepieceMode : colors.cameraMode}
           checked={hasLabels}
           onChange={event => {
+            dispatch(switchLabel(event.target.checked));
             onLabelChange(event.target.checked);
           }}
         />

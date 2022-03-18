@@ -3,7 +3,11 @@ import colors from "../../data/color-data";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import PropTypes from "prop-types";
 
+import { useDispatch } from "react-redux";
+import { switchMode } from "../../store/canvasData/canvasData";
+
 const ModeSwitcher = ({ isEyepieceMode, onModeChange }) => {
+  const dispatch = useDispatch();
   return (
     <BootstrapSwitchButton
       key="BootstrapSwitchButton"
@@ -12,7 +16,8 @@ const ModeSwitcher = ({ isEyepieceMode, onModeChange }) => {
       onstyle={colors.eyepieceMode}
       offlabel="Eyepiece"
       offstyle={colors.cameraMode}
-      onChange={onModeChange}
+      onChange={bool => dispatch(switchMode(bool))}
+      //   onChange={onModeChange}
       style={"w-100 mb-1 mt-2"}
     />
   );

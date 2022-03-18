@@ -4,7 +4,11 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import PropTypes from "prop-types";
 
+import { useDispatch } from "react-redux";
+import { switchGrid } from "../../store/canvasData/canvasData";
+
 const Grid = ({ hasGrid, isEyepieceMode, onGridChange, onRedGridChange }) => {
+  const dispatch = useDispatch();
   return (
     <FormControlLabel
       key="hasGrid"
@@ -14,6 +18,7 @@ const Grid = ({ hasGrid, isEyepieceMode, onGridChange, onRedGridChange }) => {
           color={isEyepieceMode ? colors.eyepieceMode : colors.cameraMode}
           checked={hasGrid}
           onChange={event => {
+            dispatch(switchGrid(event.target.checked));
             onGridChange(event.target.checked);
             if (!event.target.checked) onRedGridChange(event.target.checked);
           }}

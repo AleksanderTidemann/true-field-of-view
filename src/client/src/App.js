@@ -41,12 +41,13 @@ const App = () => {
 
   const handleModeChange = useCallback(
     bool => {
-      // dispatch(modeSwitch())
       // dispatch(setSubmit(false))
       setGlobalCanvasData(prev => ({
         ...initCanvasData,
         isEyepieceMode: bool,
       }));
+
+      // these two setStates should subscribe to eyepieceMode and set when redux state changes.
       setFormData({ ...initFormData });
       setSubmit(prevSubmit => (prevSubmit ? false : prevSubmit));
     },
