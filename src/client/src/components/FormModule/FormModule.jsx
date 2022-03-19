@@ -3,12 +3,12 @@ import FormInput from "./FormInput";
 import colors from "../../data/color-data";
 import PropTypes from "prop-types";
 
-const FormModule = ({
-  formItems,
-  onFormInputChange,
-  isEyepieceMode,
-  title,
-}) => {
+import { useSelector } from "react-redux";
+import { getMode } from "../../store/canvasData/canvasData";
+
+const FormModule = ({ formItems, onFormInputChange, title }) => {
+  const isEyepieceMode = useSelector(getMode);
+
   // add API database fetch
   const addonColor = useMemo(() => {
     let className = "input-group-text " + colors.text + " bg-";
@@ -41,7 +41,6 @@ const FormModule = ({
 
 FormModule.propTypes = {
   formItems: PropTypes.array.isRequired,
-  isEyepieceMode: PropTypes.bool.isRequired,
   onFormInputChange: PropTypes.func.isRequired,
 };
 

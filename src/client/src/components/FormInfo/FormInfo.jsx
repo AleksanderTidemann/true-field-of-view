@@ -3,7 +3,10 @@ import FormInfoInput from "./FormInfoInput";
 import * as calc from "../../utils/calc";
 import PropTypes from "prop-types";
 import colors from "../../data/color-data";
-import initInfoData from "../../data/info-data";
+import DEFAULT_INFO_DATA from "./defaultInfoData";
+
+import { useSelector } from "react-redux";
+import { getCanvasData } from "../../store/canvasData/canvasData";
 
 // useEffect, actually make the comp render twice.
 // because the calcs are sideEffects.
@@ -11,7 +14,17 @@ import initInfoData from "../../data/info-data";
 // since they are just side-effects of the form-data and canvasData. Yes?
 // maybe just store the submitted form-data.
 
-const FormInfo = props => {
+const FormInfo = ({ formData, isSubmit }) => {
+  const canvasData = useSelector(getCanvasData);
+  const [infoData, setInfoData] = useState(DEFAULT_INFO_DATA);
+  const {
+    hasGrid,
+    hasRedGrid,
+    redGridFactor,
+    plotSizeX,
+    plotSizeY,
+    isEyepieceMode,
+  } = canvasData;
   const {
     focallength,
     barlow,
@@ -20,17 +33,7 @@ const FormInfo = props => {
     resolutiony,
     pixelsize,
     eyepiecefocallength,
-  } = props.formData;
-  const {
-    hasGrid,
-    hasRedGrid,
-    redGridFactor,
-    plotSizeX,
-    plotSizeY,
-    isEyepieceMode,
-  } = props.globalCanvasData;
-  const { isSubmit } = props;
-  const [infoData, setInfoData] = useState(initInfoData);
+  } = formData;
   const prevRedGridState = useRef(hasRedGrid);
   const prevGridState = useRef(hasGrid);
 
@@ -209,7 +212,6 @@ const FormInfo = props => {
 
 FormInfo.propTypes = {
   formData: PropTypes.object.isRequired,
-  globalCanvasData: PropTypes.object.isRequired,
   isSubmit: PropTypes.bool.isRequired,
 };
 

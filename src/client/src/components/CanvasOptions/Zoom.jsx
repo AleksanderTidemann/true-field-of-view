@@ -1,19 +1,24 @@
-import React, { memo } from "react";
+import React from "react";
 import Button from "@mui/material/Button";
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import ZoomOutIcon from "@mui/icons-material/ZoomOut";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Tooltip from "@mui/material/Tooltip";
-import PropTypes from "prop-types";
 import colors from "../../data/color-data";
 
-import { useDispatch } from "react-redux";
-import { zoomInn, zoomOut } from "../../store/canvasData/canvasData";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  zoomInn,
+  zoomOut,
+  getMode,
+  getZoomValue,
+} from "../../store/canvasData/canvasData";
 
-const INC = 10;
-
-const Zoom = ({ isEyepieceMode, onZoomChange, zoomValue }) => {
+const Zoom = () => {
   const dispatch = useDispatch();
+  const isEyepieceMode = useSelector(getMode);
+  const zoomValue = useSelector(getZoomValue);
+
   return (
     <Tooltip title={zoomValue + "%"} placement="bottom">
       <ButtonGroup
@@ -25,7 +30,6 @@ const Zoom = ({ isEyepieceMode, onZoomChange, zoomValue }) => {
         <Button
           onClick={() => {
             dispatch(zoomOut());
-            onZoomChange(zoomValue - INC <= 10 ? 10 : zoomValue - INC);
           }}
         >
           <ZoomOutIcon />
@@ -33,7 +37,6 @@ const Zoom = ({ isEyepieceMode, onZoomChange, zoomValue }) => {
         <Button
           onClick={() => {
             dispatch(zoomInn());
-            onZoomChange(zoomValue + INC > 100 ? 100 : zoomValue + INC);
           }}
         >
           <ZoomInIcon />
@@ -43,10 +46,4 @@ const Zoom = ({ isEyepieceMode, onZoomChange, zoomValue }) => {
   );
 };
 
-Zoom.propTypes = {
-  isEyepieceMode: PropTypes.bool.isRequired,
-  onZoomChange: PropTypes.func.isRequired,
-  zoomValue: PropTypes.number.isRequired,
-};
-
-export default memo(Zoom);
+export default Zoom;

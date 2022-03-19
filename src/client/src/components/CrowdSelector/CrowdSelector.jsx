@@ -6,6 +6,9 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import colors from "../../data/color-data";
 import PropTypes from "prop-types";
 
+import { useSelector } from "react-redux";
+import { getMode } from "../../store/canvasData/canvasData";
+
 const menuPaperHeight = 48;
 const style = isEyepieceMode => ({
   style: {
@@ -37,13 +40,10 @@ const style = isEyepieceMode => ({
   },
 });
 
-const CrowdSelector = ({
-  isEyepieceMode,
-  onCrowdSelection,
-  currCrowdName,
-  crowdNames,
-}) => {
+const CrowdSelector = ({ onCrowdSelection, currCrowdName, crowdNames }) => {
+  const isEyepieceMode = useSelector(getMode);
   const paperPropsStyle = style(isEyepieceMode);
+
   const [options, setOptions] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -101,7 +101,6 @@ const CrowdSelector = ({
 };
 
 CrowdSelector.propTypes = {
-  isEyepieceMode: PropTypes.bool.isRequired,
   onCrowdSelection: PropTypes.func.isRequired,
   currCrowdName: PropTypes.string.isRequired,
   crowdNames: PropTypes.array.isRequired,

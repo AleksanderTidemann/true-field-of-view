@@ -1,14 +1,20 @@
-import React, { memo } from "react";
+import React from "react";
 import colors from "../../data/color-data";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import PropTypes from "prop-types";
 
-import { useDispatch } from "react-redux";
-import { switchGrid } from "../../store/canvasData/canvasData";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  switchGrid,
+  getMode,
+  getHasGrid,
+} from "../../store/canvasData/canvasData";
 
-const Grid = ({ hasGrid, isEyepieceMode, onGridChange, onRedGridChange }) => {
+const Grid = () => {
   const dispatch = useDispatch();
+  const isEyepieceMode = useSelector(getMode);
+  const hasGrid = useSelector(getHasGrid);
+
   return (
     <FormControlLabel
       key="hasGrid"
@@ -19,8 +25,6 @@ const Grid = ({ hasGrid, isEyepieceMode, onGridChange, onRedGridChange }) => {
           checked={hasGrid}
           onChange={event => {
             dispatch(switchGrid(event.target.checked));
-            onGridChange(event.target.checked);
-            if (!event.target.checked) onRedGridChange(event.target.checked);
           }}
         />
       }
@@ -30,11 +34,4 @@ const Grid = ({ hasGrid, isEyepieceMode, onGridChange, onRedGridChange }) => {
   );
 };
 
-Grid.propTypes = {
-  hasGrid: PropTypes.bool.isRequired,
-  isEyepieceMode: PropTypes.bool.isRequired,
-  onGridChange: PropTypes.func.isRequired,
-  onRedGridChange: PropTypes.func.isRequired,
-};
-
-export default memo(Grid);
+export default Grid;

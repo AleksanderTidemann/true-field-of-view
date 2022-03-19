@@ -1,4 +1,4 @@
-import { ANGULAR_MEASUREMENT_LABELS } from "../data/angular-measurement-labels";
+import { ANGULAR_MEASUREMENT_LABELS } from "./angular-measurement-labels";
 
 export const PLOTDIVISOR = 6;
 
@@ -20,7 +20,9 @@ export function nrstPointZero(val, width) {
 }
 
 export function isArcSeconds(canvasAU) {
-  return typeof canvasAU === "string" && canvasAU === ANGULAR_MEASUREMENT_LABELS[2];
+  return (
+    typeof canvasAU === "string" && canvasAU === ANGULAR_MEASUREMENT_LABELS[2]
+  );
 }
 
 // ../components/chart/info.jsx //
@@ -50,7 +52,7 @@ export function getAspectRatio(resX, resY) {
       if (aspectY % i === 0) factorY.push(i);
     }
     if (factorY.length && factorX.length) {
-      const commonFactors = factorX.filter((n) => factorY.indexOf(n) !== -1);
+      const commonFactors = factorX.filter(n => factorY.indexOf(n) !== -1);
       const greatestCommonFactor = Math.max(...commonFactors);
       aspectX /= greatestCommonFactor;
       aspectY /= greatestCommonFactor;
@@ -99,7 +101,8 @@ export function getPxPerGridSquare(
 
     // if hasRedGrid, then the px² should be the: result * redGridFactor²?
     pxPerSquare = hasRedGrid
-      ? Math.round(pxPerSquare * (redGridFactor * redGridFactor) * 10) / 10 + "px²"
+      ? Math.round(pxPerSquare * (redGridFactor * redGridFactor) * 10) / 10 +
+        "px²"
       : Math.round(pxPerSquare * 10) / 10 + "px²";
   }
   return pxPerSquare;
@@ -246,7 +249,6 @@ export function getCanvasObject(angUnit, degX, degY) {
   }
 }
 
-// ./menubar/menubar.js //
 export function numberify(val) {
   // return only numbers above 0
   return Number(val) <= 0 ? 0 : Number(val);

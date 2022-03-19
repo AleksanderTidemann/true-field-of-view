@@ -1,14 +1,20 @@
-import React, { memo } from "react";
+import React from "react";
 import colors from "../../data/color-data";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import PropTypes from "prop-types";
 
-import { useDispatch } from "react-redux";
-import { switchLabel } from "../../store/canvasData/canvasData";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  switchLabel,
+  getMode,
+  getHasLabels,
+} from "../../store/canvasData/canvasData";
 
-const Labels = ({ hasLabels, isEyepieceMode, onLabelChange }) => {
+const Labels = () => {
   const dispatch = useDispatch();
+  const isEyepieceMode = useSelector(getMode);
+  const hasLabels = useSelector(getHasLabels);
+
   return (
     <FormControlLabel
       key="Labels"
@@ -19,7 +25,6 @@ const Labels = ({ hasLabels, isEyepieceMode, onLabelChange }) => {
           checked={hasLabels}
           onChange={event => {
             dispatch(switchLabel(event.target.checked));
-            onLabelChange(event.target.checked);
           }}
         />
       }
@@ -29,10 +34,4 @@ const Labels = ({ hasLabels, isEyepieceMode, onLabelChange }) => {
   );
 };
 
-Labels.propTypes = {
-  hasLabels: PropTypes.bool.isRequired,
-  isEyepieceMode: PropTypes.bool.isRequired,
-  onLabelChange: PropTypes.func.isRequired,
-};
-
-export default memo(Labels);
+export default Labels;

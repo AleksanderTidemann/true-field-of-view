@@ -6,16 +6,20 @@ import {
   getData,
   filterData,
 } from "../../utils/requests/getForecast";
-import PropTypes from "prop-types";
 import colors from "../../data/color-data";
+
+import { useSelector } from "react-redux";
+import { getMode } from "../../store/canvasData/canvasData";
 
 const loading = DIVIMAGES.loading;
 const error = DIVIMAGES.error;
 
-const Forecast = ({ isEyepieceMode }) => {
+const Forecast = () => {
   const [forecastData, setForecastData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setError] = useState(false);
+
+  const isEyepieceMode = useSelector(getMode);
 
   // Componemt did mount
   useEffect(() => {
@@ -122,10 +126,6 @@ const Forecast = ({ isEyepieceMode }) => {
       </div>
     </div>
   );
-};
-
-Forecast.propTypes = {
-  isEyepieceMode: PropTypes.bool.isRequired,
 };
 
 export default memo(Forecast);

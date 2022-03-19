@@ -1,6 +1,6 @@
-import { PLANETIMAGES, MOONIMAGES } from "./img-data";
+import { PLANETIMAGES, MOONIMAGES } from "../../data/img-data";
 
-const initPlanetData = {
+const DEFAULT_PLANET_DATA = {
   key: "planets",
   mercury: {
     key: "mercury",
@@ -60,7 +60,7 @@ const initPlanetData = {
   },
 };
 
-const initMoonData = {
+const DEFAULT_MOON_DATA = {
   key: "moons",
   moon: {
     key: "moon",
@@ -72,9 +72,9 @@ const initMoonData = {
   },
 };
 
-const initCrowdData = {
-  planets: initPlanetData,
-  moons: initMoonData,
+const DEFAULT_CROWD_DATA = {
+  planets: DEFAULT_PLANET_DATA,
+  moons: DEFAULT_MOON_DATA,
 };
 
-export default initCrowdData;
+export default DEFAULT_CROWD_DATA;

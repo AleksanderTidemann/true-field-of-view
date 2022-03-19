@@ -1,19 +1,22 @@
-import React, { memo } from "react";
+import React from "react";
 import colors from "../../data/color-data";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import PropTypes from "prop-types";
 
-import { useDispatch } from "react-redux";
-import { switchRedGrid } from "../../store/canvasData/canvasData";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  switchRedGrid,
+  getMode,
+  getHasGrid,
+  getHasRedGrid,
+} from "../../store/canvasData/canvasData";
 
-const ReducedGridlines = ({
-  hasRedGrid,
-  hasGrid,
-  isEyepieceMode,
-  onRedGridChange,
-}) => {
+const ReducedGridlines = () => {
   const dispatch = useDispatch();
+  const isEyepieceMode = useSelector(getMode);
+  const hasGrid = useSelector(getHasGrid);
+  const hasRedGrid = useSelector(getHasRedGrid);
+
   return (
     <FormControlLabel
       key="Reduce Gridlines"
@@ -27,7 +30,6 @@ const ReducedGridlines = ({
           checked={hasRedGrid}
           onChange={event => {
             dispatch(switchRedGrid(event.target.checked));
-            onRedGridChange(event.target.checked);
           }}
         />
       }
@@ -37,11 +39,4 @@ const ReducedGridlines = ({
   );
 };
 
-ReducedGridlines.propTypes = {
-  hasGrid: PropTypes.bool.isRequired,
-  hasRedGrid: PropTypes.bool.isRequired,
-  isEyepieceMode: PropTypes.bool.isRequired,
-  onRedGridChange: PropTypes.func.isRequired,
-};
-
-export default memo(ReducedGridlines);
+export default ReducedGridlines;

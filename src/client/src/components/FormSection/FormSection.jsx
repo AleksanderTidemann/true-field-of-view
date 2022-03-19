@@ -3,12 +3,11 @@ import FormModule from "../FormModule/FormModule";
 import PropTypes from "prop-types";
 import colors from "../../data/color-data";
 
-const FormSection = ({
-  formData,
-  isEyepieceMode,
-  onFormInputChange,
-  onFormSubmit,
-}) => {
+import { useSelector } from "react-redux";
+import { getMode } from "../../store/canvasData/canvasData";
+
+const FormSection = ({ formData, onFormInputChange, onFormSubmit }) => {
+  const isEyepieceMode = useSelector(getMode);
   const {
     aperture,
     focallength,
@@ -49,7 +48,6 @@ const FormSection = ({
         key="Tel"
         title="Telescope"
         formItems={telModuleItems}
-        isEyepieceMode={isEyepieceMode}
         onFormInputChange={onFormInputChange}
       />
       {isEyepieceMode ? (
@@ -57,7 +55,6 @@ const FormSection = ({
           key="Eye"
           title="Eyepiece"
           formItems={eyeModuleItems}
-          isEyepieceMode={isEyepieceMode}
           onFormInputChange={onFormInputChange}
         />
       ) : (
@@ -65,7 +62,6 @@ const FormSection = ({
           key="Cam"
           title="Camera"
           formItems={camModuleItems}
-          isEyepieceMode={isEyepieceMode}
           onFormInputChange={onFormInputChange}
         />
       )}
@@ -75,7 +71,6 @@ const FormSection = ({
 };
 
 FormSection.propTypes = {
-  isEyepieceMode: PropTypes.bool.isRequired,
   formData: PropTypes.object.isRequired,
   onFormInputChange: PropTypes.func.isRequired,
   onFormSubmit: PropTypes.func.isRequired,

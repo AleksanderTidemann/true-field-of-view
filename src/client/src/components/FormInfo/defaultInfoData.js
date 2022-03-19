@@ -1,6 +1,6 @@
 // remove all isEyepiece
 
-const initInfoData = {
+const DEFAULT_INFO_DATA = {
   focalRatio: {
     key: "FR",
     value: "",
@@ -39,4 +39,4 @@ const initInfoData = {
   },
 };
 
-export default initInfoData;
+export default DEFAULT_INFO_DATA;

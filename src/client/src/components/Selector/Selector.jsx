@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect, memo } from "react";
 import BodySelector from "../BodySelector/BodySelector";
 import CrowdSelector from "../CrowdSelector/CrowdSelector";
 import { DIVIMAGES } from "../../data/img-data";
-import initCrowdData from "../../data/crowd-data";
+import DEFAULT_CROWD_DATA from "./defaultCrowdData";
 import { isEmptyObject } from "../../utils/calc";
 import { getSolarSystemData } from "../../utils/requests/getSolarsystemdata";
 import PropTypes from "prop-types";
@@ -11,7 +11,7 @@ const loading = DIVIMAGES.loading;
 const error = DIVIMAGES.error;
 const picWidth = "25px";
 
-const Selector = ({ isEyepieceMode, currBody, setCurrBody }) => {
+const Selector = ({ currBody, setCurrBody }) => {
   const [crowdData, setCrowdData] = useState({});
   const [currCrowd, setCurrCrowd] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -23,7 +23,7 @@ const Selector = ({ isEyepieceMode, currBody, setCurrBody }) => {
     setIsError(false);
     const fetchData = async () => {
       try {
-        const newCrowdData = await getSolarSystemData(initCrowdData);
+        const newCrowdData = await getSolarSystemData(DEFAULT_CROWD_DATA);
         const firstCrowdName = Object.keys(newCrowdData)[0];
         const firstCrowd = newCrowdData[firstCrowdName];
 
@@ -85,7 +85,6 @@ const Selector = ({ isEyepieceMode, currBody, setCurrBody }) => {
     <div className="container p-0 mb-4">
       <div className="row">
         <CrowdSelector
-          isEyepieceMode={isEyepieceMode}
           currCrowdName={isEmptyObject(currCrowd) ? "" : currCrowd.key}
           onCrowdSelection={handleCrowdSelection}
           crowdNames={crowdNames}
@@ -101,7 +100,6 @@ const Selector = ({ isEyepieceMode, currBody, setCurrBody }) => {
 };
 
 Selector.propTypes = {
-  isEyepieceMode: PropTypes.bool.isRequired,
   setCurrBody: PropTypes.func.isRequired,
   currBody: PropTypes.object.isRequired,
 };

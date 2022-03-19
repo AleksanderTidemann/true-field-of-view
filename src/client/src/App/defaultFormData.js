@@ -1,4 +1,4 @@
-const initFormData = {
+const DEFAULT_FORM_DATA = {
   aperture: {
     ref: "aperture",
     value: "",
@@ -65,4 +65,4 @@ const initFormData = {
   },
 };
 
-export default initFormData;
+export default DEFAULT_FORM_DATA;

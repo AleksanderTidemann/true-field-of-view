@@ -14,13 +14,17 @@ import { isEmptyObject } from "../../utils/calc";
 import { motion } from "framer-motion";
 import PropTypes from "prop-types";
 
-// maybe move into a canvas config file?
+import { useSelector } from "react-redux";
+import { getCanvasData } from "../../store/canvasData/canvasData.js";
+
 const DEFAULT_FONT = "Arial";
 const DEFAULT_LABELSIZE = 60;
 const DEFAULT_NUMBERSIZE = 40;
 const DEFAULT_OFFSET = 5;
 
-const Canvas = ({ globalCanvasData, currBody }) => {
+const Canvas = ({ currBody }) => {
+  const canvasData = useSelector(getCanvasData);
+
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
 
@@ -29,6 +33,7 @@ const Canvas = ({ globalCanvasData, currBody }) => {
   const [dprCanvasWidth, setDprCanvasWidth] = useState(null);
   const [dprCanvasHeight, setDprCanvasHeight] = useState(null);
 
+  // these are updated according to the size of the canvas
   const [numberSize, setNumberSize] = useState(null);
   const [labelSize, setLabelSize] = useState(null);
   const [labelOffset, setLabelOffset] = useState(null);
@@ -57,12 +62,11 @@ const Canvas = ({ globalCanvasData, currBody }) => {
   // set a new canvasWidth and Height
   useEffect(() => {
     if (containerWidth) {
-      const newCanvasWidth =
-        (containerWidth / 100) * globalCanvasData.zoomValue;
+      const newCanvasWidth = (containerWidth / 100) * canvasData.zoomValue;
       const newCanvasHeight = setup.getCanvasHeight(
         newCanvasWidth,
-        globalCanvasData.plotSizeX,
-        globalCanvasData.plotSizeY
+        canvasData.plotSizeX,
+        canvasData.plotSizeY
       );
       const dpr = window.devicePixelRatio || 1;
       const { dprCanvasWidth, dprCanvasHeight } = setup.getDprCanvasDim(
@@ -83,9 +87,9 @@ const Canvas = ({ globalCanvasData, currBody }) => {
     }
   }, [
     containerWidth,
-    globalCanvasData.zoomValue,
-    globalCanvasData.plotSizeX,
-    globalCanvasData.plotSizeY,
+    canvasData.zoomValue,
+    canvasData.plotSizeX,
+    canvasData.plotSizeY,
   ]);
 
   // If the canvasWidth and sizes change,
@@ -93,8 +97,8 @@ const Canvas = ({ globalCanvasData, currBody }) => {
   useEffect(() => {
     setLabelOffset(
       setup.getLabelOffset(
-        globalCanvasData.hasLabels,
-        globalCanvasData.isEyepieceMode,
+        canvasData.hasLabels,
+        canvasData.isEyepieceMode,
         dprCanvasWidth,
         dprCanvasHeight,
         numberSize,
@@ -103,8 +107,8 @@ const Canvas = ({ globalCanvasData, currBody }) => {
       )
     );
   }, [
-    globalCanvasData.hasLabels,
-    globalCanvasData.isEyepieceMode,
+    canvasData.hasLabels,
+    canvasData.isEyepieceMode,
     dprCanvasWidth,
     dprCanvasHeight,
     numberSize,
@@ -124,10 +128,10 @@ const Canvas = ({ globalCanvasData, currBody }) => {
 
       drawCanvasBg(context, dprCanvasWidth, dprCanvasHeight);
 
-      if (!globalCanvasData.isEyepieceMode) {
+      if (!canvasData.isEyepieceMode) {
         drawSquareCanvas(
           context,
-          globalCanvasData,
+          canvasData,
           dprCanvasWidth,
           dprCanvasHeight,
           labelSize,
@@ -139,7 +143,7 @@ const Canvas = ({ globalCanvasData, currBody }) => {
       } else {
         drawCircleCanvas(
           context,
-          globalCanvasData,
+          canvasData,
           dprCanvasWidth,
           dprCanvasHeight,
           labelSize,
@@ -153,8 +157,8 @@ const Canvas = ({ globalCanvasData, currBody }) => {
       if (isEmptyObject(currBody)) return;
       drawCanvasBody(
         context,
-        globalCanvasData.plotSizeX,
-        globalCanvasData.angularUnit,
+        canvasData.plotSizeX,
+        canvasData.angularUnit,
         dprCanvasWidth,
         dprCanvasHeight,
         currBody,
@@ -165,7 +169,7 @@ const Canvas = ({ globalCanvasData, currBody }) => {
 
   return (
     <motion.div
-      key={globalCanvasData.isEyepieceMode ? "ep" : "cam"}
+      key={canvasData.isEyepieceMode ? "ep" : "cam"}
       animate={{ opacity: 1, y: 0 }}
       initial={{ opacity: 0, y: 20 }}
       exit={{ opacity: 0, y: -20 }}
@@ -176,7 +180,7 @@ const Canvas = ({ globalCanvasData, currBody }) => {
           <canvas
             ref={canvasRef}
             className={
-              globalCanvasData.isEyepieceMode
+              canvasData.isEyepieceMode
                 ? "w-100 border rounded-circle"
                 : "w-100"
             }
@@ -188,7 +192,6 @@ const Canvas = ({ globalCanvasData, currBody }) => {
 };
 
 Canvas.propTypes = {
-  globalCanvasData: PropTypes.object.isRequired,
   currBody: PropTypes.object.isRequired,
 };
 
