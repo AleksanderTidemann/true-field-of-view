@@ -20,7 +20,9 @@ const App = () => {
   const isEyepieceMode = useSelector(getMode);
 
   useEffect(() => {
-    if (isSubmit) dispatch(calculcateCanvasSize(formData));
+    if (isSubmit) {
+      dispatch(calculcateCanvasSize(formData));
+    }
   }, [isSubmit, formData]);
 
   useEffect(() => {
@@ -30,7 +32,8 @@ const App = () => {
   }, [isEyepieceMode]);
 
   const handleFormChange = useCallback((value, target) => {
-    // using callBacks to avoid giving the components new func references on every render.
+    // using callBacks to avoid giving the
+    // components new func references on every render.
     setFormData(prevData => {
       let keyCopy = { ...prevData[target] };
       keyCopy.value = value;

@@ -4,5 +4,8 @@ import reducer from "./reducers";
 // I need to create a custom API middleware.
 
 export default function () {
-  return configureStore({ reducer, middleware: [...getDefaultMiddleware()] });
+  return configureStore({
+    reducer,
+    middleware: [...getDefaultMiddleware()],
+  });
 }
