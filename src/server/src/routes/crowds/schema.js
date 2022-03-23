@@ -1,10 +1,7 @@
-import { PLANETIMAGES, MOONIMAGES } from "../../data/img-data";
-
-const DEFAULT_PLANET_DATA = {
+export const planets = {
   key: "planets",
   mercury: {
     key: "mercury",
-    img: PLANETIMAGES.mercury,
     auFromEarth: null,
     kmFromEarth: null,
     angularDiameterDeg: null, // Diameter: 0° 00' 12.065"
@@ -12,7 +9,6 @@ const DEFAULT_PLANET_DATA = {
   },
   venus: {
     key: "venus",
-    img: PLANETIMAGES.venus,
     auFromEarth: null,
     kmFromEarth: null,
     angularDiameterDeg: null, // Diameter: 0° 00' 12.065"
@@ -20,7 +16,6 @@ const DEFAULT_PLANET_DATA = {
   },
   mars: {
     key: "mars",
-    img: PLANETIMAGES.mars,
     auFromEarth: null,
     kmFromEarth: null,
     angularDiameterDeg: null, // Diameter: 0°. 00' 12.065"
@@ -28,7 +23,6 @@ const DEFAULT_PLANET_DATA = {
   },
   jupiter: {
     key: "jupiter",
-    img: PLANETIMAGES.jupiter,
     auFromEarth: null,
     kmFromEarth: null,
     angularDiameterDeg: null, // Diameter: 0° 00' 12.065"
@@ -36,7 +30,6 @@ const DEFAULT_PLANET_DATA = {
   },
   saturn: {
     key: "saturn",
-    img: PLANETIMAGES.saturn,
     auFromEarth: null,
     kmFromEarth: null,
     angularDiameterDeg: null, // Diameter: 0° 00' 12.065"
@@ -44,7 +37,6 @@ const DEFAULT_PLANET_DATA = {
   },
   uranus: {
     key: "uranus",
-    img: PLANETIMAGES.uranus,
     auFromEarth: null,
     kmFromEarth: null,
     angularDiameterDeg: null, // Diameter: 0° 00' 12.065"
@@ -52,7 +44,6 @@ const DEFAULT_PLANET_DATA = {
   },
   neptune: {
     key: "neptune",
-    img: PLANETIMAGES.neptune,
     auFromEarth: null,
     kmFromEarth: null,
     angularDiameterDeg: null, // Diameter: 0° 00' 12.065"
@@ -60,11 +51,10 @@ const DEFAULT_PLANET_DATA = {
   },
 };
 
-const DEFAULT_MOON_DATA = {
+export const moons = {
   key: "moons",
   moon: {
     key: "moon",
-    img: MOONIMAGES.moon,
     auFromEarth: null,
     kmFromEarth: null,
     angularDiameterDeg: null, // Diameter: 0° 00' 12.065"
@@ -72,9 +62,25 @@ const DEFAULT_MOON_DATA = {
   },
 };
 
-const DEFAULT_CROWD_DATA = {
-  planets: DEFAULT_PLANET_DATA,
-  moons: DEFAULT_MOON_DATA,
-};
+// export default { DEFAULT_PLANET_DATA, DEFAULT_MOON_DATA };
 
-export default DEFAULT_CROWD_DATA;
+// much easier schema.. do this after you get everything working.
+const test = {
+  key: "moons",
+  data: [
+    {
+      key: "earthMoon",
+      auFromEarth: null,
+      kmFromEarth: null,
+      angularDiameterDeg: null,
+      magnitude: null,
+    },
+    {
+      key: "etc-moon",
+      auFromEarth: null,
+      kmFromEarth: null,
+      angularDiameterDeg: null,
+      magnitude: null,
+    },
+  ],
+};

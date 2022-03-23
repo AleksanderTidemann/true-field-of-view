@@ -1,10 +1,10 @@
 import { combineReducers } from "redux";
 import canvasDataReducer from "./canvasData/canvasData";
-import crowdDataReducer from "./crowdData/crowdData";
+import crowdReducer from "./crowds/crowds";
 // import formDataReducer from "./formDataSubmitted/formDataSubmitted";
 
 export default combineReducers({
   canvasData: canvasDataReducer,
-  crowdData: crowdDataReducer,
+  crowds: crowdReducer,
   //   formDataSubmitted: formDataReducer,
 });

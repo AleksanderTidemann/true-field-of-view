@@ -10,7 +10,6 @@ import {
   createNeptune,
 } from "astronomy-bundle/planets";
 
-// used in component/chart/chart.jsx
 // adds more data to the currCrowd object
 
 // crowdsObj =

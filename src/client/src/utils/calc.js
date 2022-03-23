@@ -1,5 +1,8 @@
-import { ANGULAR_MEASUREMENT_LABELS } from "./angular-measurement-labels";
-
+export const ANGULAR_MEASUREMENT_LABELS = [
+  "Degrees",
+  "Minutes of Arc",
+  "Seconds of Arc",
+];
 export const PLOTDIVISOR = 6;
 
 // /components/chart/selector/selector and canvas

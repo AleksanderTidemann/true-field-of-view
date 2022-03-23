@@ -1,11 +1,10 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import reducer from "./reducers";
-
-// I need to create a custom API middleware.
+import api from "./api/api-middleware";
 
 export default function () {
   return configureStore({
     reducer,
-    middleware: [...getDefaultMiddleware()],
+    middleware: [...getDefaultMiddleware(), api],
   });
 }

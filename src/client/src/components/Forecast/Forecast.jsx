@@ -5,7 +5,7 @@ import {
   getAreaCountry,
   getData,
   filterData,
-} from "../../utils/requests/getForecast";
+} from "./utils/getForecast";
 import colors from "../../data/color-data";
 
 import { useSelector } from "react-redux";

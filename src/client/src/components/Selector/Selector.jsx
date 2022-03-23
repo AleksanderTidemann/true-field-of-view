@@ -2,16 +2,21 @@ import React, { useMemo, useState, useEffect, memo } from "react";
 import BodySelector from "../BodySelector/BodySelector";
 import CrowdSelector from "../CrowdSelector/CrowdSelector";
 import { DIVIMAGES } from "../../data/img-data";
-import DEFAULT_CROWD_DATA from "./defaultCrowdData";
+import DEFAULT_CROWD_DATA from "./utils/defaultCrowdData";
 import { isEmptyObject } from "../../utils/calc";
-import { getSolarSystemData } from "../../utils/requests/getSolarsystemdata";
+import { getSolarSystemData } from "./utils/getSolarsystemdata";
 import PropTypes from "prop-types";
+
+import { useDispatch } from "react-redux";
+import { loadCrowdData } from "../../store/crowds/crowds";
 
 const loading = DIVIMAGES.loading;
 const error = DIVIMAGES.error;
 const picWidth = "25px";
 
 const Selector = ({ currBody, setCurrBody }) => {
+  const dispatch = useDispatch();
+
   const [crowdData, setCrowdData] = useState({});
   const [currCrowd, setCurrCrowd] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -36,6 +41,10 @@ const Selector = ({ currBody, setCurrBody }) => {
       }
     };
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    dispatch(loadCrowdData());
   }, []);
 
   // Set the current list of planets/space objects (currCrowd)

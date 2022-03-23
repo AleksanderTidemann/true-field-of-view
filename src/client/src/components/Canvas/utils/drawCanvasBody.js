@@ -1,4 +1,4 @@
-import * as calc from "../calc";
+import * as calc from "../../../utils/calc";
 
 export function drawCanvasBody(
   context,

@@ -1,6 +1,5 @@
-import { nrstPointZero, isArcSeconds } from "../calc";
-import colors from "../../data/color-data";
-import { PLOTDIVISOR } from "../calc";
+import { PLOTDIVISOR, nrstPointZero, isArcSeconds } from "../../../utils/calc";
+import colors from "../../../data/color-data";
 
 function drawCircleGridY(
   ctx,
@@ -54,7 +53,8 @@ function paintCircularText(
   // rotate 50% of total angle for center alignment
   for (let j = 0; j < label.length; j++) {
     let charWid = ctx.measureText(label[j]).width;
-    startAngle += (charWid / (scaledCanvasWidth / 2 - textHeight) / 2) * -clockwise;
+    startAngle +=
+      (charWid / (scaledCanvasWidth / 2 - textHeight) / 2) * -clockwise;
   }
 
   ctx.rotate(startAngle);
@@ -63,12 +63,20 @@ function paintCircularText(
   for (let j = 0; j < label.length; j++) {
     let charWid = ctx.measureText(label[j]).width; // half letter
     // rotate half letter
-    ctx.rotate((charWid / 2 / (scaledCanvasWidth / 2 - textHeight)) * clockwise);
+    ctx.rotate(
+      (charWid / 2 / (scaledCanvasWidth / 2 - textHeight)) * clockwise
+    );
     // draw the character at "top" or "bottom"
     // depending on inward or outward facing
-    ctx.fillText(label[j], 0, -1 * (0 - scaledCanvasWidth / 2 + textHeight / 2));
+    ctx.fillText(
+      label[j],
+      0,
+      -1 * (0 - scaledCanvasWidth / 2 + textHeight / 2)
+    );
 
-    ctx.rotate((charWid / 2 / (scaledCanvasWidth / 2 - textHeight)) * clockwise); // rotate half letter
+    ctx.rotate(
+      (charWid / 2 / (scaledCanvasWidth / 2 - textHeight)) * clockwise
+    ); // rotate half letter
   }
 }
 

@@ -1,6 +1,5 @@
-import { nrstPointZero, isArcSeconds } from "../calc";
-import colors from "../../data/color-data";
-import { PLOTDIVISOR } from "../calc";
+import { PLOTDIVISOR, nrstPointZero, isArcSeconds } from "../../../utils/calc";
+import colors from "../../../data/color-data";
 
 function drawSquareGridY(
   ctx,

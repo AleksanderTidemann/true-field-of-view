@@ -1,4 +1,4 @@
-import { ANGULAR_MEASUREMENT_LABELS } from "../../utils/angular-measurement-labels";
+import { ANGULAR_MEASUREMENT_LABELS } from "../../utils/calc";
 
 const DEFAULT_CANVAS_DATA = {
   isEyepieceMode: true,

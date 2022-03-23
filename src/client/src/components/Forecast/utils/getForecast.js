@@ -1,4 +1,3 @@
-// ../components/chart/forecast.jsx //
 export function filterData(data) {
   // filter forecastData from the YR API
   const currTime = Date();
@@ -8,11 +7,11 @@ export function filterData(data) {
   // We are only interested in one weather forcast at night time.
   // IF its night already, we find the current hour and return it.
   if (currTimeHour >= "21" || currTimeHour <= "03") {
-    idx = data.findIndex((item) => {
+    idx = data.findIndex(item => {
       return item.time.slice(11, 13) === currTimeHour;
     });
   } else {
-    idx = data.findIndex((item) => {
+    idx = data.findIndex(item => {
       return item.time.slice(11, 13) === "21";
     });
   }
@@ -29,7 +28,7 @@ export async function getLatLong() {
   return new Promise((resolve, reject) => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
+        position => {
           let latitude = position.coords.latitude;
           let longitude = position.coords.longitude;
           resolve({
@@ -37,7 +36,7 @@ export async function getLatLong() {
             long: Math.round(longitude),
           });
         },
-        (error) => {
+        error => {
           reject(error);
         }
       );
@@ -59,7 +58,7 @@ export async function getData(lat, long) {
 }
 
 export async function getAreaCountry(lat, long) {
-  //reverse geocode
+  // reverse geocode
   // from https://rapidapi.com/trueway/api/trueway-geocoding/
   const url =
     "https://trueway-geocoding.p.rapidapi.com/ReverseGeocode?location=" +
