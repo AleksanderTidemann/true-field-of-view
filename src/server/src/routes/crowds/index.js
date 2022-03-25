@@ -1,22 +1,27 @@
 import express from "express";
-import { planets, moons } from "./schema.js";
+import { planetSchema, earthMoonSchema } from "./schema.js";
+import getPlanetData from "./getPlanetData.js";
+import getEarthMoonData from "./getEarthMoonData.js";
 
 function getCrowdsRoute() {
   const router = express.Router();
-  router.get("/", send);
+  router.get("/", getData);
   return router;
 }
 
-const send = (req, res) => {
-  const data = {
-    planets,
-    moons,
-  };
-  res.json(data);
-  // get the schema from the "database"
-  // pass the planetdata to getSolarsystemPlanetData
-  // pass the moon data to getSolarsystemMoonData
-  // at the end, concat the two objects and send as response to be stored in the state.
+const getData = async (req, res) => {
+  // get the data
+  const planets = planetSchema;
+  const earthMoon = earthMoonSchema;
+
+  // get the data
+  const freshPlanets = await getPlanetData(planets);
+  const freshEarthMoon = await getEarthMoonData(earthMoon);
+
+  // store them togehter
+  const newData = [freshPlanets, freshEarthMoon];
+
+  res.json(newData);
 };
 
 export { getCrowdsRoute };

@@ -1,4 +1,5 @@
 import express from "express";
+import "express-async-errors";
 import bodyParser from "body-parser";
 import cors from "cors";
 import { getRoutes } from "./routes";
@@ -6,11 +7,12 @@ import { getRoutes } from "./routes";
 
 function startServer(port) {
   const app = express();
-  app.use(cors());
-  app.use(bodyParser.json());
 
   // I mount my entire app to the /api route
   app.use("/api", getRoutes());
+
+  app.use(cors());
+  app.use(bodyParser.json());
 
   // add the generic error handler just in case errors are missed by middleware
   app.use(errorMiddleware);
@@ -45,7 +47,7 @@ function errorMiddleware(error, req, res, next) {
   if (res.headersSent) {
     next(error);
   } else {
-    logger.error(error);
+    console.log(error);
     res.status(500);
     res.json({
       message: error.message,

@@ -7,8 +7,8 @@ import { isEmptyObject } from "../../utils/calc";
 import { getSolarSystemData } from "./utils/getSolarsystemdata";
 import PropTypes from "prop-types";
 
-import { useDispatch } from "react-redux";
-import { loadCrowdData } from "../../store/crowds/crowds";
+import { useDispatch, useSelector } from "react-redux";
+import * as crowds from "../../store/crowds/crowds";
 
 const loading = DIVIMAGES.loading;
 const error = DIVIMAGES.error;
@@ -16,6 +16,17 @@ const picWidth = "25px";
 
 const Selector = ({ currBody, setCurrBody }) => {
   const dispatch = useDispatch();
+  const newError = useSelector(crowds.getError);
+  const newLoading = useSelector(crowds.getLoading);
+  const currCrowdNames = useSelector(crowds.getCurrCrowdName);
+  const currBodyName = useSelector(crowds.getCurrBodyName);
+  const allCrowdNames = useSelector(crowds.getAllCrowdNames);
+
+  console.log(newError);
+  console.log(newLoading);
+  console.log(currCrowdNames);
+  console.log(currBodyName);
+  console.log(allCrowdNames);
 
   const [crowdData, setCrowdData] = useState({});
   const [currCrowd, setCurrCrowd] = useState({});
@@ -44,17 +55,19 @@ const Selector = ({ currBody, setCurrBody }) => {
   }, []);
 
   useEffect(() => {
-    dispatch(loadCrowdData());
+    dispatch(crowds.loadCrowdData());
   }, []);
 
   // Set the current list of planets/space objects (currCrowd)
   const handleCrowdSelection = crowdSelection => {
+    dispatch(crowds.loadCurrCrowd(crowdSelection));
     setCurrCrowd(crowdData[crowdSelection]);
     setCurrBody({});
   };
 
   // Set the current planet or space object selected (currBody)
   const handleBodySelection = bodyName => {
+    dispatch(crowds.loadCurrBody(bodyName));
     setCurrBody(prevBody => {
       if (prevBody.key !== bodyName) {
         return { ...currCrowd[bodyName] };
