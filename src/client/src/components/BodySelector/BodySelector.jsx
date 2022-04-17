@@ -1,33 +1,38 @@
 import React from "react";
 import Body from "./Body";
-import { DIVIMAGES } from "../../data/img-data";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
+import { getXorBodyImg } from "../../utils/calc";
+import { getCurrBodyName, getCurrCrowd } from "../../store/slices/crowdsSlice";
 
-const bodyWidth = "35px";
-const selectedx = DIVIMAGES.selectedX;
+const BodySelector = ({ picWidth }) => {
+  const currCrowd = useSelector(getCurrCrowd);
+  const currBodyName = useSelector(getCurrBodyName);
 
-const BodySelector = ({ onBodySelection, currCrowd, currBodyName }) => (
-  <div className="col-11 d-flex justify-content-around">
-    {Object.keys(currCrowd).map(item => {
-      if (item === "key") return "";
-      let bodyName = currCrowd[item].key;
-      return (
-        <Body
-          name={bodyName}
-          key={bodyName}
-          img={bodyName === currBodyName ? selectedx : currCrowd[item].img}
-          onBodySelection={onBodySelection}
-          bodyWidth={bodyWidth}
-        />
-      );
-    })}
-  </div>
-);
+  return (
+    <div className="col-11 d-flex justify-content-around">
+      {currCrowd.data.map(body => {
+        let newBodyName = body.key;
+        let bodyImgPath = getXorBodyImg(
+          currCrowd.key,
+          currBodyName,
+          newBodyName
+        );
+        return (
+          <Body
+            name={newBodyName}
+            key={newBodyName}
+            imgPath={bodyImgPath}
+            picWidth={picWidth}
+          />
+        );
+      })}
+    </div>
+  );
+};
 
 BodySelector.propTypes = {
-  onBodySelection: PropTypes.func.isRequired,
-  currCrowd: PropTypes.object.isRequired,
-  currBodyName: PropTypes.string.isRequired,
+  picWidth: PropTypes.string.isRequired,
 };
 
 export default BodySelector;

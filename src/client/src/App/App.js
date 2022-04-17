@@ -6,34 +6,39 @@ import Forecast from "../components/Forecast/Forecast";
 import Canvas from "../components/Canvas/Canvas";
 import Selector from "../components/Selector/Selector";
 import CanvasOptions from "../components/CanvasOptions/CanvasOptions";
-import DEFAULT_FORM_DATA from "./defaultFormData";
+import FORM_SCHEMA from "./formSchema";
 
 import { useDispatch, useSelector } from "react-redux";
-import { calculcateCanvasSize, getMode } from "../store/canvasData/canvasData";
+import { updateCanvasSize, getMode } from "../store/slices/canvasDataSlice";
+import { loadCrowdData } from "../store/slices/crowdsSlice";
 
 const App = () => {
-  const [formData, setFormData] = useState(DEFAULT_FORM_DATA);
-  const [currBody, setCurrBody] = useState({});
+  const [formData, setFormData] = useState(FORM_SCHEMA);
   const [isSubmit, setSubmit] = useState(false);
 
   const dispatch = useDispatch();
   const isEyepieceMode = useSelector(getMode);
 
+  // on mount, get the default canvasData from the server.
   useEffect(() => {
-    if (isSubmit) {
-      dispatch(calculcateCanvasSize(formData));
-    }
-  }, [isSubmit, formData]);
+    dispatch(loadCrowdData());
+    // loadCanvasData()
+  }, []);
 
+  // runs on mount, and everytime the mode is switched
   useEffect(() => {
-    setCurrBody({});
-    setFormData({ ...DEFAULT_FORM_DATA });
+    setFormData({ ...FORM_SCHEMA });
     setSubmit(prevSubmit => (prevSubmit ? false : prevSubmit));
   }, [isEyepieceMode]);
 
+  useEffect(() => {
+    if (isSubmit) {
+      dispatch(updateCanvasSize(formData));
+    }
+  }, [isSubmit, formData]);
+
+  // using callBacks to avoid giving the components new func references on every render.
   const handleFormChange = useCallback((value, target) => {
-    // using callBacks to avoid giving the
-    // components new func references on every render.
     setFormData(prevData => {
       let keyCopy = { ...prevData[target] };
       keyCopy.value = value;
@@ -61,8 +66,8 @@ const App = () => {
         <Forecast />
       </div>
       <CanvasOptions />
-      <Selector currBody={currBody} setCurrBody={setCurrBody} />
-      <Canvas currBody={currBody} />
+      <Selector />
+      <Canvas />
     </div>
   );
 };

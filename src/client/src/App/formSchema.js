@@ -1,4 +1,4 @@
-const DEFAULT_FORM_DATA = {
+const FORM_SCHEMA = {
   aperture: {
     ref: "aperture",
     value: "",
@@ -65,4 +65,4 @@ const DEFAULT_FORM_DATA = {
   },
 };
 
-export default DEFAULT_FORM_DATA;
+export default FORM_SCHEMA;

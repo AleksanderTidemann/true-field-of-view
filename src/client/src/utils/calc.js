@@ -5,12 +5,26 @@ export const ANGULAR_MEASUREMENT_LABELS = [
 ];
 export const PLOTDIVISOR = 6;
 
-// /components/chart/selector/selector and canvas
+// for loading images from img folder in Selector and Canvas
+export const getImgPath = (folderName, filename, extension) => {
+  const pathToFolder = "./img/";
+  const pathToImg = folderName + "/" + filename + extension;
+  return pathToFolder + pathToImg;
+};
+
+export const getXorBodyImg = (currCrowdName, currBodyName, newBodyName) => {
+  if (!currBodyName) return getImgPath(currCrowdName, newBodyName, ".png");
+  if (currBodyName === newBodyName)
+    return getImgPath("body-selection", "selectedx", ".png");
+  return getImgPath(currCrowdName, newBodyName, ".png");
+};
+
+// selector and canvas
 export function isEmptyObject(value) {
   return Object.keys(value).length === 0 && value.constructor === Object;
 }
 
-// ./canvas/drawSquareCanvas & drawCircleCanvas //
+// drawSquareCanvas & drawCircleCanvas
 export function nrstPointZero(val, width) {
   // round to nearest 0.5
   // http://diveintohtml5.info/canvas.html
@@ -28,7 +42,7 @@ export function isArcSeconds(canvasAU) {
   );
 }
 
-// ../components/chart/info.jsx //
+// in the formInfo etc.. //
 // returns only strings
 export function getFratio(flength, barlow, aperture) {
   let b = Number(barlow) <= 0 ? 1 : Number(barlow);
@@ -126,8 +140,7 @@ export function getChipSize(resX, resY, micronssquared) {
   return chipSize;
 }
 
-// ./utils/eye2canvas & ./utils/eye2canvas//
-// ../components/menubar/info.jsx //
+// formInfo
 export function getTrueFOVdeg(afov, mag) {
   // This output is a FOV unit in degrees.
   const a = Number(afov) <= 0 ? 1 : Number(afov);
@@ -214,7 +227,7 @@ export function deg2unitEye(deg) {
   }
 }
 
-// used in ./chart/canvas/body //
+// drawCanvasBody
 export function unit2ang(deg, unit) {
   // convert angular values from degrees to arcmin or arcsec based on prefered unit.
   switch (unit) {

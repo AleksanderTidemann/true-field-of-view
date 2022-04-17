@@ -8,7 +8,7 @@ import {
   switchGrid,
   getMode,
   getHasGrid,
-} from "../../store/canvasData/canvasData";
+} from "../../store/slices/canvasDataSlice";
 
 const Grid = () => {
   const dispatch = useDispatch();

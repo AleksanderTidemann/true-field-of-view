@@ -1,13 +1,17 @@
-import React, { useEffect, useState, memo } from "react";
+import React, { useEffect, useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import colors from "../../data/color-data";
-import PropTypes from "prop-types";
 
-import { useSelector } from "react-redux";
-import { getMode } from "../../store/canvasData/canvasData";
+import { useDispatch, useSelector } from "react-redux";
+import { getMode } from "../../store/slices/canvasDataSlice";
+import {
+  getAllCrowdNames,
+  getCurrCrowdName,
+  loadCurrCrowd,
+} from "../../store/slices/crowdsSlice";
 
 const menuPaperHeight = 48;
 const style = isEyepieceMode => ({
@@ -40,13 +44,17 @@ const style = isEyepieceMode => ({
   },
 });
 
-const CrowdSelector = ({ onCrowdSelection, currCrowdName, crowdNames }) => {
+const CrowdSelector = () => {
+  const dispatch = useDispatch();
   const isEyepieceMode = useSelector(getMode);
-  const paperPropsStyle = style(isEyepieceMode);
+  const currCrowdName = useSelector(getCurrCrowdName);
+  const crowdNames = useSelector(getAllCrowdNames);
 
   const [options, setOptions] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
+
   const open = Boolean(anchorEl);
+  const paperPropsStyle = style(isEyepieceMode);
 
   useEffect(() => {
     setOptions(crowdNames);
@@ -88,7 +96,7 @@ const CrowdSelector = ({ onCrowdSelection, currCrowdName, crowdNames }) => {
             id={option}
             selected={option === currCrowdName}
             onClick={e => {
-              onCrowdSelection(e.target.id);
+              dispatch(loadCurrCrowd(e.target.id));
               handleClose();
             }}
           >
@@ -100,10 +108,10 @@ const CrowdSelector = ({ onCrowdSelection, currCrowdName, crowdNames }) => {
   );
 };
 
-CrowdSelector.propTypes = {
-  onCrowdSelection: PropTypes.func.isRequired,
-  currCrowdName: PropTypes.string.isRequired,
-  crowdNames: PropTypes.array.isRequired,
-};
+// CrowdSelector.propTypes = {
+//   onCrowdSelection: PropTypes.func.isRequired,
+//   currCrowdName: PropTypes.string.isRequired,
+//   crowdNames: PropTypes.array.isRequired,
+// };
 
-export default memo(CrowdSelector);
+export default CrowdSelector;

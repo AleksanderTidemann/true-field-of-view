@@ -7,9 +7,12 @@ export function drawCanvasBody(
   dprCanvasWidth,
   dprCanvasHeight,
   selectedBody,
+  selectedCrowdName,
   labelOffset
 ) {
-  const { angularDiameterDeg, img } = selectedBody;
+  const { angularDiameterDeg, key } = selectedBody;
+  const imgPath = calc.getImgPath(selectedCrowdName, key, ".png");
+
   const bodyUnitCount = calc.unit2ang(angularDiameterDeg, angularUnit);
 
   const canvasUnitCount = plotSizeX / calc.PLOTDIVISOR;
@@ -22,7 +25,7 @@ export function drawCanvasBody(
   const centeringOffset = imagePxDiameter / 2;
 
   let imgObject = new Image();
-  imgObject.src = img;
+  imgObject.src = imgPath;
   context.drawImage(
     imgObject,
     (dprCanvasWidth + offsetWidth) / 2 - centeringOffset,

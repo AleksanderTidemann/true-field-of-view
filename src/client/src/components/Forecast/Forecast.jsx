@@ -1,18 +1,17 @@
-import React, { useEffect, useState, memo } from "react";
-import { DIVIMAGES } from "../../data/img-data";
+import React, { useEffect, useState } from "react";
+import { getImgPath } from "../../utils/calc";
 import {
   getLatLong,
   getAreaCountry,
   getData,
   filterData,
-} from "./utils/getForecast";
+} from "./utils/forecastUtils";
 import colors from "../../data/color-data";
-
 import { useSelector } from "react-redux";
-import { getMode } from "../../store/canvasData/canvasData";
+import { getMode } from "../../store/slices/canvasDataSlice";
 
-const loading = DIVIMAGES.loading;
-const error = DIVIMAGES.error;
+const loadingImg = getImgPath("loading", "loading", ".gif");
+const errorImg = getImgPath("error", "error", ".gif");
 
 const Forecast = () => {
   const [forecastData, setForecastData] = useState({});
@@ -35,12 +34,12 @@ const Forecast = () => {
         );
         const symbol_code = forecast.data.next_6_hours.summary.symbol_code;
         const temperature = forecast.data.instant.details.air_temperature;
-        const wimg = require("../../img/weather/" +
-          symbol_code +
-          ".png").default;
+
+        // replace with getImgPath function
+        const forecastImg = getImgPath("weather", symbol_code, ".png");
 
         setForecastData({
-          next6h_img: wimg,
+          next6h_img: forecastImg,
           next6h_temp: temperature,
           area: area,
           country: country,
@@ -49,7 +48,7 @@ const Forecast = () => {
         });
         setIsLoading(false);
       } catch (error) {
-        alert(error);
+        alert("Error in mounting Forecast component:", error.message);
         setError(true);
       }
     };
@@ -77,7 +76,7 @@ const Forecast = () => {
             <small>Forecast</small>
           </p>
           <p className={borderStyle()}>
-            <img src={error} alt="ERROR..." width="25px" height="25px" />
+            <img src={errorImg} alt="ERROR..." width="25px" height="25px" />
           </p>
         </div>
       </div>
@@ -96,7 +95,7 @@ const Forecast = () => {
             <small>Forecast</small>
           </p>
           <p className={borderStyle()}>
-            <img src={loading} alt="loading..." width="25px" height="25px" />
+            <img src={loadingImg} alt="loading..." width="25px" height="25px" />
           </p>
         </div>
       </div>
@@ -128,4 +127,4 @@ const Forecast = () => {
   );
 };
 
-export default memo(Forecast);
+export default Forecast;

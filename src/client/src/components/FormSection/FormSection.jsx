@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import colors from "../../data/color-data";
 
 import { useSelector } from "react-redux";
-import { getMode } from "../../store/canvasData/canvasData";
+import { getMode } from "../../store/slices/canvasDataSlice";
 
 const FormSection = ({ formData, onFormInputChange, onFormSubmit }) => {
   const isEyepieceMode = useSelector(getMode);

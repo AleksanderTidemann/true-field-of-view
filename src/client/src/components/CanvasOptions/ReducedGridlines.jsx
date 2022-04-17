@@ -9,7 +9,7 @@ import {
   getMode,
   getHasGrid,
   getHasRedGrid,
-} from "../../store/canvasData/canvasData";
+} from "../../store/slices/canvasDataSlice";
 
 const ReducedGridlines = () => {
   const dispatch = useDispatch();

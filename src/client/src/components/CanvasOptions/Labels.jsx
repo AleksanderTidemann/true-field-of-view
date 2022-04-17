@@ -8,7 +8,7 @@ import {
   switchLabel,
   getMode,
   getHasLabels,
-} from "../../store/canvasData/canvasData";
+} from "../../store/slices/canvasDataSlice";
 
 const Labels = () => {
   const dispatch = useDispatch();

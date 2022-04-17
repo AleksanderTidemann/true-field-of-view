@@ -12,18 +12,23 @@ import { drawSquareCanvas } from "./utils/drawSquareCanvas.js";
 import { drawCanvasBody } from "./utils/drawCanvasBody.js";
 import { isEmptyObject } from "../../utils/calc";
 import { motion } from "framer-motion";
-import PropTypes from "prop-types";
 
 import { useSelector } from "react-redux";
-import { getCanvasData } from "../../store/canvasData/canvasData.js";
+import { getUserData } from "../../store/slices/canvasDataSlice.js";
+import {
+  getCurrBody,
+  getCurrCrowdName,
+} from "../../store/slices/crowdsSlice.js";
 
 const DEFAULT_FONT = "Arial";
 const DEFAULT_LABELSIZE = 60;
 const DEFAULT_NUMBERSIZE = 40;
 const DEFAULT_OFFSET = 5;
 
-const Canvas = ({ currBody }) => {
-  const canvasData = useSelector(getCanvasData);
+const Canvas = () => {
+  const currBody = useSelector(getCurrBody);
+  const currCrowdName = useSelector(getCurrCrowdName); // to be used in the drawbody.
+  const canvasData = useSelector(getUserData);
 
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
@@ -44,6 +49,7 @@ const Canvas = ({ currBody }) => {
   useEffect(() => {
     if (canvasRef.current) {
       window.addEventListener("resize", setForceUpdate);
+      // cleanup function
       return () => {
         window.removeEventListener("resize", setForceUpdate);
       };
@@ -162,6 +168,7 @@ const Canvas = ({ currBody }) => {
         dprCanvasWidth,
         dprCanvasHeight,
         currBody,
+        currCrowdName,
         labelOffset
       );
     }
@@ -191,8 +198,8 @@ const Canvas = ({ currBody }) => {
   );
 };
 
-Canvas.propTypes = {
-  currBody: PropTypes.object.isRequired,
-};
+// Canvas.propTypes = {
+//   currBody: PropTypes.object.isRequired,
+// };
 
 export default memo(Canvas);

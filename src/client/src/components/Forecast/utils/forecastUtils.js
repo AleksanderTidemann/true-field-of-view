@@ -52,13 +52,20 @@ export async function getData(lat, long) {
     lat +
     "&lon=" +
     long;
-  const response = await fetch(url);
-  const data = await response.json();
-  return data;
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    alert(
+      "Error in getLatLong API call for Forecast. Message: ",
+      error.message
+    );
+  }
 }
 
 export async function getAreaCountry(lat, long) {
-  // reverse geocode
+  // reverse geocoding
   // from https://rapidapi.com/trueway/api/trueway-geocoding/
   const url =
     "https://trueway-geocoding.p.rapidapi.com/ReverseGeocode?location=" +
@@ -74,9 +81,16 @@ export async function getAreaCountry(lat, long) {
     },
   };
 
-  const response = await fetch(url, data);
-  const responseJSON = await response.json();
-  const area = responseJSON.results[0].area;
-  const country = responseJSON.results[0].country;
-  return { area, country };
+  try {
+    const response = await fetch(url, data);
+    const responseJSON = await response.json();
+    const area = responseJSON.results[0].area;
+    const country = responseJSON.results[0].country;
+    return { area, country };
+  } catch (error) {
+    alert(
+      "Error in getAreaCountry API call for Forecast. Message: ",
+      error.message
+    );
+  }
 }

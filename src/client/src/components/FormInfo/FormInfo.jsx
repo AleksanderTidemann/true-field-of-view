@@ -3,20 +3,14 @@ import FormInfoInput from "./FormInfoInput";
 import * as calc from "../../utils/calc";
 import PropTypes from "prop-types";
 import colors from "../../data/color-data";
-import DEFAULT_INFO_DATA from "./defaultInfoData";
+import INFO_SCHEMA from "./infoDataSchema";
 
 import { useSelector } from "react-redux";
-import { getCanvasData } from "../../store/canvasData/canvasData";
-
-// useEffect, actually make the comp render twice.
-// because the calcs are sideEffects.
-// maybe not have these in store.
-// since they are just side-effects of the form-data and canvasData. Yes?
-// maybe just store the submitted form-data.
+import { getUserData } from "../../store/slices/canvasDataSlice";
 
 const FormInfo = ({ formData, isSubmit }) => {
-  const canvasData = useSelector(getCanvasData);
-  const [infoData, setInfoData] = useState(DEFAULT_INFO_DATA);
+  const canvasData = useSelector(getUserData);
+  const [infoData, setInfoData] = useState(INFO_SCHEMA);
   const {
     hasGrid,
     hasRedGrid,

@@ -12,7 +12,7 @@ import {
   zoomOut,
   getMode,
   getZoomValue,
-} from "../../store/canvasData/canvasData";
+} from "../../store/slices/canvasDataSlice";
 
 const Zoom = () => {
   const dispatch = useDispatch();

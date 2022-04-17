@@ -1,4 +1,5 @@
 // Bootstrap colors
+// move to Redux
 const colors = {
   eyepieceMode: "info",
   cameraMode: "success",

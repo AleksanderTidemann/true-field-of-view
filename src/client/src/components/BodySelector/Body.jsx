@@ -1,10 +1,14 @@
 import React, { memo } from "react";
 import { motion } from "framer-motion";
 import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
+import { loadCurrBody } from "../../store/slices/crowdsSlice";
 
 // https://www.framer.com/docs/examples/
 
-const Body = ({ name, img, onBodySelection, bodyWidth }) => {
+const Body = ({ name, imgPath, picWidth }) => {
+  const dispatch = useDispatch();
+
   return (
     <motion.div
       //   initial={true}
@@ -13,13 +17,13 @@ const Body = ({ name, img, onBodySelection, bodyWidth }) => {
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
       onTap={event => {
-        onBodySelection(event.target.alt);
+        dispatch(loadCurrBody(event.target.alt));
       }}
     >
       <img
-        src={img}
+        src={imgPath}
         alt={name}
-        width={bodyWidth}
+        width={picWidth}
         style={{
           opacity: 1,
           cursor: "pointer",
@@ -32,9 +36,8 @@ const Body = ({ name, img, onBodySelection, bodyWidth }) => {
 
 Body.propTypes = {
   name: PropTypes.string.isRequired,
-  img: PropTypes.string.isRequired,
-  onBodySelection: PropTypes.func.isRequired,
-  bodyWidth: PropTypes.string.isRequired,
+  imgPath: PropTypes.string.isRequired,
+  picWidth: PropTypes.string.isRequired,
 };
 
 export default memo(Body);
