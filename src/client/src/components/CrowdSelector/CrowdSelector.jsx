@@ -3,10 +3,9 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import colors from "../../data/color-data";
-
 import { useDispatch, useSelector } from "react-redux";
-import { getMode } from "../../store/slices/canvasDataSlice";
+import { getColors } from "../../store/slices/colorSlice";
+import { getMode } from "../../store/slices/canvasSlice";
 import {
   getAllCrowdNames,
   getCurrCrowdName,
@@ -49,6 +48,7 @@ const CrowdSelector = () => {
   const isEyepieceMode = useSelector(getMode);
   const currCrowdName = useSelector(getCurrCrowdName);
   const crowdNames = useSelector(getAllCrowdNames);
+  const colors = useSelector(getColors);
 
   const [options, setOptions] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -107,11 +107,5 @@ const CrowdSelector = () => {
     </div>
   );
 };
-
-// CrowdSelector.propTypes = {
-//   onCrowdSelection: PropTypes.func.isRequired,
-//   currCrowdName: PropTypes.string.isRequired,
-//   crowdNames: PropTypes.array.isRequired,
-// };
 
 export default CrowdSelector;

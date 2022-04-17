@@ -1,18 +1,18 @@
 import React from "react";
-import colors from "../../data/color-data";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
-
 import { useDispatch, useSelector } from "react-redux";
+import { getColors } from "../../store/slices/colorSlice";
+import { resetCurrBody } from "../../store/slices/crowdsSlice";
 import {
   switchMode,
   getMode,
   resetCanvasData,
-} from "../../store/slices/canvasDataSlice";
-import { resetCurrBody } from "../../store/slices/crowdsSlice";
+} from "../../store/slices/canvasSlice";
 
 const ModeSwitcher = () => {
   const dispatch = useDispatch();
   const isEyepieceMode = useSelector(getMode);
+  const colors = useSelector(getColors);
 
   return (
     <BootstrapSwitchButton

@@ -4,20 +4,21 @@ import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import ZoomOutIcon from "@mui/icons-material/ZoomOut";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Tooltip from "@mui/material/Tooltip";
-import colors from "../../data/color-data";
 
 import { useDispatch, useSelector } from "react-redux";
+import { getColors } from "../../store/slices/colorSlice";
 import {
   zoomInn,
   zoomOut,
   getMode,
   getZoomValue,
-} from "../../store/slices/canvasDataSlice";
+} from "../../store/slices/canvasSlice";
 
 const Zoom = () => {
   const dispatch = useDispatch();
   const isEyepieceMode = useSelector(getMode);
   const zoomValue = useSelector(getZoomValue);
+  const colors = useSelector(getColors);
 
   return (
     <Tooltip title={zoomValue + "%"} placement="bottom">

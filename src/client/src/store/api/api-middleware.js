@@ -21,7 +21,7 @@ const api =
 
     try {
       const response = await axios.request({
-        //   baseURL: "http://localhost:9001/api",
+        // baseURL: "http://localhost:9001/api", I set PROXY var in the package.json instead
         url,
         method,
         data,

@@ -1,13 +1,11 @@
-import React, { useMemo, memo } from "react";
+import React from "react";
 import FormModule from "../FormModule/FormModule";
 import PropTypes from "prop-types";
-import colors from "../../data/color-data";
-
 import { useSelector } from "react-redux";
-import { getMode } from "../../store/slices/canvasDataSlice";
+import { getColors } from "../../store/slices/colorSlice";
+import { getMode } from "../../store/slices/canvasSlice";
 
 const FormSection = ({ formData, onFormInputChange, onFormSubmit }) => {
-  const isEyepieceMode = useSelector(getMode);
   const {
     aperture,
     focallength,
@@ -19,53 +17,39 @@ const FormSection = ({ formData, onFormInputChange, onFormSubmit }) => {
     resolutiony,
   } = formData;
 
-  // return arrays of items
-  // only when needed.
-  const telModuleItems = useMemo(
-    () => [aperture, focallength, barlow],
-    [aperture, focallength, barlow]
-  );
+  const isEyepieceMode = useSelector(getMode);
+  const colors = useSelector(getColors);
 
-  const eyeModuleItems = useMemo(
-    () => [eyepiecefocallength, eyepieceafov],
-    [eyepiecefocallength, eyepieceafov]
-  );
-
-  const camModuleItems = useMemo(
-    () => [pixelsize, resolutionx, resolutiony],
-    [pixelsize, resolutionx, resolutiony]
-  );
-
-  const submitBtnColor = useMemo(() => {
+  const submitBtnColor = () => {
     let className = "btn ml-1 mb-1 " + colors.text + " bg-";
     className += isEyepieceMode ? colors.eyepieceMode : colors.cameraMode;
     return className;
-  }, [isEyepieceMode]);
+  };
 
   return (
     <form className="d-flex" onSubmit={onFormSubmit}>
       <FormModule
         key="Tel"
         title="Telescope"
-        formItems={telModuleItems}
+        formItems={[aperture, focallength, barlow]}
         onFormInputChange={onFormInputChange}
       />
       {isEyepieceMode ? (
         <FormModule
           key="Eye"
           title="Eyepiece"
-          formItems={eyeModuleItems}
+          formItems={[eyepiecefocallength, eyepieceafov]}
           onFormInputChange={onFormInputChange}
         />
       ) : (
         <FormModule
           key="Cam"
           title="Camera"
-          formItems={camModuleItems}
+          formItems={[pixelsize, resolutionx, resolutiony]}
           onFormInputChange={onFormInputChange}
         />
       )}
-      <input className={submitBtnColor} type="submit" value="Go!" />
+      <input className={submitBtnColor()} type="submit" value="Go!" />
     </form>
   );
 };
@@ -76,4 +60,4 @@ FormSection.propTypes = {
   onFormSubmit: PropTypes.func.isRequired,
 };
 
-export default memo(FormSection);
+export default FormSection;

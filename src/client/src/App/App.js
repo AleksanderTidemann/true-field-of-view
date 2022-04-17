@@ -9,7 +9,7 @@ import CanvasOptions from "../components/CanvasOptions/CanvasOptions";
 import FORM_SCHEMA from "./formSchema";
 
 import { useDispatch, useSelector } from "react-redux";
-import { updateCanvasSize, getMode } from "../store/slices/canvasDataSlice";
+import { updateCanvasSize, getMode } from "../store/slices/canvasSlice";
 import { loadCrowdData } from "../store/slices/crowdsSlice";
 
 const App = () => {

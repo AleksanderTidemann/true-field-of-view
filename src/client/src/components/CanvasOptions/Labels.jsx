@@ -1,19 +1,19 @@
 import React from "react";
-import colors from "../../data/color-data";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-
 import { useDispatch, useSelector } from "react-redux";
+import { getColors } from "../../store/slices/colorSlice";
 import {
   switchLabel,
   getMode,
   getHasLabels,
-} from "../../store/slices/canvasDataSlice";
+} from "../../store/slices/canvasSlice";
 
 const Labels = () => {
   const dispatch = useDispatch();
   const isEyepieceMode = useSelector(getMode);
   const hasLabels = useSelector(getHasLabels);
+  const colors = useSelector(getColors);
 
   return (
     <FormControlLabel

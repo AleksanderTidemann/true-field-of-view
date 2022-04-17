@@ -1,5 +1,4 @@
 import { PLOTDIVISOR, nrstPointZero, isArcSeconds } from "../../../utils/calc";
-import colors from "../../../data/color-data";
 
 function drawSquareGridY(
   ctx,
@@ -10,7 +9,8 @@ function drawSquareGridY(
   pxPerUnitY,
   hasGrid,
   hasRedGrid,
-  redGridFactor
+  redGridFactor,
+  colors
 ) {
   // paint Y axis grid and numbers
   for (let i = 0; i <= plotSizeY; i++) {
@@ -157,7 +157,8 @@ function drawSquareGridX(
   dprCanvasHeight,
   hasGrid,
   hasRedGrid,
-  redGridFactor
+  redGridFactor,
+  colors
 ) {
   for (let i = 0; i <= plotSizeX; i++) {
     //i = 0 and 20 to make the border
@@ -195,6 +196,7 @@ function drawSquareGridX(
 export function drawSquareCanvas(
   ctx,
   canvasData,
+  colors,
   dprCanvasWidth,
   dprCanvasHeight,
   labelSize,
@@ -231,7 +233,8 @@ export function drawSquareCanvas(
     dprCanvasHeight,
     hasGrid,
     hasRedGrid,
-    redGridFactor
+    redGridFactor,
+    colors
   );
   drawSquareGridXnumbers(
     ctx,
@@ -268,7 +271,8 @@ export function drawSquareCanvas(
     pxPerUnitY,
     hasGrid,
     hasRedGrid,
-    redGridFactor
+    redGridFactor,
+    colors
   );
   drawSquareGridYnumbers(
     ctx,

@@ -1,15 +1,17 @@
-import React, { useEffect, useState, useRef, useMemo } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import FormInfoInput from "./FormInfoInput";
 import * as calc from "../../utils/calc";
 import PropTypes from "prop-types";
-import colors from "../../data/color-data";
 import INFO_SCHEMA from "./infoDataSchema";
 
 import { useSelector } from "react-redux";
-import { getUserData } from "../../store/slices/canvasDataSlice";
+import { getUserData } from "../../store/slices/canvasSlice";
+import { getColors } from "../../store/slices/colorSlice";
 
 const FormInfo = ({ formData, isSubmit }) => {
   const canvasData = useSelector(getUserData);
+  const colors = useSelector(getColors);
+
   const [infoData, setInfoData] = useState(INFO_SCHEMA);
   const {
     hasGrid,
@@ -163,10 +165,6 @@ const FormInfo = ({ formData, isSubmit }) => {
     }));
   }, [resolutionx, resolutiony, pixelsize]);
 
-  const borderColor = useMemo(() => {
-    return isEyepieceMode ? colors.eyepieceMode : colors.cameraMode;
-  }, [isEyepieceMode]);
-
   return (
     <div
       className={
@@ -178,7 +176,6 @@ const FormInfo = ({ formData, isSubmit }) => {
           if (isEyepieceMode && item.isEyepieceInfo) {
             return (
               <FormInfoInput
-                borderColor={borderColor}
                 key={item.key}
                 title={item.key}
                 value={item.value}
@@ -189,7 +186,6 @@ const FormInfo = ({ formData, isSubmit }) => {
           if ((!isEyepieceMode && !item.isEyepieceInfo) || item.key === "FR") {
             return (
               <FormInfoInput
-                borderColor={borderColor}
                 key={item.key}
                 title={item.key}
                 value={item.value}

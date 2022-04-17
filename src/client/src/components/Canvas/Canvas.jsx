@@ -12,13 +12,13 @@ import { drawSquareCanvas } from "./utils/drawSquareCanvas.js";
 import { drawCanvasBody } from "./utils/drawCanvasBody.js";
 import { isEmptyObject } from "../../utils/calc";
 import { motion } from "framer-motion";
-
 import { useSelector } from "react-redux";
-import { getUserData } from "../../store/slices/canvasDataSlice.js";
+import { getUserData } from "../../store/slices/canvasSlice.js";
 import {
   getCurrBody,
   getCurrCrowdName,
 } from "../../store/slices/crowdsSlice.js";
+import { getColors } from "../../store/slices/colorSlice.js";
 
 const DEFAULT_FONT = "Arial";
 const DEFAULT_LABELSIZE = 60;
@@ -27,8 +27,9 @@ const DEFAULT_OFFSET = 5;
 
 const Canvas = () => {
   const currBody = useSelector(getCurrBody);
-  const currCrowdName = useSelector(getCurrCrowdName); // to be used in the drawbody.
+  const currCrowdName = useSelector(getCurrCrowdName);
   const canvasData = useSelector(getUserData);
+  const colors = useSelector(getColors);
 
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
@@ -138,6 +139,7 @@ const Canvas = () => {
         drawSquareCanvas(
           context,
           canvasData,
+          colors,
           dprCanvasWidth,
           dprCanvasHeight,
           labelSize,
@@ -150,6 +152,7 @@ const Canvas = () => {
         drawCircleCanvas(
           context,
           canvasData,
+          colors,
           dprCanvasWidth,
           dprCanvasHeight,
           labelSize,
@@ -197,9 +200,5 @@ const Canvas = () => {
     </motion.div>
   );
 };
-
-// Canvas.propTypes = {
-//   currBody: PropTypes.object.isRequired,
-// };
 
 export default memo(Canvas);

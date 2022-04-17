@@ -6,9 +6,9 @@ import {
   getData,
   filterData,
 } from "./utils/forecastUtils";
-import colors from "../../data/color-data";
 import { useSelector } from "react-redux";
-import { getMode } from "../../store/slices/canvasDataSlice";
+import { getColors } from "../../store/slices/colorSlice";
+import { getMode } from "../../store/slices/canvasSlice";
 
 const loadingImg = getImgPath("loading", "loading", ".gif");
 const errorImg = getImgPath("error", "error", ".gif");
@@ -19,6 +19,7 @@ const Forecast = () => {
   const [isError, setError] = useState(false);
 
   const isEyepieceMode = useSelector(getMode);
+  const colors = useSelector(getColors);
 
   // Componemt did mount
   useEffect(() => {

@@ -1,20 +1,13 @@
-import React, { useMemo, memo } from "react";
+import React from "react";
 import FormInput from "./FormInput";
-import colors from "../../data/color-data";
 import PropTypes from "prop-types";
-
 import { useSelector } from "react-redux";
-import { getMode } from "../../store/slices/canvasDataSlice";
+import { getColors } from "../../store/slices/colorSlice";
 
 const FormModule = ({ formItems, onFormInputChange, title }) => {
-  const isEyepieceMode = useSelector(getMode);
+  const colors = useSelector(getColors);
 
   // add API database fetch
-  const addonColor = useMemo(() => {
-    let className = "input-group-text " + colors.text + " bg-";
-    className += isEyepieceMode ? colors.eyepieceMode : colors.cameraMode;
-    return className;
-  }, [isEyepieceMode]);
 
   return (
     <div
@@ -30,7 +23,6 @@ const FormModule = ({ formItems, onFormInputChange, title }) => {
           <FormInput
             key={formItem.ref}
             item={formItem}
-            addonColor={addonColor}
             onFormInputChange={onFormInputChange}
           />
         ))}
@@ -44,4 +36,4 @@ FormModule.propTypes = {
   onFormInputChange: PropTypes.func.isRequired,
 };
 
-export default memo(FormModule);
+export default FormModule;

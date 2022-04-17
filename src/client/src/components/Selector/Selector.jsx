@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import BodySelector from "../BodySelector/BodySelector";
 import CrowdSelector from "../CrowdSelector/CrowdSelector";
 import { getImgPath } from "../../utils/calc";
@@ -10,7 +10,6 @@ const errorImg = getImgPath("error", "error", ".gif");
 const picWidth = "35px";
 
 const Selector = () => {
-  //   const dispatch = useDispatch();
   const isError = useSelector(getError);
   const isLoading = useSelector(getLoading);
 

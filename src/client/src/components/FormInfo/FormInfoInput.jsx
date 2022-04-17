@@ -1,20 +1,26 @@
 import React, { useEffect, useState, memo } from "react";
-import PropTypes from "prop-types";
-import colors from "../../data/color-data";
+import { useSelector } from "react-redux";
+import { getColors } from "../../store/slices/colorSlice";
+import { getMode } from "../../store/slices/canvasSlice";
 
-const FormInfoInput = ({ isChanged, title, value, borderColor }) => {
+import PropTypes from "prop-types";
+
+const FormInfoInput = ({ isChanged, title, value }) => {
   const [textColor, setTextColor] = useState(null);
+  const colors = useSelector(getColors);
+  const isEyepieceMode = useSelector(getMode);
 
   // set textColor based on submit and if the info value has changed after a submit.
   useEffect(() => {
     isChanged ? setTextColor(colors.textMuted) : setTextColor(colors.text);
-  }, [isChanged]);
+  }, [isChanged, colors]);
 
   // compute the style
   const style = () => {
     let first = "info-items text-center " + textColor;
-    let second = "col-auto border rounded border-" + borderColor;
-    let result = first + " " + second;
+    let second = "col-auto border rounded border-";
+    let third = isEyepieceMode ? colors.eyepieceMode : colors.cameraMode;
+    let result = first + " " + second + third;
     return result;
   };
 
@@ -32,7 +38,6 @@ FormInfoInput.propTypes = {
   isChanged: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
-  borderColor: PropTypes.string.isRequired,
 };
 
 export default memo(FormInfoInput);

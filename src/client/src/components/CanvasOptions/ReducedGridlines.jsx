@@ -1,21 +1,21 @@
 import React from "react";
-import colors from "../../data/color-data";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-
 import { useDispatch, useSelector } from "react-redux";
+import { getColors } from "../../store/slices/colorSlice";
 import {
   switchRedGrid,
   getMode,
   getHasGrid,
   getHasRedGrid,
-} from "../../store/slices/canvasDataSlice";
+} from "../../store/slices/canvasSlice";
 
 const ReducedGridlines = () => {
   const dispatch = useDispatch();
   const isEyepieceMode = useSelector(getMode);
   const hasGrid = useSelector(getHasGrid);
   const hasRedGrid = useSelector(getHasRedGrid);
+  const colors = useSelector(getColors);
 
   return (
     <FormControlLabel
