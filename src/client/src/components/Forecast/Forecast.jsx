@@ -67,8 +67,8 @@ const Forecast = () => {
   };
 
   return (
-    <div className="form-label-group mb-0 mt-2 justify-content-center">
-      <p className={"mr-1 " + colors.text}>
+    <>
+      <p className={"mr-1 mb-0 " + colors.text}>
         <small>Forecast</small>
       </p>
       <p className={borderStyle()}>
@@ -93,13 +93,13 @@ const Forecast = () => {
               alt="Specification Drawing"
               width={picWidth}
               height={picWidth}
-              className="mr-2"
+              className="mr-2 mb-0"
             />
             {forecastData.next6h_temp}°
           </>
         )}
       </p>
-    </div>
+    </>
   );
 };
 

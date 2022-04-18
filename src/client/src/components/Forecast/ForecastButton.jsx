@@ -16,21 +16,21 @@ const ForecastButton = () => {
         "border border-white rounded mb-1 col-3 bg-" + colors.background
       }
     >
-      {buttonState ? (
-        <ForecastPlaceholder />
-      ) : (
-        <div className="form-label-group mb-0 mt-2 justify-content-center">
+      <div className="form-label-group mb-0 mt-2 justify-content-center">
+        {buttonState ? (
+          <ForecastPlaceholder />
+        ) : (
           <Button
             onClick={() => setButtonState(prevState => !prevState)}
             variant="contained"
             color={isEyepieceMode ? colors.eyepieceMode : colors.cameraMode}
             size="small"
-            style={{ fontSize: "12px" }}
+            style={{ fontSize: "9px" }}
           >
             Get Local Forecast
           </Button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
