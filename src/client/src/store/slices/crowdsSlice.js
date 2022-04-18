@@ -2,8 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 import { apiCallBegan } from "../api/api-actions";
 import { createSelector } from "reselect";
 import moment from "moment";
+import * as calc from "../../utils/calc";
 
-//crowdData schema in node server
+//crowdData is receveic from express server
 
 const slice = createSlice({
   name: "crowds",
@@ -67,10 +68,11 @@ const {
 export default slice.reducer;
 
 // Action creators
-const url = "/api/crowds";
+const url = "/api/crowds/data";
 export const loadCrowdData = () => (dispatch, getState) => {
   //less than 10 minutes. caching..
-  //const { lastFetch } = getState().crowdData;
+  //const { lastFetch } = getState().crowds;
+  // const timerInMinutes = 10;
 
   //const diffInMinutes = moment().diff(moment(lastFetch), "minutes");
   //if (diffInMinutes < 10) return;
@@ -104,13 +106,12 @@ export const getCurrCrowd = createSelector(
   crowds => crowds.currCrowd
 ); // returns an object with a key (string) and data(array) properties.
 
-export const getCurrCrowdName = createSelector(
-  selectCrowds,
-  crowds => crowds.currCrowd.key
+export const getCurrCrowdName = createSelector(selectCrowds, crowds =>
+  calc.isValid(crowds.currCrowd.key) ? crowds.currCrowd.key : ""
 ); // returns a string with the name of the currently selected crowd by the user
 
 export const getAllCrowdNames = createSelector(selectCrowds, crowds =>
-  crowds.crowdData.map(crowd => crowd.key)
+  crowds.crowdData.map(crowd => (calc.isValid(crowd.key) ? crowd.key : ""))
 ); // returns an array with strings of all the crowd names ["planets", "moons"]
 
 // body info
@@ -119,7 +120,6 @@ export const getCurrBody = createSelector(
   crowds => crowds.currBody
 ); // returns an object with properties such as key, magnitude, distancefromearth etc..
 
-export const getCurrBodyName = createSelector(
-  selectCrowds,
-  crowds => crowds.currBody.key
+export const getCurrBodyName = createSelector(selectCrowds, crowds =>
+  calc.isValid(crowds.currBody.key) ? crowds.currBody.key : ""
 ); // returns a string with the name of the currently selected body by the user

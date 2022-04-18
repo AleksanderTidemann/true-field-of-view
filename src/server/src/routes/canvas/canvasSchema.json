@@ -1,0 +1,12 @@
+{
+  "isEyepieceMode": true,
+  "hasGrid": true,
+  "hasLabels": true,
+  "hasRedGrid": false,
+  "redGridFactor": 6,
+  "zoomValue": 50,
+  "zoomIncrement": 10,
+  "plotSizeX": 20,
+  "plotSizeY": 20,
+  "angularUnit": "Minutes of Arc"
+}

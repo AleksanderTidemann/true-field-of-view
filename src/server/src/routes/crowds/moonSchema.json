@@ -1,0 +1,12 @@
+{
+  "key": "moons",
+  "data": [
+    {
+      "key": "moon",
+      "auFromEarth": null,
+      "kmFromEarth": null,
+      "angularDiameterDeg": null,
+      "magnitude": null
+    }
+  ]
+}

@@ -13,7 +13,7 @@ import { drawCanvasBody } from "./utils/drawCanvasBody.js";
 import { isEmptyObject } from "../../utils/calc";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
-import { getUserData } from "../../store/slices/canvasSlice.js";
+import { getCanvasData } from "../../store/slices/canvasSlice.js";
 import {
   getCurrBody,
   getCurrCrowdName,
@@ -26,14 +26,16 @@ const DEFAULT_NUMBERSIZE = 40;
 const DEFAULT_OFFSET = 5;
 
 const Canvas = () => {
+  // From the state.
   const currBody = useSelector(getCurrBody);
   const currCrowdName = useSelector(getCurrCrowdName);
-  const canvasData = useSelector(getUserData);
+  const canvasData = useSelector(getCanvasData);
   const colors = useSelector(getColors);
 
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
 
+  // size of canvas and its parent container. To handle zooming
   const [containerWidth, setContainerWidth] = useState(null);
   const [canvasWidth, setCanvasWidth] = useState(null);
   const [dprCanvasWidth, setDprCanvasWidth] = useState(null);
@@ -44,6 +46,7 @@ const Canvas = () => {
   const [labelSize, setLabelSize] = useState(null);
   const [labelOffset, setLabelOffset] = useState(null);
 
+  // forceupdate for window resizes.
   const [forceUpdate, setForceUpdate] = useState(null);
 
   // on mount, listen and forceUpdate on the window resizing.

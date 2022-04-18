@@ -1,6 +1,6 @@
 import React from "react";
-import BodySelector from "../BodySelector/BodySelector";
-import CrowdSelector from "../CrowdSelector/CrowdSelector";
+import BodySelector from "./BodySelector";
+import CrowdSelector from "./CrowdSelector";
 import { getImgPath } from "../../utils/calc";
 import { useSelector } from "react-redux";
 import { getLoading, getError } from "../../store/slices/crowdsSlice";
@@ -9,7 +9,7 @@ const loadingImg = getImgPath("loading", "loading", ".gif");
 const errorImg = getImgPath("error", "error", ".gif");
 const picWidth = "35px";
 
-const Selector = () => {
+const SelectorPlaceholder = () => {
   const isError = useSelector(getError);
   const isLoading = useSelector(getLoading);
 
@@ -44,5 +44,4 @@ const Selector = () => {
   );
 };
 
-// because globalCanvasData does not have to update the Selector
-export default Selector;
+export default SelectorPlaceholder;

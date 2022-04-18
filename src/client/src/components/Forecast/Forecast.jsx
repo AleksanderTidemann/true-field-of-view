@@ -12,6 +12,7 @@ import { getMode } from "../../store/slices/canvasSlice";
 
 const loadingImg = getImgPath("loading", "loading", ".gif");
 const errorImg = getImgPath("error", "error", ".gif");
+const picWidth = "25px";
 
 const Forecast = () => {
   const [forecastData, setForecastData] = useState({});
@@ -65,65 +66,39 @@ const Forecast = () => {
     return css + bg;
   };
 
-  if (isError) {
-    return (
-      <div
-        className={
-          "border border-white rounded mb-1 col-3 bg-" + colors.background
-        }
-      >
-        <div className="form-label-group mb-0 mt-2 justify-content-center">
-          <p className={"mr-1 " + colors.text}>
-            <small>Forecast</small>
-          </p>
-          <p className={borderStyle()}>
-            <img src={errorImg} alt="ERROR..." width="25px" height="25px" />
-          </p>
-        </div>
-      </div>
-    );
-  }
-
-  if (isLoading) {
-    return (
-      <div
-        className={
-          "border border-white rounded mb-1 col-3 bg-" + colors.background
-        }
-      >
-        <div className="form-label-group mb-0 mt-2 justify-content-center">
-          <p className={"mr-1 " + colors.text}>
-            <small>Forecast</small>
-          </p>
-          <p className={borderStyle()}>
-            <img src={loadingImg} alt="loading..." width="25px" height="25px" />
-          </p>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div
-      className={
-        "border border-white rounded mb-1 col-3 bg-" + colors.background
-      }
-    >
-      <div className="form-label-group mb-0 mt-2 justify-content-center">
-        <p className={"mr-1 " + colors.text}>
-          <small>Forecast</small>
-        </p>
-        <p className={borderStyle()}>
+    <div className="form-label-group mb-0 mt-2 justify-content-center">
+      <p className={"mr-1 " + colors.text}>
+        <small>Forecast</small>
+      </p>
+      <p className={borderStyle()}>
+        {isError ? (
           <img
-            src={forecastData.next6h_img}
-            alt="Specification Drawing"
-            width="25px"
-            height="25px"
-            className="mr-2"
+            src={errorImg}
+            alt="ERROR..."
+            width={picWidth}
+            height={picWidth}
           />
-          {forecastData.next6h_temp}°
-        </p>
-      </div>
+        ) : isLoading ? (
+          <img
+            src={loadingImg}
+            alt="loading..."
+            width={picWidth}
+            height={picWidth}
+          />
+        ) : (
+          <>
+            <img
+              src={forecastData.next6h_img}
+              alt="Specification Drawing"
+              width={picWidth}
+              height={picWidth}
+              className="mr-2"
+            />
+            {forecastData.next6h_temp}°
+          </>
+        )}
+      </p>
     </div>
   );
 };

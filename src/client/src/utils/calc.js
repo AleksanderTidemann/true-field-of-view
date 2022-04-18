@@ -5,6 +5,13 @@ export const ANGULAR_MEASUREMENT_LABELS = [
 ];
 export const PLOTDIVISOR = 6;
 
+// when waiting for data to arrive from server
+// we make sure the selectors in the store always deliver valid values
+export const isValid = val => {
+  if (typeof val !== "undefined" && typeof val !== null) return true;
+  return false;
+};
+
 // for loading images from img folder in Selector and Canvas
 export const getImgPath = (folderName, filename, extension) => {
   const pathToFolder = "./img/";

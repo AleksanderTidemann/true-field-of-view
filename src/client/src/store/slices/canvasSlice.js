@@ -1,32 +1,38 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { apiCallBegan } from "../api/api-actions";
 import { createSelector } from "reselect";
 import * as calc from "../../utils/calc";
 
-// should also get this on the server
-// load Canvas Data
-const CANVAS_SCHEMA = {
-  isEyepieceMode: true,
-  hasGrid: true,
-  hasLabels: true,
-  hasRedGrid: false,
-  redGridFactor: 6,
-  zoomValue: 50,
-  zoomIncrement: 10,
-  plotSizeX: 20,
-  plotSizeY: 20,
-  angularUnit: calc.ANGULAR_MEASUREMENT_LABELS[1],
-};
+//canvasData is received from express server
 
 const slice = createSlice({
   name: "canvas",
   initialState: {
+    lastFetch: 0,
+    isLoading: false,
+    isError: false,
     // this is the default schema that is set when the user switches mode.
     // It should be received from the server on load
-    defaultData: CANVAS_SCHEMA,
+    defaultData: {},
     // userData are the changes the user makes to the defaultData and sees in the chart.
-    userData: CANVAS_SCHEMA,
+    userData: {},
   },
   reducers: {
+    canvasDataRequested: canvas => {
+      canvas.isLoading = true;
+      canvas.isError = false;
+    },
+    canvasDataReceived: (canvas, action) => {
+      const canvasDataSchema = action.payload;
+      canvas.defaultData = canvasDataSchema;
+      canvas.userData = canvasDataSchema;
+      canvas.isLoading = false;
+      canvas.isError = false;
+    },
+    canvasDataRequestFailed: canvas => {
+      canvas.isLoading = false;
+      canvas.isError = true;
+    },
     canvasDataReset: canvas => {
       canvas.userData = canvas.defaultData;
     },
@@ -46,13 +52,13 @@ const slice = createSlice({
       canvas.userData.hasRedGrid = action.payload;
     },
     zoomedInn: canvas => {
-      const { zoomValue, zoomIncrement } = canvas;
+      const { zoomValue, zoomIncrement } = canvas.userData;
       const newZoomValue =
         zoomValue + zoomIncrement > 100 ? 100 : zoomValue + zoomIncrement;
       canvas.userData.zoomValue = newZoomValue;
     },
     zoomedOut: canvas => {
-      const { zoomValue, zoomIncrement } = canvas;
+      const { zoomValue, zoomIncrement } = canvas.userData;
       const newZoomValue =
         zoomValue - zoomIncrement <= 10 ? 10 : zoomValue - zoomIncrement;
       canvas.userData.zoomValue = newZoomValue;
@@ -89,6 +95,9 @@ const slice = createSlice({
 });
 
 const {
+  canvasDataRequested,
+  canvasDataReceived,
+  canvasDataRequestFailed,
   canvasSizeUpdated,
   zoomedOut,
   zoomedInn,
@@ -101,8 +110,25 @@ const {
 export default slice.reducer;
 
 // Action Creators
-//export const loadCanvasData = () => (dispatch, getState) => {};
-//from api
+const url = "/api/canvas/data";
+export const loadCanvasData = () => (dispatch, getState) => {
+  //less than 10 minutes. caching..
+  //const { lastFetch } = getState().crowds;
+  // const timerInMinutes = 10;
+
+  //const diffInMinutes = moment().diff(moment(lastFetch), "minutes");
+  //if (diffInMinutes < 10) return;
+
+  dispatch(
+    apiCallBegan({
+      url,
+      method: "get",
+      onStart: canvasDataRequested.type,
+      onSuccess: canvasDataReceived.type,
+      onError: canvasDataRequestFailed.type,
+    })
+  );
+};
 export const switchMode = bool => modeSwitched(bool);
 export const switchGrid = bool => gridSwitched(bool);
 export const switchLabel = bool => labelSwitched(bool);
@@ -113,29 +139,27 @@ export const updateCanvasSize = formData => canvasSizeUpdated(formData);
 export const resetCanvasData = () => canvasDataReset();
 
 // Selectors
-export const getUserData = state => state.canvas.userData;
+export const getCanvas = state => state.canvas;
+export const getCanvasData = state => state.canvas.userData;
+export const getLoading = createSelector(getCanvas, canvas => canvas.isLoading);
+export const getError = createSelector(getCanvas, canvas => canvas.isError);
 
-export const getMode = createSelector(
-  getUserData,
-  userData => userData.isEyepieceMode
+export const getMode = createSelector(getCanvasData, userData =>
+  calc.isValid(userData.isEyepieceMode) ? userData.isEyepieceMode : true
 );
 
-export const getHasGrid = createSelector(
-  getUserData,
-  userData => userData.hasGrid
+export const getHasGrid = createSelector(getCanvasData, userData =>
+  calc.isValid(userData.hasGrid) ? userData.hasGrid : true
 );
 
-export const getHasRedGrid = createSelector(
-  getUserData,
-  userData => userData.hasRedGrid
+export const getHasRedGrid = createSelector(getCanvasData, userData =>
+  calc.isValid(userData.hasRedGrid) ? userData.hasRedGrid : false
 );
 
-export const getHasLabels = createSelector(
-  getUserData,
-  userData => userData.hasLabels
+export const getHasLabels = createSelector(getCanvasData, userData =>
+  calc.isValid(userData.hasLabels) ? userData.hasLabels : true
 );
 
-export const getZoomValue = createSelector(
-  getUserData,
-  userData => userData.zoomValue
+export const getZoomValue = createSelector(getCanvasData, userData =>
+  calc.isValid(userData.zoomValue) ? userData.zoomValue : 50
 );

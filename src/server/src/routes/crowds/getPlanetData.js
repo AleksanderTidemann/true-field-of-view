@@ -22,7 +22,7 @@ const getPlanet = {
 };
 
 // returns a promise
-const getPlanetData = async planetSchema => {
+export const getPlanetData = async planetSchema => {
   const planetSchemaCopy = JSON.parse(JSON.stringify(planetSchema));
   const planetDataCopy = JSON.parse(JSON.stringify(planetSchema.data));
   const date = new Date();
@@ -49,5 +49,3 @@ const getPlanetData = async planetSchema => {
 
   return planetSchemaCopy;
 };
-
-export default getPlanetData;

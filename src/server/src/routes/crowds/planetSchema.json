@@ -1,0 +1,54 @@
+{
+  "key": "planets",
+  "data": [
+    {
+      "key": "mercury",
+      "auFromEarth": null,
+      "kmFromEarth": null,
+      "angularDiameterDeg": null,
+      "magnitude": null
+    },
+    {
+      "key": "venus",
+      "auFromEarth": null,
+      "kmFromEarth": null,
+      "angularDiameterDeg": null,
+      "magnitude": null
+    },
+    {
+      "key": "mars",
+      "auFromEarth": null,
+      "kmFromEarth": null,
+      "angularDiameterDeg": null,
+      "magnitude": null
+    },
+    {
+      "key": "jupiter",
+      "auFromEarth": null,
+      "kmFromEarth": null,
+      "angularDiameterDeg": null,
+      "magnitude": null
+    },
+    {
+      "key": "saturn",
+      "auFromEarth": null,
+      "kmFromEarth": null,
+      "angularDiameterDeg": null,
+      "magnitude": null
+    },
+    {
+      "key": "uranus",
+      "auFromEarth": null,
+      "kmFromEarth": null,
+      "angularDiameterDeg": null,
+      "magnitude": null
+    },
+    {
+      "key": "neptune",
+      "auFromEarth": null,
+      "kmFromEarth": null,
+      "angularDiameterDeg": null,
+      "magnitude": null
+    }
+  ]
+}

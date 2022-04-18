@@ -1,27 +1,23 @@
 import express from "express";
-import { planetSchema, earthMoonSchema } from "./schema.js";
-import getPlanetData from "./getPlanetData.js";
-import getEarthMoonData from "./getEarthMoonData.js";
+import { getPlanetData } from "./getPlanetData.js";
+import { getMoonData } from "./getMoonData.js";
 
-function getCrowdsRoute() {
+import planetSchema from "./planetSchema.json";
+import moonSchema from "./moonSchema.json";
+
+export const getCrowdsRoute = () => {
   const router = express.Router();
-  router.get("/", getData);
+  router.get("/data", getData);
   return router;
-}
+};
 
 const getData = async (req, res) => {
   // get the data
-  const planets = planetSchema;
-  const earthMoon = earthMoonSchema;
-
-  // get the data
-  const freshPlanets = await getPlanetData(planets);
-  const freshEarthMoon = await getEarthMoonData(earthMoon);
+  const freshPlanets = await getPlanetData(planetSchema);
+  const freshMoons = await getMoonData(moonSchema);
 
   // store them togehter
-  const newData = [freshPlanets, freshEarthMoon];
+  const newData = [freshPlanets, freshMoons];
 
   res.json(newData);
 };
-
-export { getCrowdsRoute };

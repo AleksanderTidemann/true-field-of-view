@@ -5,11 +5,11 @@ import PropTypes from "prop-types";
 import INFO_SCHEMA from "./infoDataSchema";
 
 import { useSelector } from "react-redux";
-import { getUserData } from "../../store/slices/canvasSlice";
+import { getCanvasData } from "../../store/slices/canvasSlice";
 import { getColors } from "../../store/slices/colorSlice";
 
 const FormInfo = ({ formData, isSubmit }) => {
-  const canvasData = useSelector(getUserData);
+  const canvasData = useSelector(getCanvasData);
   const colors = useSelector(getColors);
 
   const [infoData, setInfoData] = useState(INFO_SCHEMA);

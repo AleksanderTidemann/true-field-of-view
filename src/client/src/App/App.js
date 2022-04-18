@@ -2,15 +2,16 @@ import React, { useState, useEffect, useCallback } from "react";
 import ModeSwitcher from "../components/ModeSwitcher/ModeSwitcher";
 import FormSection from "../components/FormSection/FormSection";
 import FormInfo from "../components/FormInfo/FormInfo";
-import Forecast from "../components/Forecast/Forecast";
-import Canvas from "../components/Canvas/Canvas";
-import Selector from "../components/Selector/Selector";
+import ForecastButton from "../components/Forecast/ForecastButton";
 import CanvasOptions from "../components/CanvasOptions/CanvasOptions";
-import FORM_SCHEMA from "./formSchema";
+import SelectorPlaceholder from "../components/Selector/SelectorPlaceholder";
+import CanvasPlaceholder from "../components/Canvas/CanvasPlaceholder";
+import FORM_SCHEMA from "./formSchema.json";
 
 import { useDispatch, useSelector } from "react-redux";
 import { updateCanvasSize, getMode } from "../store/slices/canvasSlice";
 import { loadCrowdData } from "../store/slices/crowdsSlice";
+import { loadCanvasData } from "../store/slices/canvasSlice";
 
 const App = () => {
   const [formData, setFormData] = useState(FORM_SCHEMA);
@@ -22,7 +23,7 @@ const App = () => {
   // on mount, get the default canvasData from the server.
   useEffect(() => {
     dispatch(loadCrowdData());
-    // loadCanvasData()
+    dispatch(loadCanvasData());
   }, []);
 
   // runs on mount, and everytime the mode is switched
@@ -31,6 +32,7 @@ const App = () => {
     setSubmit(prevSubmit => (prevSubmit ? false : prevSubmit));
   }, [isEyepieceMode]);
 
+  // update the canvas Size and shape on formSubmit.
   useEffect(() => {
     if (isSubmit) {
       dispatch(updateCanvasSize(formData));
@@ -63,11 +65,11 @@ const App = () => {
       />
       <div className="d-flex">
         <FormInfo formData={formData} isSubmit={isSubmit} />
-        <Forecast />
+        <ForecastButton />
       </div>
       <CanvasOptions />
-      <Selector />
-      <Canvas />
+      <SelectorPlaceholder />
+      <CanvasPlaceholder />
     </div>
   );
 };
