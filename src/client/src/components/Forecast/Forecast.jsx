@@ -28,25 +28,25 @@ const Forecast = () => {
     setError(false);
     const fetchData = async () => {
       try {
-        const { lat, long } = await getLatLong();
-        const { area, country } = await getAreaCountry(lat, long);
-        const data = await getData(lat, long);
-        const { forecast, forecastTime, forecastDate } = filterData(
-          data.properties.timeseries
-        );
-        const symbol_code = forecast.data.next_6_hours.summary.symbol_code;
-        const temperature = forecast.data.instant.details.air_temperature;
+        // const { lat, long } = await getLatLong();
+        // const { area, country } = await getAreaCountry(lat, long);
+        // const data = await getData(lat, long);
+        // const { forecast, forecastTime, forecastDate } = filterData(
+        //   data.properties.timeseries
+        // );
+        // const symbol_code = forecast.data.next_6_hours.summary.symbol_code;
+        // const temperature = forecast.data.instant.details.air_temperature;
 
         // replace with getImgPath function
         const forecastImg = getImgPath("weather", symbol_code, ".png");
 
         setForecastData({
-          next6h_img: forecastImg,
-          next6h_temp: temperature,
-          area: area,
-          country: country,
-          current_date: forecastDate,
-          current_time: forecastTime,
+          //   next6h_img: forecastImg,
+          //   next6h_temp: temperature,
+          //   area: area,
+          //   country: country,
+          //   current_date: forecastDate,
+          //   current_time: forecastTime,
         });
         setIsLoading(false);
       } catch (error) {
@@ -54,7 +54,7 @@ const Forecast = () => {
         setError(true);
       }
     };
-    fetchData();
+    // fetchData();
   }, []);
 
   const borderStyle = () => {
