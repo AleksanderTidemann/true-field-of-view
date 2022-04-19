@@ -1,7 +1,8 @@
-# True Field of View : A Web Tool for Amateur Astronomers
+# True Field of View 
+### A web tool for amateur astronomers
 
 ```diff
-! a work in progress.. !
+! Under development... !
 ```
 
-A web application for calculating and visualizing the true field-of-view of celestial objects based on your current astronomy setup (telescope, camera, and eyepiece). Get valuable information about the precise angular and visual diameter of dedicated celestial objects (and their respective astronomical units), choose different visualization options, check tonight's forecast in your current location, select presets off the shelf, and much more.
+TFOV is a web application for calculating and visualizing the current true field-of-view (TFOV) of celestial objects based on different astronomy setups (telescopes, cameras, and eyepieces). Get valuable information about the precise angular and visual diameter of dedicated celestial objects (and their respective astronomical units), choose different visualization options, check tonight's local weather forecast, select presets off the shelf, and much more.
