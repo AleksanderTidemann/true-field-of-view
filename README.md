@@ -1,5 +1,4 @@
 # True Field of View 
-### A web tool for amateur astronomers
 
 ```diff
 ! Under development... !
