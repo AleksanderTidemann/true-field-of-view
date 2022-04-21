@@ -13,10 +13,10 @@ export const getAreaCountry = async (lat, long) => {
 const reverseGeocode = (lat, long) => {
   const url = "https://trueway-geocoding.p.rapidapi.com/ReverseGeocode";
   const options = {
-    params: { location: lat + "," + long, language: "en" },
+    params: { location: lat + "," + long },
     headers: {
       "X-RapidAPI-Host": "trueway-geocoding.p.rapidapi.com",
-      "X-RapidAPI-Key": rapid_api_key,
+      "X-RapidAPI-Key": "a2818f755dmshd33cce0135e90fdp15e85ejsn20915d56e974",
     },
   };
   return new Promise((resolve, reject) => {

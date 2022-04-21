@@ -10,8 +10,6 @@ import FORM_SCHEMA from "./formSchema.json";
 
 import { useDispatch, useSelector } from "react-redux";
 import { updateCanvasSize, getMode } from "../store/slices/canvasSlice";
-import { loadCrowdData } from "../store/slices/crowdsSlice";
-import { loadCanvasData } from "../store/slices/canvasSlice";
 
 const App = () => {
   const [formData, setFormData] = useState(FORM_SCHEMA);
@@ -20,16 +18,10 @@ const App = () => {
   const dispatch = useDispatch();
   const isEyepieceMode = useSelector(getMode);
 
-  // on mount, get the default canvasData from the server.
-  useEffect(() => {
-    dispatch(loadCrowdData());
-    dispatch(loadCanvasData());
-  }, []);
-
   // runs on mount, and everytime the mode is switched
   useEffect(() => {
     setFormData({ ...FORM_SCHEMA });
-    setSubmit(prevSubmit => (prevSubmit ? false : prevSubmit));
+    setSubmit((prevSubmit) => (prevSubmit ? false : prevSubmit));
   }, [isEyepieceMode]);
 
   // update the canvas Size and shape on formSubmit.
@@ -37,20 +29,20 @@ const App = () => {
     if (isSubmit) {
       dispatch(updateCanvasSize(formData));
     }
-  }, [isSubmit, formData]);
+  }, [isSubmit, formData, dispatch]);
 
   // using callBacks to avoid giving the components new func references on every render.
   const handleFormChange = useCallback((value, target) => {
-    setFormData(prevData => {
+    setFormData((prevData) => {
       let keyCopy = { ...prevData[target] };
       keyCopy.value = value;
       prevData[target] = keyCopy;
       return { ...prevData };
     });
-    setSubmit(prevSubmit => (prevSubmit ? false : prevSubmit));
+    setSubmit((prevSubmit) => (prevSubmit ? false : prevSubmit));
   }, []);
 
-  const handleFormSubmit = useCallback(value => {
+  const handleFormSubmit = useCallback((value) => {
     value.preventDefault();
     setSubmit(true);
   }, []);
