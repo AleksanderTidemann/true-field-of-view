@@ -20,7 +20,7 @@ const App = () => {
 
   // runs on mount, and everytime the mode is switched
   useEffect(() => {
-    setFormData({ ...FORM_SCHEMA });
+    setFormData({ ...FORM_SCHEMA }); // reset the formdata
     setSubmit(prevSubmit => (prevSubmit ? false : prevSubmit));
   }, [isEyepieceMode]);
 
