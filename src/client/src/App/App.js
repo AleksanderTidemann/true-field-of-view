@@ -24,7 +24,7 @@ const App = () => {
     setSubmit(prevSubmit => (prevSubmit ? false : prevSubmit));
   }, [isEyepieceMode]);
 
-  // update the canvas Size and shape on formSubmit.
+  // update the canvas Size and shape on formSubmit
   useEffect(() => {
     if (isSubmit) dispatch(updateCanvasSize(formData));
   }, [isSubmit, formData, dispatch]);
