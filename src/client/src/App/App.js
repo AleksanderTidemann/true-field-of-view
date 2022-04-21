@@ -21,28 +21,26 @@ const App = () => {
   // runs on mount, and everytime the mode is switched
   useEffect(() => {
     setFormData({ ...FORM_SCHEMA });
-    setSubmit((prevSubmit) => (prevSubmit ? false : prevSubmit));
+    setSubmit(prevSubmit => (prevSubmit ? false : prevSubmit));
   }, [isEyepieceMode]);
 
   // update the canvas Size and shape on formSubmit.
   useEffect(() => {
-    if (isSubmit) {
-      dispatch(updateCanvasSize(formData));
-    }
+    if (isSubmit) dispatch(updateCanvasSize(formData));
   }, [isSubmit, formData, dispatch]);
 
   // using callBacks to avoid giving the components new func references on every render.
   const handleFormChange = useCallback((value, target) => {
-    setFormData((prevData) => {
+    setFormData(prevData => {
       let keyCopy = { ...prevData[target] };
       keyCopy.value = value;
       prevData[target] = keyCopy;
       return { ...prevData };
     });
-    setSubmit((prevSubmit) => (prevSubmit ? false : prevSubmit));
+    setSubmit(prevSubmit => (prevSubmit ? false : prevSubmit));
   }, []);
 
-  const handleFormSubmit = useCallback((value) => {
+  const handleFormSubmit = useCallback(value => {
     value.preventDefault();
     setSubmit(true);
   }, []);

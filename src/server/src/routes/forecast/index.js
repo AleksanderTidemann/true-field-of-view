@@ -11,8 +11,11 @@ export const getForecastRoute = () => {
 const getData = async (req, res) => {
   const { lat, long } = req.body;
 
+  // Using RapidAPI for the reverse Geocoding:
+  // https://rapidapi.com
   const { area, country } = await getAreaCountry(lat, long);
 
+  // using the `https://api.met.no/weatherapi/" to get the forecast
   const response = await getForecast(lat, long);
   const data = response.data.properties.timeseries;
 

@@ -4,14 +4,14 @@
 # production
 **/build
 
-# keys
-**/rapid_api_key.js
-
-# misc
-**.DS_Store
+# Environment
+**.env
 **.env.local
 **.env.development.local
 **.env.test.local
 **.env.production.local
+
+# misc
+**.DS_Store
 
 npm-debug.log*

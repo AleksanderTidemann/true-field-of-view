@@ -19,7 +19,7 @@ const slice = createSlice({
     userData: {},
   },
   reducers: {
-    canvasDataRequested: (canvas) => {
+    canvasDataRequested: canvas => {
       canvas.isLoading = true;
       canvas.isError = false;
     },
@@ -30,11 +30,11 @@ const slice = createSlice({
       canvas.isLoading = false;
       canvas.isError = false;
     },
-    canvasDataRequestFailed: (canvas) => {
+    canvasDataRequestFailed: canvas => {
       canvas.isLoading = false;
       canvas.isError = true;
     },
-    canvasDataReset: (canvas) => {
+    canvasDataReset: canvas => {
       canvas.userData = canvas.defaultData;
     },
     modeSwitched: (canvas, action) => {
@@ -52,13 +52,13 @@ const slice = createSlice({
     redGridSwitched: (canvas, action) => {
       canvas.userData.hasRedGrid = action.payload;
     },
-    zoomedInn: (canvas) => {
+    zoomedInn: canvas => {
       const { zoomValue, zoomIncrement } = canvas.userData;
       const newZoomValue =
         zoomValue + zoomIncrement > 100 ? 100 : zoomValue + zoomIncrement;
       canvas.userData.zoomValue = newZoomValue;
     },
-    zoomedOut: (canvas) => {
+    zoomedOut: canvas => {
       const { zoomValue, zoomIncrement } = canvas.userData;
       const newZoomValue =
         zoomValue - zoomIncrement <= 10 ? 10 : zoomValue - zoomIncrement;
@@ -130,45 +130,42 @@ export const loadCanvasData = () => (dispatch, getState) => {
     })
   );
 };
-export const switchMode = (bool) => modeSwitched(bool);
-export const switchGrid = (bool) => gridSwitched(bool);
-export const switchLabel = (bool) => labelSwitched(bool);
-export const switchRedGrid = (bool) => redGridSwitched(bool);
+export const switchMode = bool => modeSwitched(bool);
+export const switchGrid = bool => gridSwitched(bool);
+export const switchLabel = bool => labelSwitched(bool);
+export const switchRedGrid = bool => redGridSwitched(bool);
 export const zoomInn = () => zoomedInn();
 export const zoomOut = () => zoomedOut();
-export const updateCanvasSize = (formData) => canvasSizeUpdated(formData);
+export const updateCanvasSize = formData => canvasSizeUpdated(formData);
 export const resetCanvasData = () => canvasDataReset();
 
 // Selectors
-export const getCanvas = (state) => state.canvas;
-export const getCanvasData = (state) => state.canvas.userData;
-export const getLoading = createSelector(
-  getCanvas,
-  (canvas) => canvas.isLoading
-);
-export const getError = createSelector(getCanvas, (canvas) => canvas.isError);
+export const getCanvas = state => state.canvas;
+export const getCanvasData = state => state.canvas.userData;
+export const getLoading = createSelector(getCanvas, canvas => canvas.isLoading);
+export const getError = createSelector(getCanvas, canvas => canvas.isError);
 
 export const getMode = createSelector(
   getCanvasData,
-  (userData) => userData.isEyepieceMode
+  userData => userData.isEyepieceMode
 );
 
 export const getHasGrid = createSelector(
   getCanvasData,
-  (userData) => userData.hasGrid
+  userData => userData.hasGrid
 );
 
 export const getHasRedGrid = createSelector(
   getCanvasData,
-  (userData) => userData.hasRedGrid
+  userData => userData.hasRedGrid
 );
 
 export const getHasLabels = createSelector(
   getCanvasData,
-  (userData) => userData.hasLabels
+  userData => userData.hasLabels
 );
 
 export const getZoomValue = createSelector(
   getCanvasData,
-  (userData) => userData.zoomValue
+  userData => userData.zoomValue
 );

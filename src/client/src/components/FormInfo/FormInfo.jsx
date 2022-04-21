@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import FormInfoInput from "./FormInfoInput";
 import * as calc from "../../utils/calc";
 import PropTypes from "prop-types";
-import INFO_SCHEMA from "./infoDataSchema";
+import INFO_SCHEMA from "./infoDataSchema.json";
 
 import { useSelector } from "react-redux";
 import { getCanvasData } from "../../store/slices/canvasSlice";

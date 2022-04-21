@@ -1,5 +1,4 @@
 import axios from "axios";
-import rapid_api_key from "./rapid_api_key";
 
 export const getAreaCountry = async (lat, long) => {
   const response = await reverseGeocode(lat, long);
@@ -16,7 +15,7 @@ const reverseGeocode = (lat, long) => {
     params: { location: lat + "," + long },
     headers: {
       "X-RapidAPI-Host": "trueway-geocoding.p.rapidapi.com",
-      "X-RapidAPI-Key": "a2818f755dmshd33cce0135e90fdp15e85ejsn20915d56e974",
+      "X-RapidAPI-Key": process.env.RAPID_API_KEY,
     },
   };
   return new Promise((resolve, reject) => {
