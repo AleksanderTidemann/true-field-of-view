@@ -1,9 +1,12 @@
 import express from "express";
+import bodyParser from "body-parser";
 import "express-async-errors";
 import { getRoutes } from "./routes";
 
 function startServer(port) {
   const app = express();
+
+  app.use(bodyParser.json());
 
   // I mount my entire app to the /api route
   app.use("/api", getRoutes());
@@ -14,14 +17,14 @@ function startServer(port) {
   // I prefer dealing with promises. It makes testing easier, among other things.
   // So this block of code allows me to start the express app and resolve the
   // promise with the express server
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const server = app.listen(port, () => {
       console.log(`Listening on port ${server.address().port}`);
 
       // this block of code turns `server.close` into a promise API
       const originalClose = server.close.bind(server);
       server.close = () => {
-        return new Promise(resolveClose => {
+        return new Promise((resolveClose) => {
           originalClose(resolveClose);
         });
       };
@@ -63,7 +66,7 @@ function setupCloseOnExit(server) {
       .then(() => {
         console.log("Server successfully closed");
       })
-      .catch(e => {
+      .catch((e) => {
         console.log("Something went wrong closing the server", e.stack);
       });
 

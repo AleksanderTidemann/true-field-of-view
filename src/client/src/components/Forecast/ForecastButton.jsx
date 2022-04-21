@@ -1,14 +1,33 @@
 import React, { useState } from "react";
+import { Button } from "@mui/material";
 import { useSelector } from "react-redux";
 import { getColors } from "../../store/slices/colorSlice";
-import { Button } from "@mui/material";
 import { getMode } from "../../store/slices/canvasSlice";
+import getUserCoords from "./getUserCoords";
 import ForecastPlaceholder from "./ForecastPlaceholder";
+
+const btnFontSize = "9px";
 
 const ForecastButton = () => {
   const colors = useSelector(getColors);
   const isEyepieceMode = useSelector(getMode);
-  const [buttonState, setButtonState] = useState(false);
+  const [buttonClick, setButtonClick] = useState(false);
+  const [userCoords, setUserCoords] = useState({});
+
+  const handleClick = () => {
+    const getGeolocation = async () => {
+      try {
+        const { lat, long } = await getUserCoords();
+        setUserCoords({ lat, long });
+        setButtonClick(true);
+      } catch (error) {
+        console.log(error.message);
+        setButtonClick(false);
+        setUserCoords({});
+      }
+    };
+    getGeolocation();
+  };
 
   return (
     <div
@@ -17,15 +36,15 @@ const ForecastButton = () => {
       }
     >
       <div className="form-label-group mb-0 mt-2 justify-content-center">
-        {buttonState ? (
-          <ForecastPlaceholder />
+        {buttonClick ? (
+          <ForecastPlaceholder userCoords={userCoords} />
         ) : (
           <Button
-            onClick={() => setButtonState(prevState => !prevState)}
+            onClick={handleClick}
             variant="contained"
             color={isEyepieceMode ? colors.eyepieceMode : colors.cameraMode}
             size="small"
-            style={{ fontSize: "9px" }}
+            style={{ fontSize: btnFontSize }}
           >
             Get Local Forecast
           </Button>

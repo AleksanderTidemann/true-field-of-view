@@ -5,13 +5,6 @@ export const ANGULAR_MEASUREMENT_LABELS = [
 ];
 export const PLOTDIVISOR = 6;
 
-// when waiting for data to arrive from server
-// we make sure the selectors in the store always deliver valid values
-export const isValid = val => {
-  if (typeof val !== "undefined" && typeof val !== null) return true;
-  return false;
-};
-
 // for loading images from img folder in Selector and Canvas
 export const getImgPath = (folderName, filename, extension) => {
   const pathToFolder = "./img/";
@@ -76,7 +69,7 @@ export function getAspectRatio(resX, resY) {
       if (aspectY % i === 0) factorY.push(i);
     }
     if (factorY.length && factorX.length) {
-      const commonFactors = factorX.filter(n => factorY.indexOf(n) !== -1);
+      const commonFactors = factorX.filter((n) => factorY.indexOf(n) !== -1);
       const greatestCommonFactor = Math.max(...commonFactors);
       aspectX /= greatestCommonFactor;
       aspectY /= greatestCommonFactor;

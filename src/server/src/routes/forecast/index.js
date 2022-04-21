@@ -2,22 +2,17 @@ import express from "express";
 import { getForecast, filterForecast } from "./getForecast";
 import { getAreaCountry } from "./getAreaCountry";
 
-// receives an object with from client:
-// {
-//     lat : something,
-//     long : something
-// }
-
 export const getForecastRoute = () => {
   const router = express.Router();
-  router.get("/data", getData);
+  router.post("/data", getData);
   return router;
 };
 
 const getData = async (req, res) => {
-  const { lat, long } = req.query;
+  const { lat, long } = req.body;
 
   const { area, country } = await getAreaCountry(lat, long);
+
   const response = await getForecast(lat, long);
   const data = response.data.properties.timeseries;
 
