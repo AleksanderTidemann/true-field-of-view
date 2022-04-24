@@ -111,7 +111,7 @@ const {
 export default slice.reducer;
 
 // Action Creators
-const url = "/canvas/data";
+export const url = "/canvas/data";
 export const loadCanvasData = () => (dispatch, getState) => {
   //less than 10 minutes. caching..
   //const { lastFetch } = getState().crowds;
@@ -120,7 +120,7 @@ export const loadCanvasData = () => (dispatch, getState) => {
   //const diffInMinutes = moment().diff(moment(lastFetch), "minutes");
   //if (diffInMinutes < 10) return;
 
-  dispatch(
+  return dispatch(
     apiCallBegan({
       url,
       method: "get",
