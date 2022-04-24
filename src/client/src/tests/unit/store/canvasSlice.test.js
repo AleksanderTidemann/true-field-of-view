@@ -21,51 +21,34 @@ describe("canvasSlice", () => {
     defaultData: {},
     userData: {},
   });
-  // the data that is returned from the server:
-  const createSchema = () => ({
-    isEyepieceMode: true,
-    hasGrid: true,
-    hasRedGrid: false,
-    hasLabels: true,
-    redGridFactor: 6,
-    zoomValue: 50,
-    zoomIncrement: 10,
-    plotSizeX: 20,
-    plotSizeY: 20,
-    angularUnit: "Minutes of Arc",
-  });
 
   // ACTIONS
   describe("loading canvas data", () => {
-    it("should add schema to defaultData and userData if it's saved to the server.", async () => {
+    it("should add same data to defaultData and userData if it's saved to the server.", async () => {
       // ARRANGE
-      const schema = createSchema();
-      const expectedResult = createCanvasSlice();
-      expectedResult.userData = { ...schema };
-      expectedResult.defaultData = { ...schema };
-
+      const schema = { id: 1 };
       fakeAxios.onGet(cs.url).reply(success, schema);
       // ACT
       await store.dispatch(cs.loadCanvasData());
       // ASSERT
-      expect(canvasSlice()).toEqual(expectedResult);
+      expect(canvasSlice().userData).toMatchObject(schema);
+      expect(canvasSlice().defaultData).toMatchObject(schema);
     });
     it("should not add schema to defaultData and userData if's not saved to the server", async () => {
       // ARRANGE
-      const expectedResult = createCanvasSlice();
-      expectedResult.isError = true;
-      fakeAxios.onGet(cs.url).reply(error);
+      const schema = { id: 1 };
+      fakeAxios.onGet(cs.url).reply(error, schema);
       // ACT
       await store.dispatch(cs.loadCanvasData());
       // ASSERT
-      expect(canvasSlice()).toEqual(expectedResult);
+      expect(canvasSlice().userData).toMatchObject({});
+      expect(canvasSlice().defaultData).toMatchObject({});
     });
 
     describe("error indicator", () => {
       it("should be false if server responds with success", async () => {
         // ARRANGE
-        const newData = createSchema();
-        fakeAxios.onGet(cs.url).reply(success, newData);
+        fakeAxios.onGet(cs.url).reply(success);
         // ACT
         await store.dispatch(cs.loadCanvasData());
         // ASSERT
@@ -73,13 +56,11 @@ describe("canvasSlice", () => {
       });
       it("should be false while fetching data from server", async () => {
         // ARRANGE
-        const newData = createSchema();
         fakeAxios.onGet(cs.url).reply(() => {
           // ASSERT
           expect(canvasSlice().isError).toBe(false);
-          return [success, newData];
+          return [success];
         });
-
         // ACT
         await store.dispatch(cs.loadCanvasData());
       });
@@ -128,10 +109,8 @@ describe("canvasSlice", () => {
     it("should toggle isEyepieceMode in defaultData and userData", async () => {
       // ARRANGE
       const mode = true;
-      const state = createCanvasSlice();
-      state.userData.isEyepieceMode = mode;
-      state.defaultData.isEyepieceMode = mode;
-      fakeAxios.onGet(cs.url).reply(success, state);
+      const schema = { isEyepieceMode: true };
+      fakeAxios.onGet(cs.url).reply(success, schema);
       // ACT
       await store.dispatch(cs.loadCanvasData());
       store.dispatch(cs.switchMode(!mode));
@@ -145,10 +124,9 @@ describe("canvasSlice", () => {
   describe("switching grid", () => {
     it("should toggle hasGrid in userData", async () => {
       // ARRANGE
-      const mode = false;
-      const state = createCanvasSlice();
-      state.userData.hasGrid = mode;
-      fakeAxios.onGet(cs.url).reply(success, state);
+      const mode = true;
+      const schema = { hasGrid: mode };
+      fakeAxios.onGet(cs.url).reply(success, schema);
 
       // ACT
       await store.dispatch(cs.loadCanvasData());
@@ -159,10 +137,8 @@ describe("canvasSlice", () => {
     it("should make hasRedGrid false if hasGrid is false in userData", async () => {
       // ARRANGE
       const mode = true;
-      const state = createCanvasSlice();
-      state.userData.hasGrid = mode;
-      state.userData.hasRedGrid = mode;
-      fakeAxios.onGet(cs.url).reply(success, state);
+      const schema = { hasGrid: mode, hasRedGrid: mode };
+      fakeAxios.onGet(cs.url).reply(success, schema);
       // ACT
       await store.dispatch(cs.loadCanvasData());
       store.dispatch(cs.switchGrid(!mode));
@@ -175,9 +151,8 @@ describe("canvasSlice", () => {
   describe("switching reduced gridlines", () => {
     it("should toggle hasRedGrid in userData", async () => {
       const mode = false;
-      const state = createCanvasSlice();
-      state.userData.hasRedGrid = mode;
-      fakeAxios.onGet(cs.url).reply(success, state);
+      const schema = { hasRedGrid: mode };
+      fakeAxios.onGet(cs.url).reply(success, schema);
 
       await store.dispatch(cs.loadCanvasData());
       store.dispatch(cs.switchRedGrid(!mode));
@@ -186,13 +161,12 @@ describe("canvasSlice", () => {
     });
   });
 
-  // switchLabel
+  // switchLabel()
   describe("switching label", () => {
     it("should toggle hasLabels in userData", async () => {
       const mode = true;
-      const state = createCanvasSlice();
-      state.userData.hasLabels = mode;
-      fakeAxios.onGet(cs.url).reply(success, state);
+      const schema = { hasLabels: mode };
+      fakeAxios.onGet(cs.url).reply(success, schema);
 
       await store.dispatch(cs.loadCanvasData());
       store.dispatch(cs.switchLabel(!mode));
@@ -201,21 +175,63 @@ describe("canvasSlice", () => {
     });
   });
 
+  // zoomInn()
   describe("zooming inn", () => {
-    it("should increment zoomValue in userData by the zoomIncrement", () => {
-      const state = createCanvasSlice();
-      state.userData.zoomIncrement = 10;
-      state.userData.zoomValue = 50;
+    it("should increment zoomValue by the zoomIncrement in userData", async () => {
+      const inc = 10;
+      const val = 50;
+      const expectedResult = val + inc;
+      const schema = { zoomIncrement: inc, zoomValue: val };
+      fakeAxios.onGet(cs.url).reply(success, schema);
 
+      await store.dispatch(cs.loadCanvasData());
       store.dispatch(cs.zoomInn());
 
-      //   expect(canvasSlice().userData.hasLabels).toBe(true);
+      expect(canvasSlice().userData.zoomValue).toBe(expectedResult);
     });
-    it("should set zoomValue in userData to 100% if increment renders zoomValue higher than 100", () => {});
+    it("should not have a zoomValue greater than 100", async () => {
+      const inc = 10;
+      const val = 95;
+      const expectedResult = 100;
+      const schema = { zoomIncrement: inc, zoomValue: val };
+      fakeAxios.onGet(cs.url).reply(success, schema);
+
+      await store.dispatch(cs.loadCanvasData());
+      store.dispatch(cs.zoomInn());
+
+      expect(canvasSlice().userData.zoomValue).toBe(expectedResult);
+    });
   });
 
-  // zoomInn
-  // zoomOut
-  // updateCanvasSize
-  // resetCanvasData
+  // zoomOut()
+  describe("zooming out", () => {
+    it("should de-increment zoomValue by the zoomIncrement in userData", async () => {
+      const val = 50;
+      const inc = 10;
+      const expectedResult = val - inc;
+      const schema = { zoomIncrement: inc, zoomValue: val };
+      fakeAxios.onGet(cs.url).reply(success, schema);
+
+      await store.dispatch(cs.loadCanvasData());
+      store.dispatch(cs.zoomOut());
+
+      expect(canvasSlice().userData.zoomValue).toBe(expectedResult);
+    });
+    it("should not have zoomValue less than 10", async () => {
+      const val = 15;
+      const inc = 10;
+      const expectedResult = 10;
+      const schema = { zoomIncrement: inc, zoomValue: val };
+      fakeAxios.onGet(cs.url).reply(success, schema);
+
+      await store.dispatch(cs.loadCanvasData());
+      store.dispatch(cs.zoomOut());
+
+      expect(canvasSlice().userData.zoomValue).toBe(expectedResult);
+    });
+  });
+
+  // updateCanvasSize()
+
+  // resetCanvasData()
 });
