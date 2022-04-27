@@ -1,5 +1,6 @@
 import * as calc from "../../../utils/calc";
 
+// Calculate the RELATIVE width of the bodies we draw in the canvas.
 export function drawCanvasBody(
   context,
   plotSizeX,

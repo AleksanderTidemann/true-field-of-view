@@ -1,6 +1,7 @@
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import * as cs from "../../../store/slices/canvasSlice";
+import { mockFormData } from "../../utils/testdata";
 import configureStore from "../../../store/configureStore";
 
 describe("canvasSlice", () => {
@@ -14,13 +15,6 @@ describe("canvasSlice", () => {
   });
 
   const canvasSlice = () => store.getState().canvas;
-  const createCanvasSlice = () => ({
-    lastFetch: 0,
-    isLoading: false,
-    isError: false,
-    defaultData: {},
-    userData: {},
-  });
 
   // ACTIONS
   describe("loading canvas data", () => {
@@ -231,7 +225,41 @@ describe("canvasSlice", () => {
     });
   });
 
-  // updateCanvasSize()
+  // updateEyeCanvas()
+  // updateCamCanvas()
+  describe("update canvas size", () => {
+    it("should produce correct plotsize x, y, and angular unit from eyepiece formData", async () => {
+      const { formData, eyeResult } = mockFormData();
+      const schema = { plotSizeX: 0, plotSizeY: 0, angularUnit: "" };
+      fakeAxios.onGet(cs.url).reply(success, schema);
+
+      await store.dispatch(cs.loadCanvasData());
+      store.dispatch(cs.updateEyeCanvas(formData));
+
+      expect(canvasSlice().userData).toMatchObject(eyeResult);
+    });
+    it("should produce correct plotsize x, y, and angular unit from camera formdata", async () => {
+      const { formData, camResult } = mockFormData();
+      const schema = { plotSizeX: 0, plotSizeY: 0, angularUnit: "" };
+      fakeAxios.onGet(cs.url).reply(success, schema);
+
+      await store.dispatch(cs.loadCanvasData());
+      store.dispatch(cs.updateCamCanvas(formData));
+
+      expect(canvasSlice().userData).toMatchObject(camResult);
+    });
+  });
 
   // resetCanvasData()
+  it("should overwrite the userData with the default data", async () => {
+    const schema = { isEyepieceMode: true, hasLabels: true };
+    fakeAxios.onGet(cs.url).reply(success, schema);
+
+    await store.dispatch(cs.loadCanvasData());
+    store.dispatch(cs.switchLabel(false));
+    store.dispatch(cs.switchMode(false));
+    store.dispatch(cs.resetCanvasData());
+
+    expect(canvasSlice().defaultData).toMatchObject(canvasSlice().userData);
+  });
 });

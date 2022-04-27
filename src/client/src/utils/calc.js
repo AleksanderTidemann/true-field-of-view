@@ -69,7 +69,7 @@ export function getAspectRatio(resX, resY) {
       if (aspectY % i === 0) factorY.push(i);
     }
     if (factorY.length && factorX.length) {
-      const commonFactors = factorX.filter((n) => factorY.indexOf(n) !== -1);
+      const commonFactors = factorX.filter(n => factorY.indexOf(n) !== -1);
       const greatestCommonFactor = Math.max(...commonFactors);
       aspectX /= greatestCommonFactor;
       aspectY /= greatestCommonFactor;
@@ -140,9 +140,9 @@ export function getChipSize(resX, resY, micronssquared) {
   return chipSize;
 }
 
-// formInfo
-export function getTrueFOVdeg(afov, mag) {
-  // This output is a FOV unit in degrees.
+// Returns a unit TFOV in degrees based on the apparent-FOV of an eyepiece
+// and the magnification of the telescope+eyepiece setup. afov / magnification.
+export function getTFOVdeg(afov, mag) {
   const a = Number(afov) <= 0 ? 1 : Number(afov);
   const m = Number(mag) <= 0 ? 1 : Number(mag);
   return a / m;
@@ -154,25 +154,23 @@ export function getFlength(flength, barlow) {
   return f;
 }
 
+// convert microns into mm
+// Calculate the mm size of one side of the camera sensor (X or Y)
+// based on resolution (f.instace 640) and chipsize (microns squared)
 export function mic2mm(resolution, micronssquared) {
-  // convert microns into mm
-  // Calculate the mm size of one side of the camera sensor (X or Y)
-  // based on resolution (f.instace 640) and chipsize (microns squared)
   let sensorMM = Number(Math.sqrt(micronssquared) / 1000) * Number(resolution);
   sensorMM = Math.round(sensorMM * 10) / 10;
 
   return sensorMM;
 }
 
+// return the FOV in radians based on the sensor size (in milimeters) divided by the telescop focal length (inc barlow).
 export function sensor2rad(sensorMM, flength) {
-  // get the FOV of specifc camera sensor in radians
-  // the unit FOV is the sensor size divided by the focal length.
-  // this gives the FOV in radians.
   return sensorMM / flength;
 }
 
+// convert from radians to degrees
 export function rad2deg(radians) {
-  // convert from radians to degrees
   return radians * (180 / Math.PI);
 }
 
@@ -198,10 +196,10 @@ export function deg2arcsec(deg) {
   return deg * 3600;
 }
 
+// convert from degrees to arc minutes (two sides) and
+// check what the best unit is for our canvas.
+// Take the "longest" side as our reference.
 export function deg2unitCam(degX, degY) {
-  // convert from degrees to arc minutes (two sides) and
-  // check what the best unit is for our canvas.
-  // Take the "longest" side as our reference.
   const result = degX - degY;
   const preferedRef = result > 0 ? degX : degY;
   const arcminRef = preferedRef * 60;
@@ -215,8 +213,8 @@ export function deg2unitCam(degX, degY) {
   }
 }
 
+// check what the best angular unit is for our canvas in eyepiece mode
 export function deg2unitEye(deg) {
-  // check what the best angular unit is for our canvas in eyepiece mode
   const arcminRef = deg * 60;
   if (arcminRef > 60) {
     return ANGULAR_MEASUREMENT_LABELS[0]; // degrees
@@ -227,9 +225,8 @@ export function deg2unitEye(deg) {
   }
 }
 
-// drawCanvasBody
+// convert angular values from degrees to arcmin or arcsec based on prefered unit.
 export function unit2ang(deg, unit) {
-  // convert angular values from degrees to arcmin or arcsec based on prefered unit.
   switch (unit) {
     case ANGULAR_MEASUREMENT_LABELS[0]:
       return deg;
@@ -241,21 +238,28 @@ export function unit2ang(deg, unit) {
   }
 }
 
+// return only numbers above 0
+export function numberify(val) {
+  return Number(val) <= 0 ? 0 : Number(val);
+}
+
+// returns an object that is used to draw the canvas
+// plotSizeX andY are FOV units in degrees, arc min or arc sec * the plotdivisor
 export function getCanvasObject(angUnit, degX, degY) {
   switch (angUnit) {
-    case ANGULAR_MEASUREMENT_LABELS[0]:
+    case ANGULAR_MEASUREMENT_LABELS[0]: // degrees
       return {
         plotSizeX: Math.round(degX * PLOTDIVISOR),
         plotSizeY: Math.round(degY * PLOTDIVISOR),
         angularUnit: ANGULAR_MEASUREMENT_LABELS[0],
       };
-    case ANGULAR_MEASUREMENT_LABELS[1]:
+    case ANGULAR_MEASUREMENT_LABELS[1]: // arc minutes
       return {
         plotSizeX: Math.round(deg2arcmin(degX) * PLOTDIVISOR),
         plotSizeY: Math.round(deg2arcmin(degY) * PLOTDIVISOR),
         angularUnit: ANGULAR_MEASUREMENT_LABELS[1],
       };
-    case ANGULAR_MEASUREMENT_LABELS[2]:
+    case ANGULAR_MEASUREMENT_LABELS[2]: // arc seconds
       return {
         plotSizeX: Math.round(deg2arcsec(degX)),
         plotSizeY: Math.round(deg2arcsec(degY)),
@@ -265,11 +269,7 @@ export function getCanvasObject(angUnit, degX, degY) {
   }
 }
 
-export function numberify(val) {
-  // return only numbers above 0
-  return Number(val) <= 0 ? 0 : Number(val);
-}
-
+// calculate the tfov (in degrees) and canvas size (x, y) from the user-specified camera sensor
 export function cam2canvas(
   pixelsizevalue,
   resolutionxvalue,
@@ -277,17 +277,15 @@ export function cam2canvas(
   focallenghtvalue,
   barlowvalue
 ) {
-  // calculate the tfov (in degrees) from the size of our camera sensor
-  const flength = getFlength(focallenghtvalue, barlowvalue);
+  const flength = getFlength(focallenghtvalue, barlowvalue); // telescop focal length
 
-  const sensorXsizeMM = mic2mm(resolutionxvalue, pixelsizevalue);
-  const sensorYsizeMM = mic2mm(resolutionyvalue, pixelsizevalue);
-  const fovXrad = sensor2rad(sensorXsizeMM, flength);
-  const fovYrad = sensor2rad(sensorYsizeMM, flength);
-
-  const fovXdeg = rad2deg(fovXrad);
-  const fovYdeg = rad2deg(fovYrad);
-  const preferedUnit = deg2unitCam(fovXdeg, fovYdeg);
+  const sensorXsizeMM = mic2mm(resolutionxvalue, pixelsizevalue); // microns 2 milimeters
+  const sensorYsizeMM = mic2mm(resolutionyvalue, pixelsizevalue); // microns 2 milimeters
+  const fovXrad = sensor2rad(sensorXsizeMM, flength); //sensor 2 radians (fov)
+  const fovYrad = sensor2rad(sensorYsizeMM, flength); //sensor 2 radians (fov)
+  const fovXdeg = rad2deg(fovXrad); // radians 2 degrees
+  const fovYdeg = rad2deg(fovYrad); // radians 2 degrees
+  const preferedUnit = deg2unitCam(fovXdeg, fovYdeg); // degrees 2 unit (arc minutes, seconds or degrees)
 
   return getCanvasObject(preferedUnit, fovXdeg, fovYdeg);
 }
@@ -299,10 +297,10 @@ export function eye2canvas(
   barlowvalue
 ) {
   // calculate the tfov of or eyepiece from the eyepiece afov, focal length and scope specifics
-  const flength_scope = getFlength(focallenghtvalue, barlowvalue);
-  const mag = getMag(flength_scope, eyepiecefocallengthvalue);
-  const tFovDeg = getTrueFOVdeg(eyepieceafovvalue, Number(mag));
-  const preferedUnit = deg2unitEye(tFovDeg);
+  const flength_scope = getFlength(focallenghtvalue, barlowvalue); // get telescope focal length
+  const mag = getMag(flength_scope, eyepiecefocallengthvalue); // get magnification
+  const tFovDeg = getTFOVdeg(eyepieceafovvalue, Number(mag)); // get TFOV in degrees
+  const preferedUnit = deg2unitEye(tFovDeg); // degrees 2 unit (arc minutes, seconds or degrees)
 
   return getCanvasObject(preferedUnit, tFovDeg, tFovDeg);
 }

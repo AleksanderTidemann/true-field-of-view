@@ -64,29 +64,34 @@ const slice = createSlice({
         zoomValue - zoomIncrement <= 10 ? 10 : zoomValue - zoomIncrement;
       canvas.userData.zoomValue = newZoomValue;
     },
-    canvasSizeUpdated: (canvas, action) => {
+    eyeCanvasUpdated: (canvas, action) => {
       //payload is formData
       const { eyepieceafov, eyepiecefocallength, focallength, barlow } =
         action.payload;
-      const { pixelsize, resolutionx, resolutiony } = action.payload;
-      let newCanvasSize = [];
 
-      if (canvas.userData.isEyepieceMode) {
-        let eyeAFOV = calc.numberify(eyepieceafov.value);
-        let eyeFL = calc.numberify(eyepiecefocallength.value);
-        let fl = calc.numberify(focallength.value);
-        let b = calc.numberify(barlow.value);
+      let eyeAFOV = calc.numberify(eyepieceafov.value);
+      let eyeFL = calc.numberify(eyepiecefocallength.value);
+      let fl = calc.numberify(focallength.value);
+      let b = calc.numberify(barlow.value);
 
-        newCanvasSize = calc.eye2canvas(eyeAFOV, eyeFL, fl, b);
-      } else {
-        let pxS = calc.numberify(pixelsize.value);
-        let resX = calc.numberify(resolutionx.value);
-        let resY = calc.numberify(resolutiony.value);
-        let fl = calc.numberify(focallength.value);
-        let b = calc.numberify(barlow.value);
+      let newCanvasSize = calc.eye2canvas(eyeAFOV, eyeFL, fl, b);
 
-        newCanvasSize = calc.cam2canvas(pxS, resX, resY, fl, b);
-      }
+      canvas.userData.plotSizeX = newCanvasSize.plotSizeX;
+      canvas.userData.plotSizeY = newCanvasSize.plotSizeY;
+      canvas.userData.angularUnit = newCanvasSize.angularUnit;
+    },
+    camCanvasUpdated: (canvas, action) => {
+      //payload is formData
+      const { focallength, barlow, pixelsize, resolutionx, resolutiony } =
+        action.payload;
+
+      let pxS = calc.numberify(pixelsize.value);
+      let resX = calc.numberify(resolutionx.value);
+      let resY = calc.numberify(resolutiony.value);
+      let fl = calc.numberify(focallength.value);
+      let b = calc.numberify(barlow.value);
+
+      let newCanvasSize = calc.cam2canvas(pxS, resX, resY, fl, b);
 
       canvas.userData.plotSizeX = newCanvasSize.plotSizeX;
       canvas.userData.plotSizeY = newCanvasSize.plotSizeY;
@@ -99,7 +104,8 @@ const {
   canvasDataRequested,
   canvasDataReceived,
   canvasDataRequestFailed,
-  canvasSizeUpdated,
+  eyeCanvasUpdated,
+  camCanvasUpdated,
   zoomedOut,
   zoomedInn,
   redGridSwitched,
@@ -136,7 +142,8 @@ export const switchLabel = bool => labelSwitched(bool);
 export const switchRedGrid = bool => redGridSwitched(bool);
 export const zoomInn = () => zoomedInn();
 export const zoomOut = () => zoomedOut();
-export const updateCanvasSize = formData => canvasSizeUpdated(formData);
+export const updateEyeCanvas = formData => eyeCanvasUpdated(formData);
+export const updateCamCanvas = formData => camCanvasUpdated(formData);
 export const resetCanvasData = () => canvasDataReset();
 
 // Selectors

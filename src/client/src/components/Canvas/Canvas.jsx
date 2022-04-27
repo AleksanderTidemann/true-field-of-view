@@ -21,7 +21,7 @@ import {
 import { getColors } from "../../store/slices/colorSlice.js";
 
 const DEFAULT_FONT = "Arial";
-const DEFAULT_LABELSIZE = 60;
+const DEFAULT_LABELSIZE = 50;
 const DEFAULT_NUMBERSIZE = 40;
 const DEFAULT_OFFSET = 5;
 

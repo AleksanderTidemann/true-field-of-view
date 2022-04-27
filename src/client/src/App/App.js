@@ -6,10 +6,14 @@ import ForecastButton from "../components/Forecast/ForecastButton";
 import CanvasOptions from "../components/CanvasOptions/CanvasOptions";
 import SelectorPlaceholder from "../components/Selector/SelectorPlaceholder";
 import CanvasPlaceholder from "../components/Canvas/CanvasPlaceholder";
-import FORM_SCHEMA from "./formSchema.json";
+import FORM_SCHEMA from "./formDataSchema.json";
 
 import { useDispatch, useSelector } from "react-redux";
-import { updateCanvasSize, getMode } from "../store/slices/canvasSlice";
+import {
+  updateEyeCanvas,
+  updateCamCanvas,
+  getMode,
+} from "../store/slices/canvasSlice";
 
 const App = () => {
   const [formData, setFormData] = useState(FORM_SCHEMA);
@@ -24,10 +28,14 @@ const App = () => {
     setSubmit(prevSubmit => (prevSubmit ? false : prevSubmit));
   }, [isEyepieceMode]);
 
-  // update the canvas Size and shape on formSubmit
+  // update the canvas dim and res on formSubmit
   useEffect(() => {
-    if (isSubmit) dispatch(updateCanvasSize(formData));
-  }, [isSubmit, formData, dispatch]);
+    if (isSubmit) {
+      isEyepieceMode
+        ? dispatch(updateEyeCanvas(formData))
+        : dispatch(updateCamCanvas(formData));
+    }
+  }, [isSubmit, formData, dispatch, isEyepieceMode]);
 
   // using callBacks to avoid giving the components new func references on every render.
   const handleFormChange = useCallback((value, target) => {
