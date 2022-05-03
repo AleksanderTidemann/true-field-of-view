@@ -17,6 +17,7 @@ describe("canvasSlice", () => {
   const canvasSlice = () => store.getState().canvas;
 
   // ACTIONS
+  // loadCanvasData()
   describe("loading canvas data", () => {
     it("should add same data to defaultData and userData if it's saved to the server.", async () => {
       // ARRANGE
@@ -40,7 +41,7 @@ describe("canvasSlice", () => {
     });
 
     describe("error indicator", () => {
-      it("should be false if server responds with success", async () => {
+      it("should be false on successful respons from server", async () => {
         // ARRANGE
         fakeAxios.onGet(cs.url).reply(success);
         // ACT
@@ -58,7 +59,7 @@ describe("canvasSlice", () => {
         // ACT
         await store.dispatch(cs.loadCanvasData());
       });
-      it("should be true if server responds with error", async () => {
+      it("should be true on error respons from server", async () => {
         // ARRANGE
         fakeAxios.onGet(cs.url).reply(error);
         // ACT
