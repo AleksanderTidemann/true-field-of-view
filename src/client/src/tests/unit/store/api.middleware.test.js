@@ -1,6 +1,3 @@
-// set mockAxios to a fake url that returns success
-// set the store with jest.fn() s like below and with invoke thing
-// invoke specific actions and expect different functions to have been called in succession.
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import api from "../../../store/api/api-middleware";
@@ -35,17 +32,7 @@ describe("api middleware", () => {
     fakeAxiosReply = jest.fn();
   });
 
-  describe("intercepting actions with type equal to apiCallBegan", () => {
-    it("should call next with action", async () => {
-      fakeAxios.onGet(url).reply(success);
-      const { next, invoke } = fakeStore;
-      const action = apiCallBegan({ url });
-
-      await invoke(action);
-
-      expect(next).toHaveBeenCalledWith(action);
-    });
-
+  describe("intercepting actions with type of apiCallBegan", () => {
     it("should dispatch onStart action if specified", async () => {
       fakeAxios.onGet(url).reply(success);
 
@@ -63,7 +50,7 @@ describe("api middleware", () => {
     });
 
     it("should make server request on specified url", async () => {
-      fakeAxios.onGet(url).reply(success, fakeAxiosReply());
+      fakeAxios.onGet(url).reply(() => [success, fakeAxiosReply()]);
 
       const { next, invoke } = fakeStore;
       const action = apiCallBegan({ url });
@@ -160,21 +147,27 @@ describe("api middleware", () => {
     });
   });
 
-  describe("intercepting actions with type not equal to apiCallBegan", () => {});
+  describe("intercepting actions with type not of apiCallBegan", () => {
+    it("should not make request to server", async () => {
+      fakeAxios.onGet(url).reply(() => [success, fakeAxiosReply()]);
+      const { invoke } = fakeStore;
+      const action = { type: "OTHER", payload: { url } };
 
-  //   it("should make an analytics API call", () => {
-  //     const { next, invoke } = create();
-  //     const action = {
-  //       type: RELEVANT,
-  //       meta: {
-  //         analytics: {
-  //           event: "foo",
-  //           data: { extra: "stuff" },
-  //         },
-  //       },
-  //     };
-  //     invoke(action);
-  //     expect(next).toHaveBeenCalledWith(action);
-  //     expect(fakeAnalyticsApi).toHaveBeenCalled();
-  //   });
+      await invoke(action);
+
+      expect(fakeAxiosReply).not.toHaveBeenCalled();
+    });
+  });
+
+  // in either case..
+  it("should call next with action", async () => {
+    fakeAxios.onGet(url).reply(success);
+    const { next, invoke } = fakeStore;
+    const action = apiCallBegan({ url });
+
+    await invoke(action);
+
+    expect(next).toHaveBeenCalledWith(action);
+    expect(next.mock.calls.length).toBe(1);
+  });
 });
