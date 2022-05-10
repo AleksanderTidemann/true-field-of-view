@@ -24,4 +24,7 @@ export const mockFormData = () => ({
   },
 });
 
+// My coords in Norway:
+export const userCoords = { lat: 59.93, long: 10.69 };
+
 export const createCurrBody = () => {};

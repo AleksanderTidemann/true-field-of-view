@@ -22,7 +22,7 @@ describe("crowdsSlice", () => {
   // ACTIONS
   // loadCrowdData()
   describe("loading crowd data", () => {
-    it("should add the server data into crowdData", async () => {
+    it("should add data from the server into crowdData property", async () => {
       const schema = createCrowdData();
       fakeAxios.onGet(cs.url).reply(success, schema);
 

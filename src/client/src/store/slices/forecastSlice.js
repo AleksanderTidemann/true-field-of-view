@@ -39,8 +39,8 @@ const {
 export default slice.reducer;
 
 // Action creators
-const url = "/forecast/data";
-export const loadForecast = (userCoords) => (dispatch, getState) => {
+export const url = "/forecast/data";
+export const loadForecast = userCoords => (dispatch, getState) => {
   //less than 10 minutes. caching..
   //const { lastFetch } = getState().crowds;
   // const timerInMinutes = 10;
@@ -61,19 +61,19 @@ export const loadForecast = (userCoords) => (dispatch, getState) => {
 };
 
 // Selectors
-const getForecast = (state) => state.forecast;
+const getForecast = state => state.forecast;
 
 export const getLoading = createSelector(
   getForecast,
-  (forecast) => forecast.isLoading
+  forecast => forecast.isLoading
 );
 
 export const getError = createSelector(
   getForecast,
-  (forecast) => forecast.isError
+  forecast => forecast.isError
 );
 
 export const getForecastData = createSelector(
   getForecast,
-  (forecast) => forecast.data
+  forecast => forecast.data
 );
