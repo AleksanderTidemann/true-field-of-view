@@ -1,7 +1,7 @@
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import configureStore from "../../../store/configureStore";
-import * as fc from "../../../store/slices/forecastSlice";
+import configureStore from "../configureStore";
+import * as fc from "../slices/forecastSlice";
 import userCoords from "../../utils/testdata";
 
 describe("forecastSlice", () => {

@@ -1,7 +1,7 @@
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import configureStore from "../../../store/configureStore";
-import * as cs from "../../../store/slices/crowdsSlice";
+import configureStore from "../configureStore";
+import * as cs from "../slices/crowdsSlice";
 
 describe("crowdsSlice", () => {
   let fakeAxios;

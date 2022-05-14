@@ -1,8 +1,8 @@
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import * as cs from "../../../store/slices/canvasSlice";
-import { mockFormData } from "../../utils/testdata";
-import configureStore from "../../../store/configureStore";
+import * as cs from "../slices/canvasSlice";
+import { mockFormData } from "../../utils/testData";
+import configureStore from "../configureStore";
 
 describe("canvasSlice", () => {
   let fakeAxios;

@@ -15,20 +15,22 @@ const ModeSwitcher = () => {
   const colors = useSelector(getColors);
 
   return (
-    <BootstrapSwitchButton
-      key="BootstrapSwitchButton"
-      checked={isEyepieceMode}
-      onlabel="Camera"
-      onstyle={colors.eyepieceMode}
-      offlabel="Eyepiece"
-      offstyle={colors.cameraMode}
-      onChange={bool => {
-        dispatch(switchMode(bool));
-        dispatch(resetCurrBody());
-        dispatch(resetCanvasData());
-      }}
-      style={"w-100 mb-1 mt-2"}
-    />
+    <div data-testid="mode-switcher">
+      <BootstrapSwitchButton
+        key="BootstrapSwitchButton"
+        checked={isEyepieceMode}
+        onlabel="Camera"
+        onstyle={colors.eyepieceMode}
+        offlabel="Eyepiece"
+        offstyle={colors.cameraMode}
+        onChange={bool => {
+          dispatch(switchMode(bool));
+          dispatch(resetCurrBody());
+          dispatch(resetCanvasData());
+        }}
+        style={"w-100 mb-1 mt-2"}
+      />
+    </div>
   );
 };
 
