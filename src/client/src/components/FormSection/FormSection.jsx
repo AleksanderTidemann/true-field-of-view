@@ -1,63 +1,66 @@
-import React from "react";
-import FormModule from "../FormModule/FormModule";
-import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
-import { getColors } from "../../store/slices/colorSlice";
-import { getMode } from "../../store/slices/canvasSlice";
+import React, { useState, useEffect, useCallback } from "react";
+import Form from "../Form/Form";
+import FormInfo from "../FormInfo/FormInfo";
+import ForecastButton from "../Forecast/ForecastButton";
+import FORM_SCHEMA from "./formDataSchema.json";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  updateEyeCanvas,
+  updateCamCanvas,
+  getMode,
+} from "../../store/slices/canvasSlice";
 
-const FormSection = ({ formData, onFormInputChange, onFormSubmit }) => {
-  const {
-    aperture,
-    focallength,
-    barlow,
-    eyepieceafov,
-    eyepiecefocallength,
-    pixelsize,
-    resolutionx,
-    resolutiony,
-  } = formData;
+const FormSection = () => {
+  const [formData, setFormData] = useState(FORM_SCHEMA);
+  const [isSubmit, setSubmit] = useState(false);
 
+  const dispatch = useDispatch();
   const isEyepieceMode = useSelector(getMode);
-  const colors = useSelector(getColors);
 
-  const submitBtnColor = () => {
-    let className = "btn ml-1 mb-1 " + colors.text + " bg-";
-    className += isEyepieceMode ? colors.eyepieceMode : colors.cameraMode;
-    return className;
-  };
+  // runs on mount, and everytime the mode is switched
+  useEffect(() => {
+    setFormData({ ...FORM_SCHEMA }); // reset the formdata
+    setSubmit(prevSubmit => (prevSubmit ? false : prevSubmit));
+  }, [isEyepieceMode]);
+
+  // update the canvas dim and res on formSubmit
+  useEffect(() => {
+    if (isSubmit) {
+      isEyepieceMode
+        ? dispatch(updateEyeCanvas(formData))
+        : dispatch(updateCamCanvas(formData));
+    }
+  }, [isSubmit, formData, dispatch, isEyepieceMode]);
+
+  // using callBacks to avoid giving the components new func references on every render.
+  const handleFormChange = useCallback((value, target) => {
+    setFormData(prevData => {
+      let keyCopy = { ...prevData[target] };
+      keyCopy.value = value;
+      prevData[target] = keyCopy;
+      return { ...prevData };
+    });
+    setSubmit(prevSubmit => (prevSubmit ? false : prevSubmit));
+  }, []);
+
+  const handleFormSubmit = useCallback(value => {
+    value.preventDefault();
+    setSubmit(true);
+  }, []);
 
   return (
-    <form className="d-flex" onSubmit={onFormSubmit}>
-      <FormModule
-        key="Tel"
-        title="Telescope"
-        formItems={[aperture, focallength, barlow]}
-        onFormInputChange={onFormInputChange}
+    <>
+      <Form
+        formData={formData}
+        onFormInputChange={handleFormChange}
+        onFormSubmit={handleFormSubmit}
       />
-      {isEyepieceMode ? (
-        <FormModule
-          key="Eye"
-          title="Eyepiece"
-          formItems={[eyepiecefocallength, eyepieceafov]}
-          onFormInputChange={onFormInputChange}
-        />
-      ) : (
-        <FormModule
-          key="Cam"
-          title="Camera"
-          formItems={[pixelsize, resolutionx, resolutiony]}
-          onFormInputChange={onFormInputChange}
-        />
-      )}
-      <input className={submitBtnColor()} type="submit" value="Go!" />
-    </form>
+      <div className="d-flex">
+        <FormInfo formData={formData} isSubmit={isSubmit} />
+        <ForecastButton />
+      </div>
+    </>
   );
-};
-
-FormSection.propTypes = {
-  formData: PropTypes.object.isRequired,
-  onFormInputChange: PropTypes.func.isRequired,
-  onFormSubmit: PropTypes.func.isRequired,
 };
 
 export default FormSection;
