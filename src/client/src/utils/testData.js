@@ -28,6 +28,7 @@ export const mockFormData = () => ({
 export const userCoords = { lat: 59.93, long: 10.69 };
 
 // a copy of the initial successfull onLoad redux state on may 14th 2022.
+// for use in util/reduxTestRender.js
 export const preloadedState = {
   canvas: {
     lastFetch: 0,

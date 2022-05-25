@@ -5,18 +5,27 @@ import { preloadedState } from "./testData";
 import reducer from "../store/reducers";
 import api from "../store/api/api-middleware";
 
+//testStateEyepiece
+//testStateCamera
+// or just return the state.
+
 const customRender = (component, options) => {
-  const storeForTests = configureStore({
+  const store = configureStore({
     reducer,
     middleware: [...getDefaultMiddleware(), api],
     preloadedState,
   });
 
   const reduxProvider = ({ children }) => (
-    <Provider store={storeForTests}>{children}</Provider>
+    <Provider store={store}>{children}</Provider>
   );
 
-  return render(component, { wrapper: reduxProvider, ...options });
+  const element = render(component, {
+    wrapper: reduxProvider,
+    ...options,
+  });
+
+  return { element, store };
 };
 
 export default customRender;

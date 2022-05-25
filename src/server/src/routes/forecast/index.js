@@ -1,6 +1,7 @@
 import express from "express";
-import { getForecast, filterForecast } from "./getForecast";
+import { getForecast } from "./getForecast";
 import { getAreaCountry } from "./getAreaCountry";
+import { filterForecast } from "./filterForecast";
 
 export const getForecastRoute = () => {
   const router = express.Router();

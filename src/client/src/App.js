@@ -6,13 +6,15 @@ import SelectorPlaceholder from "./components/Selector/SelectorPlaceholder";
 import CanvasPlaceholder from "./components/Canvas/CanvasPlaceholder";
 
 const App = () => {
-  <div className="App container p-0">
-    <ModeSwitcher />
-    <FormSection />
-    <CanvasOptions />
-    <SelectorPlaceholder />
-    <CanvasPlaceholder />
-  </div>;
+  return (
+    <div className="App container p-0">
+      <ModeSwitcher />
+      <FormSection />
+      <CanvasOptions />
+      <SelectorPlaceholder />
+      <CanvasPlaceholder />
+    </div>
+  );
 };
 
 export default App;

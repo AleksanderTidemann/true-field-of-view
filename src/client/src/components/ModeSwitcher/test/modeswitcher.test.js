@@ -14,21 +14,19 @@ describe("modeswitcher", () => {
   let user;
   let containerDiv;
   let switchButton;
-  let component;
+  let element;
+
   beforeEach(() => {
-    component = customRender(<ModeSwitcher />);
-    containerDiv = component.queryByTestId("mode-switcher");
+    ({ element } = customRender(<ModeSwitcher />));
+    containerDiv = element.queryByTestId("mode-switcher");
     switchButton = containerDiv.firstChild;
     user = userEvent.setup();
   });
-
   afterEach(() => cleanup());
 
   it("should render in ON position (eyepiece mode))", () => {
     expect(containerDiv).toBeTruthy();
     expect(switchButton.className.includes("off")).toBe(false);
-
-    component.unmount();
   });
 
   // try puttng in describe block
