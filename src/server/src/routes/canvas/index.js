@@ -3,10 +3,11 @@ import canvasSchema from "./canvasSchema.json";
 
 export const getCanvasRoute = () => {
   const router = express.Router();
-  router.get("/data", getData);
+  router.get("/", getCanvasData);
   return router;
 };
 
-const getData = async (req, res) => {
+const getCanvasData = async (req, res) => {
+  if (!canvasSchema) return res.status(500).send("no canvas data found..");
   res.json(canvasSchema);
 };

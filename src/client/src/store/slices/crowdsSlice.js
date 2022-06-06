@@ -67,7 +67,7 @@ const {
 export default slice.reducer;
 
 // Action creators
-export const url = "/crowds/data";
+export const url = "/crowds";
 export const loadCrowdData = () => (dispatch, getState) => {
   //less than 10 minutes. caching..
   //const { lastFetch } = getState().crowds;

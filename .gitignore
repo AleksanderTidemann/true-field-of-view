@@ -16,5 +16,6 @@
 
 # misc
 **.DS_Store
+**avaliable-endpoints.txt
 
 npm-debug.log*

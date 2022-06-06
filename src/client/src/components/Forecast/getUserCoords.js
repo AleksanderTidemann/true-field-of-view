@@ -2,7 +2,7 @@ const getUserCoords = () => {
   return new Promise((resolve, reject) => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
+        position => {
           let latitude = position.coords.latitude;
           let longitude = position.coords.longitude;
           resolve({
@@ -10,7 +10,7 @@ const getUserCoords = () => {
             long: longitude,
           });
         },
-        (error) => {
+        error => {
           reject(error);
         }
       );

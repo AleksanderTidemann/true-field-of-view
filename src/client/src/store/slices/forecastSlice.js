@@ -39,7 +39,7 @@ const {
 export default slice.reducer;
 
 // Action creators
-export const url = "/forecast/data";
+export const url = "/forecast";
 export const loadForecast = userCoords => (dispatch, getState) => {
   //less than 10 minutes. caching..
   //const { lastFetch } = getState().crowds;

@@ -1,4 +1,4 @@
-// filter forecastData from the YR API
+// filter forecastData from `https://api.met.no/weatherapi/"
 export const filterForecast = data => {
   const currTime = Date();
   const currHour = currTime.slice(16, 18);

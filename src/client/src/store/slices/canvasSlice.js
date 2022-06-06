@@ -117,7 +117,7 @@ const {
 export default slice.reducer;
 
 // Action Creators
-export const url = "/canvas/data";
+export const url = "/canvasdata";
 export const loadCanvasData = () => (dispatch, getState) => {
   //less than 10 minutes. caching..
   //const { lastFetch } = getState().crowds;
