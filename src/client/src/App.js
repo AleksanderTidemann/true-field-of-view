@@ -7,7 +7,7 @@ import CanvasPlaceholder from "./components/Canvas/CanvasPlaceholder";
 
 const App = () => {
   return (
-    <div className="App container p-0">
+    <div className="container p-0 App">
       <ModeSwitcher />
       <FormSection />
       <CanvasOptions />

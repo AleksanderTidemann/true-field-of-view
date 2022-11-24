@@ -1,3 +1,4 @@
 import { startServer } from "./start";
+import config from "config";
 
-startServer(process.env.PORT);
+startServer(3001); //config.get("port") ||

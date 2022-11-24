@@ -25,6 +25,10 @@ export function drawCanvasBody(
   const imagePxDiameter = bodyUnitCount * pxPerUnit;
   const centeringOffset = imagePxDiameter / 2;
 
+  // this only tells me the width of the image in the browser.
+  console.log(bodyUnitCount, canvasUnitCount);
+  console.log(dprCanvasWidth);
+
   let imgObject = new Image();
   imgObject.src = imgPath;
   context.drawImage(

@@ -1,0 +1,31 @@
+{
+  "proxy": "http://localhost:3001/api",
+  "canvasdata": [
+    {
+      "method": "get",
+      "url": "/canvasdata",
+      "respons": "the template data for our canvas/react app"
+    }
+  ],
+  "forecast": [
+    {
+      "method": "post",
+      "url": "/forecast",
+      "body": { "lat": 0.0, "long": 0.0 },
+      "respons": "object with area, country, temperature, etc. of night time in the users location"
+    }
+  ],
+  "crowds": [
+    {
+      "method": "get",
+      "url": "/crowds",
+      "respons": "object with detailed info on all celestial crowds avaliable."
+    },
+    {
+      "method": "get",
+      "url": "/crowds/:key",
+      "key": ["planets", "moons"],
+      "respons": "object with detailed info on a specific celestial crowd."
+    }
+  ]
+}

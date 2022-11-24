@@ -9,8 +9,8 @@ import { apiCallBegan, apiCallSuccess, apiCallFailed } from "./api-actions";
 
 const api =
   ({ dispatch }) =>
-  (next) =>
-  async (action) => {
+  next =>
+  async action => {
     if (action.type !== apiCallBegan.type) return next(action);
 
     const { url, method, data, onStart, onSuccess, onError } = action.payload;
@@ -21,7 +21,7 @@ const api =
 
     try {
       const response = await axios.request({
-        //baseURL: "http://localhost:3001/api", // I set PROXY var in the package.json instead
+        //baseURL: "http://localhost:3001/api", I set PROXY var in the package.json instead
         url,
         method,
         data,

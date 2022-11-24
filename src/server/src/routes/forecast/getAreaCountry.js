@@ -1,4 +1,5 @@
 import axios from "axios";
+import config from "config";
 
 export const getAreaCountry = async (lat, long) => {
   const response = await reverseGeocode(lat, long);
@@ -10,12 +11,12 @@ export const getAreaCountry = async (lat, long) => {
 // Get the area and country of latitude and longitude coordinates via reverse geocoding
 // from https://rapidapi.com/trueway/api/trueway-geocoding/
 const reverseGeocode = (lat, long) => {
-  const url = "https://trueway-geocoding.p.rapidapi.com/ReverseGeocode";
+  const url = config.get("geocode.url");
   const options = {
     params: { location: lat + "," + long },
     headers: {
-      "X-RapidAPI-Host": "trueway-geocoding.p.rapidapi.com",
-      "X-RapidAPI-Key": process.env.RAPID_API_KEY,
+      "X-RapidAPI-Host": config.get("geocode.host"),
+      "X-RapidAPI-Key": config.get("geocode.key"),
     },
   };
   return new Promise((resolve, reject) => {

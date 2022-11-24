@@ -1,0 +1,10 @@
+{
+  "port": "tfov_port",
+  "db": {
+    "username": "tfov_db_username",
+    "password": "tfov_db_password"
+  },
+  "geocode": {
+    "key": "tfov_rapid_api_key"
+  }
+}

@@ -4,9 +4,6 @@
 # production
 **/build
 
-# database
-**dbconnectionstring.js
-
 # Environment
 **.env
 **.env.local
@@ -16,6 +13,6 @@
 
 # misc
 **.DS_Store
-**avaliable-endpoints.txt
+**secret.txt
 
 npm-debug.log*
