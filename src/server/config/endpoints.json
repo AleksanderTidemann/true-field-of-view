@@ -23,7 +23,7 @@
     },
     {
       "method": "get",
-      "url": "/crowds/:key",
+      "url": "/crowds/key",
       "key": ["planets", "moons"],
       "respons": "object with detailed info on a specific celestial crowd."
     }
