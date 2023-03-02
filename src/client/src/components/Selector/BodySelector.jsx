@@ -11,13 +11,14 @@ const BodySelector = ({ picWidth }) => {
 
   return (
     <div className="col-11 d-flex justify-content-around">
-      {currCrowd.data.map(body => {
+      {currCrowd.data.map((body) => {
         let newBodyName = body.key;
         let bodyImgPath = getXorBodyImg(
           currCrowd.key,
           currBodyName,
           newBodyName
         );
+        console.log(bodyImgPath);
         return (
           <Body
             name={newBodyName}
